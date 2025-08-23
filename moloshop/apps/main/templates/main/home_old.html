@@ -1,0 +1,20 @@
+
+{# ../apps/main/templates/main/home.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% include "main/includes/_search.html" %}
+    {% include "main/includes/_offices.html" %}
+    {% include "main/includes/_marketplace.html" %}
+    {% include "main/includes/_board.html" %}
+    {% include "main/includes/_blog.html" %}
+    {% include "main/includes/_portfolio.html" %}
+{% endblock %}
+
+

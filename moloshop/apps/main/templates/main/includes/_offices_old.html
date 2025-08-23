@@ -1,0 +1,25 @@
+
+{# ../apps/main/templates/main/home/_offices.html #}
+{# -- 2. Офисы зарегистрированных пользователей -- #}
+
+<section class="section offices-section">
+    <div class="container">
+        <h2 class="title-lg">Офисы и лейдинги</h2>
+        <div class="grid grid-3 gap-lg">
+            {% for office in offices %}
+                <div class="card">
+                    <img src="{{ office.image.url }}" alt="{{ office.name }}">
+                    <h3>{{ office.name }}</h3>
+                    <p>{{ office.short_description }}</p>
+                    <a href="{{ office.url }}" class="btn btn-outline">Перейти</a>
+                </div>
+            {% empty %}
+                <p>Нет активных офисов</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+

@@ -1,0 +1,11 @@
+
+{# moloshop/apps/users/templates/users/profile.html #}
+
+{% extends "core/base.html" %}
+
+
+{% block content %}
+<h1>Профиль</h1>
+<p>E-mail: {{ user.email }}</p>
+<p>Имя: {{ user.first_name }}</p>
+{% endblock %}

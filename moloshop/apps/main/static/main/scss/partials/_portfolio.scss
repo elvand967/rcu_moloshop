@@ -1,0 +1,33 @@
+.portfolio-section {
+    .portfolio-card {
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: $border-radius-md;
+        box-shadow: $shadow-sm;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.03);
+            box-shadow: $shadow-md;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        h3 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: $white;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    }
+}

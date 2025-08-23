@@ -1,0 +1,90 @@
+// moloshop/apps/core/static/core/scss/_header.scss
+
+// === Основной параллакс-блок ===
+.hero-parallax {
+  min-height: 450px;
+  background: url('/static/main/img/main-banner.jpg') center 0/cover no-repeat;
+  color: #fff;
+//   text-shadow: 1px 1px 8px #000;
+  position: relative;
+  will-change: background-position;
+//   display: flex; // чтобы h-100 row работало по высоте
+  align-items: center;
+}
+
+// == Адаптивная высота секции ==
+@media (max-width: 768px) {
+  .hero-parallax {
+    min-height: 350px;
+    padding: 1.5rem 0;
+  }
+}
+
+// ==== Секция поиска ====
+.search-section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: rgba(44,62,80,0.80);
+    padding: 2rem 1rem;
+    border-radius: 0.75rem;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+
+    h3 {
+      color: #fff; // яркий заголовок формы
+      margin-bottom: 1rem;
+    }
+    input, select {
+      // Не дублируем стилику — ваш core.css всё делает!
+      // Оставляем только если хотим override:
+      background: #fff;
+    }
+    button.btn {
+      background: #ffc107;
+      color: #111;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    button.btn:hover {
+      background: #e0a800;
+      color: #fff;
+    }
+  }
+}
+
+// ==== Заголовок и подзаголовки справа ====
+.hero-title {
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: 0.5rem;
+  color: $color-secondary-light;
+  -webkit-text-stroke: 1px $color-background-light;     /* толщина и цвет обводки */
+//   text-shadow: 2px 2px 8px rgba(255,255,255,2.75);
+}
+.hero-subtitle {
+  font-size: 1.35rem;
+  color: $color-warning-light;
+//   -webkit-text-stroke: 1px $color-bg-ad-alt;     /* толщина и цвет обводки */
+//   text-shadow: 1px 1px 8px rgba(255,255,255,2.5);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+    margin-left: 0;
+    text-align: center;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-left: 0;
+    text-align: center;
+  }
+  .search-section form {
+    padding: 1rem 0.5rem;
+  }
+}

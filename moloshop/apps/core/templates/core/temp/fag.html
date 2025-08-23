@@ -1,0 +1,20 @@
+{# moloshop/apps/core/templates/core/fag.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+        {% with ""|center:5 as repeat_range %}
+          {% for _ in repeat_range %}
+            <p>{{ info }}</p>
+          {% endfor %}
+        {% endwith %}
+{% endblock content %}

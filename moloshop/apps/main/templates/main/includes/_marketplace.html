@@ -1,0 +1,24 @@
+
+{# ../apps/main/templates/main/home/_marketplace.html #}
+{# -- 3. Витрина товаров и услуг -- #}
+
+<section class="section marketplace-section bg-light">
+    <div class="container">
+        <h2 class="title-lg">Товары и услуги</h2>
+        <div class="grid grid-4 gap-lg">
+            {% for product in products %}
+                <div class="card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">{{ product.price }} BYN</p>
+                    <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            {% empty %}
+                <p>Товары пока не добавлены</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+

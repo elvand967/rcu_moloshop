@@ -1,0 +1,24 @@
+
+Запуск сервера:
+python manage.py runserver
+---
+
+Создание миграций новых моделей:
+python manage.py makemigrations
+
+Миграции:
+python manage.py migrate
+---
+
+список всех зависимостей в виртуальном окружении:
+    создать:
+pip freeze > requirements.txt
+    установить:
+pip install -r requirements.txt
+---
+
+Меню личного кабинета
+Передача параметров в views_service.py
+{"slug": "privacy-policy"}             # Политика конфиденциальности
+{"slug": "service-rules"}              # Правила сервиса
+{"slug": "registration-on-the-site"}   # Инструкция по регистрации на сайте

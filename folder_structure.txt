@@ -1,0 +1,69 @@
+└── moloshop
+       └── apps
+            └── core
+                └── static
+                    └── core
+                        ├── css
+                        │   ├── core.css
+                        │   └── global_core.css
+                        ├── img
+                        │   ├── logo.ico
+                        │   ├── logo.png
+                        │   └── icons
+                        │       ├── chevron-down.svg
+                        │       ├── chevron-down1.svg
+                        │       ├── chevron-down2.svg
+                        │       ├── chevron-up.svg
+                        │       ├── chevron-up1.svg
+                        │       ├── chevron-up2.svg
+                        │       ├── cross.svg
+                        │       ├── exit.svg
+                        │       ├── favorites.svg
+                        │       ├── heart.svg
+                        │       ├── home.svg
+                        │       ├── home1.svg
+                        │       ├── log-in.svg
+                        │       ├── profile.svg
+                        │       ├── register.svg
+                        │       ├── settings.svg
+                        │       ├── settings1.svg
+                        │       ├── user-plus.svg
+                        │       ├── user.svg
+                        │       └── social
+                        │           ├── Twitter_x.svg
+                        │           ├── facebook.svg
+                        │           ├── facebook1.svg
+                        │           ├── google.svg
+                        │           ├── instagram.svg
+                        │           ├── telegram.svg
+                        │           ├── telegram1.svg
+                        │           ├── tiktok.svg
+                        │           └── viber.svg
+                        ├── js
+                        │   ├── fast_nav.js
+                        │   ├── footer_animations.js
+                        │   ├── parallax_effect.js
+                        │   ├── submenu_arrows.js
+                        │   └── ckeditor
+                        │       └── styles.js
+                        └── scss
+                            ├── _buttons.scss
+                            ├── _header.scss
+                            ├── _layout.scss
+                            ├── core.scss
+                            ├── global_core.scss
+                            └── partials
+                                ├── _ckeditor_styles.scss
+                                ├── _fast_scroll_nav.scss
+                                ├── _fast_scroll_nav_old.scss
+                                ├── _footer.scss
+                                ├── _footer_old.scss
+                                ├── _footer_old2.scss
+                                ├── _globals.scss
+                                ├── _globals_old.scss
+                                ├── _grid.scss
+                                ├── _main_menu.scss
+                                ├── _mixins.scss
+                                ├── _utilities.scss
+                                ├── _variables.scss
+                                └── _variables_old.scss

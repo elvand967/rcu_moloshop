@@ -1,0 +1,11 @@
+asgiref==3.9.1
+Django==5.2.5
+django-js-asset==3.1.2
+django-mptt==0.17.0
+libsass==0.23.0
+pillow==11.3.0
+pyperclip==1.9.0
+python-dotenv==1.1.1
+sqlparse==0.5.3
+tzdata==2025.2
+Unidecode==1.4.0

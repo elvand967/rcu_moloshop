@@ -1,0 +1,154 @@
+{# templates/core/base_home.html #}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moloshop.by — Главная</title>
+
+    <!-- Глобальные стили -->
+    <link rel="stylesheet" href="{% static 'core/css/global_core.css' %}">
+    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+</head>
+<body>
+
+<header class="header">
+    <div class="container flex-between">
+        <div class="logo">
+            <a href="/">Moloshop.by</a>
+        </div>
+
+        <nav class="main-nav">
+            <ul class="nav-list flex-gap">
+                <li><a href="#">Личный кабинет</a></li>
+                <li><a href="#">Офисы</a></li>
+                <li><a href="#">Витрина</a></li>
+                <li><a href="#">Доска объявлений</a></li>
+                <li><a href="#">Блог</a></li>
+                <li><a href="#">Портфолио</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+
+    <!-- 1. Блок поиска -->
+    <section class="section search-section bg-light">
+        <div class="container">
+            <h1 class="title-xl text-center">Найдите услугу или товар</h1>
+            <form class="search-form flex-center" action="{% url 'search' %}" method="get">
+                <input type="text" name="q" placeholder="Поиск..." class="search-input">
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 2. Офисы зарегистрированных пользователей -->
+    <section class="section offices-section">
+        <div class="container">
+            <h2 class="title-lg">Офисы и лейдинги</h2>
+            <div class="grid grid-3 gap-lg">
+                {% for office in offices %}
+                    <div class="card">
+                        <img src="{{ office.image.url }}" alt="{{ office.name }}">
+                        <h3>{{ office.name }}</h3>
+                        <p>{{ office.short_description }}</p>
+                        <a href="{{ office.url }}" class="btn btn-outline">Перейти</a>
+                    </div>
+                {% empty %}
+                    <p>Нет активных офисов</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Витрина товаров и услуг -->
+    <section class="section marketplace-section bg-light">
+        <div class="container">
+            <h2 class="title-lg">Товары и услуги</h2>
+            <div class="grid grid-4 gap-lg">
+                {% for product in products %}
+                    <div class="card">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <h3>{{ product.name }}</h3>
+                        <p class="price">{{ product.price }} BYN</p>
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                {% empty %}
+                    <p>Товары пока не добавлены</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Доска объявлений -->
+    <section class="section board-section">
+        <div class="container">
+            <h2 class="title-lg">Свежие объявления</h2>
+            <div class="grid grid-3 gap-md">
+                {% for ad in ads %}
+                    <article class="ad-card">
+                        <h3>{{ ad.title }}</h3>
+                        <p>{{ ad.short_description }}</p>
+                        <a href="{{ ad.get_absolute_url }}">Подробнее</a>
+                    </article>
+                {% empty %}
+                    <p>Объявлений нет</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Блог -->
+    <section class="section blog-section bg-light">
+        <div class="container">
+            <h2 class="title-lg">Последние статьи</h2>
+            <div class="grid grid-3 gap-md">
+                {% for post in blog_posts %}
+                    <article class="blog-card">
+                        <h3>{{ post.title }}</h3>
+                        <p>{{ post.short_description }}</p>
+                        <a href="{{ post.get_absolute_url }}">Читать</a>
+                    </article>
+                {% empty %}
+                    <p>Нет опубликованных статей</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Портфолио -->
+    <section class="section portfolio-section">
+        <div class="container">
+            <h2 class="title-lg">Работы наших пользователей</h2>
+            <div class="grid grid-4 gap-md">
+                {% for item in portfolio_items %}
+                    <div class="portfolio-card">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                        <h3>{{ item.title }}</h3>
+                    </div>
+                {% empty %}
+                    <p>Портфолио пока пустое</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="footer bg-dark text-light">
+    <div class="container flex-between">
+        <p>&copy; {{ now|date:"Y" }} Moloshop.by</p>
+        <nav>
+            <a href="#">О нас</a> | 
+            <a href="#">Контакты</a> |
+            <a href="#">Политика конфиденциальности</a>
+        </nav>
+    </div>
+</footer>
+
+</body>
+</html>

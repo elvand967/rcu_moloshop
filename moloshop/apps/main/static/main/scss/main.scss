@@ -1,0 +1,48 @@
+@import "variables"; // т.к. `core/scss/partials` уже в include_paths скрипта assets/compiler_scss.py
+
+// @import 'partials/search';
+@import 'partials/header';
+@import 'partials/offices';
+// @import 'partials/marketplace';
+// @import 'partials/board';
+// @import 'partials/blog';
+// @import 'partials/portfolio';
+
+/* Общие стили главной страницы */
+.section {
+    padding: 3rem 0;
+
+    @include media-max(md) {
+        padding: 2rem 0;
+    }
+}
+
+.card,
+.ad-card,
+.blog-card,
+.portfolio-card {
+    background: $color-surface; // фон карточек
+    border-radius: 12px;
+    box-shadow: 0 2px 6px $color-shadow; // мягкая тень
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px $color-shadow-strong; // усиленная тень при hover
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin-bottom: 0.8rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: $color-text; // заголовок карточки
+    }
+}

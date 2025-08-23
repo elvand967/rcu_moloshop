@@ -1,0 +1,23 @@
+{# ../apps/main/templates/main/home/_search.html #}
+{# -- 1. Блок поиска -- #}
+
+<section class="section search-section bg-surface">
+    <div class="container">
+        <h1 class="title-xl text-center text-primary">Найдите услугу или товар</h1>
+
+        <form class="search-form flex-center" action="{% url 'search' %}" method="get">
+            <div class="search-field-wrapper">
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Поиск..."
+                    class="search-input"
+                    aria-label="Поиск по сайту"
+                >
+                <button type="submit" class="btn btn-primary">
+                    Найти
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

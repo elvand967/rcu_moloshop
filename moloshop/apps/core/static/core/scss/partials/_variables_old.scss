@@ -1,0 +1,110 @@
+
+// moloshop/apps/core/static/core/scss/_variables.scss
+
+// ================================
+//  Moloshop.by — Variables
+// ================================
+
+// ==== Основные цвета ====
+$color-primary:       #2c7e73; // Основной фирменный цвет (кнопки, активные элементы)
+$color-primary-light: #3da390; // Осветлённый вариант (hover, фоновые акценты)
+$color-primary-dark:  #205c54; // Тёмный вариант (нажатые элементы, активные состояния)
+
+$color-secondary:       #3fa58c; // Дополнительный акцент
+$color-secondary-light: #60c0a8; // Светлее (hover)
+$color-secondary-dark:  #2e7b69; // Темнее (active)
+
+$color-accent:       #5dc2ae; // Яркий акцент (иконки, выделения)
+$color-accent-light: #7dd7c6; // Светлее (hover, фоны)
+$color-accent-dark:  #429988; // Темнее (нажатые элементы)
+
+// ==== Базовые цвета фона и текста ====
+$color-background:       #f5f7f9; // Цвет фона страницы
+$color-background-light: #ffffff; // Белоснежный вариант (карточки, панели)
+$color-background-dark:  #e6e9ec; // Немного темнее (разделы, альтернативные блоки)
+
+$color-surface:       #ffffff; // Поверхности (панели, карточки)
+$color-surface-light: #fdfdfd; // Ещё светлее (hover фона)
+$color-surface-dark:  #f0f2f3; // Чуть темнее (разделение элементов)
+
+$color-text:           #1f2d2b; // Основной текст
+$color-text-light:     #5a6e6a; // Вторичный текст, подписи
+$color-text-inverse:   #ffffff; // Текст на тёмном фоне
+
+// ==== Статусные цвета ====
+$color-success:       #4caf50; // Успех
+$color-success-light: #6ec071; // Hover фон
+$color-success-dark:  #3a8f3d; // Active
+
+$color-warning:       #ff9800; // Предупреждение
+$color-warning-light: #ffb84d; // Hover фон
+$color-warning-dark:  #cc7a00; // Active
+
+$color-error:         #f44336; // Ошибка
+$color-error-light:   #f77066; // Hover фон
+$color-error-dark:    #c23328; // Active
+
+$color-info:          #2196f3; // Информация
+$color-info-light:    #64b5f6; // Hover фон
+$color-info-dark:     #1976d2; // Active
+
+// ==== Разделители и тени ====
+$color-divider:       #e0e0e0; // Линии разделения
+$color-divider-dark:  #bdbdbd; // Более тёмный разделитель
+
+$color-shadow:        rgba(0, 0, 0, 0.1); // Базовая тень
+$color-shadow-strong: rgba(0, 0, 0, 0.2); // Усиленная тень для модалок
+
+
+
+// из старой разработки
+
+// Размер контейнера
+$container-max-width: 1200px;
+$container-padding: 1rem;
+
+// Отступы между колонками
+$gutter-width: 1rem;
+
+// Количество колонок в сетке
+$grid-columns: 12;
+
+// Точки брейкпоинтов (максимальная ширина)
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+// Упрощённые переменные
+$breakpoint-sm: map-get($breakpoints, sm);
+$breakpoint-md: map-get($breakpoints, md);
+$breakpoint-lg: map-get($breakpoints, lg);
+$breakpoint-xl: map-get($breakpoints, xl);
+// ==========================
+// Миксины для медиа-запросов
+// ==========================
+
+// Макс. ширина
+@mixin media-max($point) {
+  @media (max-width: map-get($breakpoints, $point)) {
+    @content;
+  }
+}
+
+// Мин. ширина
+@mixin media-min($point) {
+  @media (min-width: map-get($breakpoints, $point)) {
+    @content;
+  }
+}
+/*
+Теперь в любом месте можно писать:
+.section {
+  padding: 3rem 0;
+
+  @include media-max(md) {
+    padding: 2rem 0;
+  }
+}
+*/

@@ -1,0 +1,20 @@
+{# moloshop/apps/users/templates/users/logout.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link type="text/css" href="{% static 'users/css/users.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Выход</h2>
+    <p>Вы успешно вышли из системы.</p>
+    <a class="btn-main" href="{% url 'users:login' %}">Войти снова</a>
+    <a class="btn-main anon" href="{% url 'main:includes' %}">Продолжить без авторизации</a>
+  </div>
+</div>
+{% endblock %}

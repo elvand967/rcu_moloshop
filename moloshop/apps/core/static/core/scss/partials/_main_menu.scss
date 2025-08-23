@@ -1,0 +1,242 @@
+
+// moloshop/apps/core/static/core/scss/partials/_main_menu.scss
+
+.navbar {
+  background-color: $color-primary-light;
+  padding: 0.5rem 0.5rem;
+  position: relative;
+//   border-radius: 0  0 .75rem  .75rem;
+  z-index: 50;
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: $color-text-inverse;
+      transition: transform 0.3s ease; // плавный эффект для всей группы (логотип + текст)
+
+      &:hover,
+      &:focus {
+        color: $color-warning-light;
+        text-decoration: none;
+        transform: scale(1.15); // увеличиваем всю группу (логотип + текст бренда)
+      }
+    }
+
+    .brand-logo {
+      padding-left: 2.0rem;
+      max-height: 40px; // уменьшенный размер логотипа
+      height: auto;
+      width: auto;
+      transition: transform 0.3s ease; // плавный переход
+    }
+
+    .brand-name {
+      display: flex;
+      padding-left: 0.75rem;
+      font-size: 2.0rem;
+      font-weight: 800;
+      -webkit-text-stroke: 1px $color-primary;
+      color: $color-text-inverse;
+      user-select: none;
+      line-height: 1;
+      transition: transform 0.3s ease; // плавный переход
+
+      sup {
+        font-size: 0.75rem;
+        vertical-align: super;
+        color: $color-text-inverse;
+        -webkit-text-stroke: 0px $color-text-inverse;
+        margin-left: 0.1rem;
+        user-select: none;
+      }
+    }
+  }
+
+  .menu-list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+
+    .menu-item {
+      position: relative;
+
+      .menu-link-wrap {
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-link {
+        color: $color-text-inverse;
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-decoration: none;
+        padding: 0.3rem 0.75rem;
+        border-radius: 0.4rem;
+        display: block;
+
+        // добавляем плавный переход для нового эффекта увеличения
+        transition:
+          background-color 0.2s ease,
+          color 0.2s ease,
+          box-shadow 0.2s ease,
+          transform 0.3s ease;
+
+        &:hover,
+        &:focus {
+          background-color: $color-primary;
+          color: $color-text-inverse;
+          box-shadow: 0 2px 8px $color-shadow;
+          outline: none;
+          transform: scale(1.1); // увеличение ссылки и шрифта при наведении
+        }
+
+        &:focus-visible {
+          outline: 2px solid $color-accent;
+          outline-offset: 2px;
+        }
+      }
+
+      &.has-dropdown:hover > .dropdown-menu,
+      &.has-dropdown:focus-within > .dropdown-menu {
+        display: block;
+      }
+
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 110%;
+        left: 0;
+        background-color: $color-primary-light;
+        border: 1px solid $color-surface-light;
+        box-shadow: 0 4px 12px rgba(63, 165, 140, 0.15);
+        border-radius: 0.4rem;
+        min-width: 10rem;
+        padding: 0.5rem 0;
+        z-index: 20;
+
+        .dropdown-link {
+          display: block;
+          padding: 0.4rem 1rem;
+          color: $color-text-inverse;
+          text-decoration: none;
+          font-size: 1rem;
+          transition: background 0.2s ease, color 0.2s ease;
+
+          &:hover,
+          &:focus {
+            background-color: $color-primary;
+            color: $color-text-inverse;
+            border-radius: 0.4rem;
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+
+  .divider-item {
+    color: $color-text-inverse;
+    font-weight: bold;
+    user-select: none;
+    padding: 0 0.15rem;
+  }
+
+  .navbar-toggle {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    .menu-label {
+      color: $color-text-inverse;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .hamburger {
+      position: relative;
+      width: 2rem;
+      height: 1.5rem;
+      cursor: pointer;
+
+      span {
+        display: block;
+        height: 3px;
+        width: 100%;
+        margin-bottom: 5px;
+        background-color: $color-text-inverse;
+        border-radius: 2px;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+
+  // ---- Медиазапросы ----
+  @media (max-width: 835px) {
+    .menu-list {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start; // выравнивание по левому краю
+      width: 100%;
+      gap: 0;
+      padding-top: 1rem;
+
+      .menu-item {
+        width: 100%;
+
+        .menu-link {
+          padding: 0.5rem 1rem;
+          width: 100%;
+        }
+
+        .dropdown-menu {
+          display: block;
+          position: relative;
+          box-shadow: none;
+          background-color: $color-primary-light;
+          border: none;
+          padding-left: 2rem;
+          width: 100%;
+
+          .dropdown-link {
+            padding-left: 1.5rem;
+          }
+        }
+      }
+    }
+
+    #menu-toggle:checked ~ .navbar-menu .menu-list {
+      display: flex;
+    }
+
+    .navbar-toggle {
+      display: flex;
+      margin-top: 0.5rem;
+    }
+
+    #menu-toggle:checked ~ .navbar-toggle .hamburger span:nth-child(1) {
+      transform: rotate(45deg) translateY(8px);
+    }
+    #menu-toggle:checked ~ .navbar-toggle .hamburger span:nth-child(2) {
+      opacity: 0;
+    }
+    #menu-toggle:checked ~ .navbar-toggle .hamburger span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-8px);
+    }
+
+    .navbar-menu {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+@mixin fast-nav-icon(
+  $size: 1rem,
+  $color-light: $color-text,
+  $color-dark: $color-surface-light
+) {
+  width: $size;
+  height: $size;
+  display: block;
+  margin: 0;
+  padding: 0;
+  transition: fill 0.2s ease-in-out;
+  fill: $color-light;
+
+  body.dark-theme & {
+    fill: $color-dark;
+  }
+}

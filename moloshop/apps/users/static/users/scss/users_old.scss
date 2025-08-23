@@ -1,0 +1,220 @@
+// Подключаем переменные и миксины
+@import 'variables';
+@import 'mixins';
+
+.auth-container {
+  min-height: 80vh;
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $color-background;
+}
+
+.auth-card {
+  background: $color-background-light;
+  box-shadow: 0 8px 32px 0 $color-shadow-strong;
+  border-radius: 0.75rem;
+  padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 340px;
+  max-width: 400px;
+}
+
+.auth-title {
+  color: $color-text;
+  text-align: center;
+  margin-bottom: 1.2em;
+  font-weight: 700;
+}
+
+.form-group {
+  margin-bottom: 1.3em;
+
+  label {
+    display: block;
+    margin-bottom: 0.4em;
+    color: $color-text-light;
+    font-weight: 500;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 0.6em 1em;
+    border-radius: 0.7em;
+    border: 1px solid $color-divider;
+    background: $color-background-dark;
+    color: $color-text;
+    font-size: 1em;
+    margin-bottom: 0.2em;
+
+    &:focus {
+      border: 1.5px solid $color-primary;
+      outline: none;
+      background: $color-background;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.3);
+    }
+  }
+}
+
+.btn-main {
+  display: block;
+  width: 100%;
+  background: $color-primary;
+  color: $color-text-inverse;
+  border: none;
+  outline: none;
+  border-radius: 0.6em;
+  font-weight: 700;
+  font-size: 1.1em;
+  padding: 0.9em 0.9em;
+  cursor: pointer;
+  margin-top: 1em;
+  box-shadow: 0 2px 8px $color-shadow-strong;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    text-decoration: none;
+    background: $color-primary-dark;
+    color: $color-text;
+    box-shadow: 0 4px 16px $color-shadow-strong;
+  }
+}
+
+.anon {
+  background: $color-text;
+  color: $color-text-inverse;
+
+  &:hover {
+    text-decoration: none;
+    background: $color-primary-dark;
+    color: $color-text;
+    box-shadow: 0 4px 16px $color-shadow-strong;
+  }
+}
+
+.auth-links {
+  margin: 1.4em 0 0.8em;
+  text-align: center;
+  color: $color-text-light;
+
+  a {
+    color: $color-accent;
+    font-weight: 600;
+
+    &:hover {
+      color: $color-primary;
+      text-decoration: underline;
+    }
+  }
+}
+
+.auth-social {
+  margin-top: 1.2em;
+
+  .social-divider {
+    text-align: center;
+    color: $color-text-light;
+    margin-bottom: 0.7em;
+    font-size: 0.96em;
+  }
+
+  .btn-social {
+    display: block;
+    width: 100%;
+    border-radius: 0.5em;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 0.4em;
+    color: $color-text-inverse;
+    padding: 0.85em;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, background 0.2s ease;
+    box-shadow: 0 1px 4px $color-shadow;
+
+    &.btn-google { background: #DB4437; }
+    &.btn-vk     { background: #4C75A3; }
+    &.btn-github { background: #24292e; }
+    &.btn-yandex {
+      background: #FFCC00;
+      color: #1F4E79;
+    }
+    &.btn-phone {
+      background: $color-secondary-dark;
+      color: $color-text;
+    }
+
+    &:hover {
+      box-shadow: 0 2px 12px $color-shadow-strong;
+      filter: brightness(1.07);
+    }
+  }
+}
+
+.messages {
+  padding: 0;
+  margin: 0 0 0.8em 0;
+  list-style: none;
+
+  .message {
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+    padding: 0.7em 1em;
+    color: $color-text-inverse;
+    background: $color-primary-light;
+
+    &.success {
+      background: $color-success;
+      color: $color-surface;
+    }
+    &.error {
+      background: $color-error-light;
+      color: $color-text-inverse;
+    }
+    &.info {
+      background: $color-info;
+      color: $color-text-inverse;
+    }
+    &.warning {
+      background: $color-warning; // можно заменить на $color-warning, если нужно
+      color: $color-text-inverse;
+    }
+  }
+}
+
+//---------------------
+// header
+//---------------------
+
+.user-header-gradient {
+  background: linear-gradient(90deg, #48b1f3 0%, #06beb6 100%);
+  box-shadow: 0 2px 16px 0 rgba(70, 160, 230, 0.10);
+  color: $color-text-inverse;
+  letter-spacing: 0.02em;
+  border-radius: 0 0 20px 20px;
+  position: relative;
+}
+
+.user-header-title {
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 2.3rem;
+  letter-spacing: 0.09em;
+  margin-bottom: 0.3em;
+}
+
+.user-header-slogan {
+  font-size: 1.18rem;
+  font-weight: 400;
+  opacity: 0.94;
+  margin: 0;
+}
+
+.user-header-logo {
+  filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.11));
+  height: 54px; // можно увеличить под нужный вам размер
+}
+
+.header-logo-link {
+  outline: none;
+  border: none;
+}
