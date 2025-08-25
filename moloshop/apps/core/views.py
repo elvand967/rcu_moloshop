@@ -65,6 +65,21 @@ def favorites(request):
 
 
 
+# apps/core/views.py
+from django.shortcuts import render, get_object_or_404
+from .models.core_documents import ContractsInstructions
+
+
+def docs_detail(request, slug):
+    """
+    Показывает один документ ContractsInstructions по slug.
+    """
+    document = get_object_or_404(ContractsInstructions, slug=slug)
+
+    context = {
+        'document': document
+    }
+    return render(request, 'core/docs.html', context)
 
 
 

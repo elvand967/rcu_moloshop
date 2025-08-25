@@ -1,0 +1,80 @@
+
+// ../apps/core/static/core/scss/partials/_richtext.scss
+
+// ==================== _richtext.scss ====================
+// Стили для контента CKEditor в Moloshop
+// Универсальные классы выравнивания картинок
+// ========================================================
+
+.ckeditor-content {
+  // Базовые правила для всех картинок
+  img {
+    max-width: 100%;   // теперь картинки растягиваются по необходимости
+    height: auto;
+    display: inline-block;
+    margin: 1rem 0;
+  }
+
+  // Выровненные влево
+  .img-left {
+    float: left;
+    margin: 0.5rem 1rem 0.5rem 0;
+    display: block;
+  }
+
+  // Выровненные вправо
+  .img-right {
+    float: right;
+    margin: 0.5rem 0 0.5rem 1rem;
+    display: block;
+  }
+
+  // Центрированные (средние/естественные размеры)
+  .img-center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+    text-align: center;
+  }
+
+  // На всю ширину контейнера
+  .img-full {
+    max-width: 100% !important;
+    display: block !important;
+    margin: 1rem auto;
+    float: none !important;
+  }
+
+  // Служебный класс для очистки обтекания
+  .clearfix {
+    clear: both;
+  }
+
+
+/* Адаптивное поведение на узких экранах */
+  @media (max-width: 576px) {
+    .img-left,
+    .img-right {
+      float: none;
+      display: block;
+      margin: 0 auto 1rem;
+    }
+  }
+
+  /* Таблицы: тянутся по ширине и не ломают вёрстку */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: .5rem;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* Обёртка для горизонтального скролла широкой таблицы */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+}

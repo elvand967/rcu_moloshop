@@ -23,5 +23,5 @@
 // Подвал
 @import 'partials/footer';
 
-// Стилизация изображений для WYSIWYG-редактора CKEditor
-//@import 'partials/ckeditor_styles';
+// Стилизация и адоптация изображений и таблиц для WYSIWYG-редактора CKEditor
+@import 'partials/richtext';

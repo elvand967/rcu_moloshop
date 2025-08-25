@@ -16,3 +16,4 @@ from .other_models import SomeOtherModel
 from .abstract import UUIDModel, NamedSlugModel, SlugNamespaceModel
 from .seo import StopWord, SEOReplacement
 from .footer_menu import FooterMenuCategory
+from .core_documents import ContractsInstructions
