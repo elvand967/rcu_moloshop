@@ -9,3 +9,7 @@ class UsersConfig(AppConfig):
     name = 'apps.users'
     verbose_name = 'Пользователи'
     verbose_name_plural = 'Пользователи'
+
+    def ready(self):
+        # Подключаем сигналы
+        import apps.users.signals  # noqa

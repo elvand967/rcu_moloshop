@@ -1,5 +1,5 @@
 
-# ../apps/core/views.py
+# ../apps/core/log.py
 
 from django.shortcuts import render
 
@@ -65,7 +65,7 @@ def favorites(request):
 
 
 
-# apps/core/views.py
+# apps/core/log.py
 from django.shortcuts import render, get_object_or_404
 from .models.core_documents import ContractsInstructions
 

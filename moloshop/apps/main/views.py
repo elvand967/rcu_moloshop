@@ -1,4 +1,4 @@
-# moloshop/apps/main/views.py
+# moloshop/apps/main/log.py
 from django.shortcuts import render
 from django.urls import reverse
 

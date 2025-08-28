@@ -1,9 +1,10 @@
 
-# ../apps/users/forms.py
+# ../apps/users/forms/custom_user.py
 
 from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from .models import CustomUser
+from apps.users.models.custom_user import CustomUser
+
 
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
@@ -27,12 +28,13 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
 class CustomUserChangeForm(forms.ModelForm):
     password = ReadOnlyPasswordHashField()
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'is_active', 'is_staff')
+        fields = ('email','password','is_active','is_staff')
 
     def clean_password(self):
         return self.initial["password"]

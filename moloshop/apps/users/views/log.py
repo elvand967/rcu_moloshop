@@ -1,9 +1,9 @@
-# apps/users/views.py
+# apps/users/log.py
 # from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout as auth_logout
 from django.contrib import messages
-from .models import CustomUser
+from apps.users.models.custom_user import CustomUser
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
