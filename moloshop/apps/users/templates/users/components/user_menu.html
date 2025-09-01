@@ -1,0 +1,86 @@
+{# moloshop/apps/userpanel/templates/userpanel/components/user_menu.html #}
+
+<div class="user-menu-wrapper mb-4 border rounded">
+  <input type="checkbox" id="user-menu-toggle" class="user-menu-toggle" hidden>
+
+  <label for="user-menu-toggle" class="user-menu-toggle-label">
+    <span class="menu-title">Личный кабинет</span>
+    <span class="hamburger" aria-label="Переключить меню">
+      <span class="line line1"></span>
+      <span class="line line2"></span>
+      <span class="line line3"></span>
+    </span>
+  </label>
+
+  <nav class="user-menu">
+    {% for section in menu_sections %}
+      <div class="menu-section">
+        {% if section.children.exists %}
+          {# раскрываем, если текущий раздел в списке активных #}
+          <input type="checkbox" id="toggle-section-{{ section.pk }}" class="submenu-toggle"
+                 {% if section.pk in open_ids %}checked{% endif %} hidden>
+
+          <div class="menu-header-wrap">
+            <a href="{{ section.get_absolute_url }}"
+               class="menu-header{% if current_path == section.get_absolute_url %} active{% endif %}">
+              {{ section.name }}
+            </a>
+            <label for="toggle-section-{{ section.pk }}" class="chevron-toggle" aria-label="Развернуть меню">
+              <span class="chevron-icon"></span>
+            </label>
+          </div>
+
+          <div class="submenu-wrapper">
+            <div class="submenu">
+              {% for group in section.children.all %}
+                <div class="submenu-group">
+                  {% if group.children.exists %}
+                    <input type="checkbox" id="toggle-group-{{ group.pk }}" class="submenu-toggle"
+                           {% if group.pk in open_ids %}checked{% endif %} hidden>
+
+                    <div class="submenu-header-wrap">
+                      <a href="{{ group.get_absolute_url }}"
+                         class="submenu-header{% if current_path == group.get_absolute_url %} active{% endif %}">
+                        {{ group.name }}
+                      </a>
+                      <label for="toggle-group-{{ group.pk }}" class="chevron-toggle" aria-label="Развернуть подменю">
+                        <span class="chevron-icon"></span>
+                      </label>
+                    </div>
+
+                    <div class="submenu-list-wrapper">
+                      <ul class="submenu-list">
+                        {% for item in group.children.all %}
+                          <li>
+                            <a href="{{ item.get_absolute_url }}"
+                               {% if current_path == item.get_absolute_url %}class="active"{% endif %}>
+                              {{ item.name }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  {% else %}
+                    <div class="submenu-header-wrap">
+                      <a href="{{ group.get_absolute_url }}"
+                         class="submenu-header{% if current_path == group.get_absolute_url %} active{% endif %}">
+                        {{ group.name }}
+                      </a>
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% else %}
+          <div class="menu-header-wrap">
+            <a href="{{ section.get_absolute_url }}"
+               class="menu-header{% if current_path == section.get_absolute_url %} active{% endif %}">
+              {{ section.name }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </nav>
+</div>

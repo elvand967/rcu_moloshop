@@ -13,6 +13,12 @@
   vertical-align: baseline;
 }
 
+html, body {
+  height: 100%;
+  margin: 0; // убрать отступы браузера, чтобы не было отступа сверху/снизу по умолчанию
+  min-height: 100vh; // минимальная высота viewport для body
+}
+
 ul,
 ol {
   list-style: none;
@@ -74,7 +80,15 @@ body {
   font-size: 16px;
   line-height: 1.5;
   color: $color-text;
-  background-color: $color-background;
+//   background-color: $color-background;
+//   background: linear-gradient(to bottom, $color-secondary-light, $color-accent-light);
+//   background: linear-gradient(to bottom, $color-secondary-light, $color-accent-light);
+
+  // линейный градиент с левого верхнего угла к правому нижнему
+  background: linear-gradient(to bottom right, $color-background, #C2E8E1);
+  background-repeat: no-repeat; // чтобы градиент не повторялся
+  background-attachment: fixed; // опционально, чтобы градиент не скроллился вместе с контентом
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
@@ -170,11 +184,6 @@ select {
 
 // ==================== LAYOUT GRID (sticky footer) ====================
 // Используется в base.html: .site > header.site-header + main.site-main + footer.site-footer
-
-html, body {
-  height: 100%;
-  margin: 0; // чтобы не было отступа сверху/снизу по умолчанию
-}
 
 .site {
   min-height: 100vh;

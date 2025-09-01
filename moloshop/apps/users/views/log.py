@@ -1,5 +1,5 @@
 # apps/users/log.py
-# from django.contrib.auth.models import User
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout as auth_logout
 from django.contrib import messages
@@ -11,6 +11,7 @@ def register_view(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
         first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
         password = request.POST.get('password', '')
         password2 = request.POST.get('password2', '')
 
@@ -32,10 +33,10 @@ def register_view(request):
         # Можно добавить дополнительные правила (длина пароля, проверка сложности и пр.)
 
         # Создание пользователя
-        user = CustomUser.objects.create_user(email=email, password=password, first_name=first_name)
+        user = CustomUser.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name)
         login(request, user)
         messages.success(request, 'Регистрация прошла успешно!')
-        return redirect('users:profile')
+        return redirect('users:profile_edit')
 
     return render(request, 'users/register.html')
 
@@ -48,7 +49,7 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('users:profile')
+            return redirect('users:profile_edit')
         else:
             messages.error(request, 'Неверный e-mail или пароль.')
 

@@ -1,0 +1,222 @@
+// apps/users/static/users/scss/partials/_usermenu.scss
+
+.user-menu-wrapper {
+  background: $color-bg-level-1;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0;
+
+  // --- Заголовок с гамбургером ---
+  .user-menu-toggle-label {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $color-bg-level-1;
+    color: $color-text-main;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+
+    .menu-title {
+      font-size: 1rem;
+      font-weight: 550;
+      overflow-wrap: break-word; // разрешает перенос внутри длинных слов
+      word-break: break-word;    // для совместимости
+      hyphens: auto;             // если нужен перенос по слогам (браузер сам вставит дефис)
+    }
+
+    .hamburger {
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      .line {
+        width: 100%;
+        height: 2px;
+        background-color: $color-text-main;
+        border-radius: 1px;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .user-menu {
+    display: block;
+    padding: .25rem;
+  }
+
+// Разделительные линии между ссылками
+//     .user-menu > * {
+//       border-bottom: 1px solid #ddd;
+//       padding: 8px 12px;
+//     }
+//
+//     .user-menu > *:last-child {
+//       border-bottom: none;
+//     }
+
+  .menu-section {
+    margin-bottom: .25rem;
+
+    .menu-header-wrap,
+    .submenu-header-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-header {
+      flex-grow: 1;
+      text-decoration: none;
+      font-weight: 500;
+      background-color: $color-bg-level-1;
+      color: $color-text-main;
+      padding: 0.25rem 0.25rem;
+      border-radius: 0.25rem;
+
+      &:hover {
+        background-color: $color-hover;
+      }
+
+      &.active {
+        background-color: $color-active;
+        color: $color-text-onactive;
+        font-weight: bold;
+      }
+    }
+
+    .submenu-header {
+      flex-grow: 1;
+      text-decoration: none;
+      font-weight: 500;
+      background-color: $color-bg-level-2;
+      color: $color-text-main;
+      padding: 0.25rem 0.25rem;
+      border-radius: 0.25rem;
+
+      &:hover {
+        background-color: $color-hover;
+      }
+
+      &.active {
+        background-color: $color-active;
+        color: $color-text-onactive;
+        font-weight: bold;
+      }
+    }
+
+    // Плавное разворачивание
+    .submenu-wrapper,
+    .submenu-list-wrapper {
+      max-height: 0;
+      overflow: hidden;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+      transition: max-height 0.4s ease;
+    }
+
+    .submenu-toggle:checked ~ .submenu-wrapper,
+    .submenu-toggle:checked ~ .submenu-list-wrapper {
+      max-height: 500px;
+    }
+
+    .chevron-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+    }
+
+    .chevron-icon {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: solid $color-text-main;
+      border-width: 0 2px 2px 0;
+      transform: rotate(135deg);
+      border-radius: 2px;
+      transition: transform 0.3s ease;
+    }
+
+    .submenu-toggle:checked + .menu-header-wrap .chevron-toggle .chevron-icon,
+    .submenu-toggle:checked + .submenu-header-wrap .chevron-toggle .chevron-icon {
+      transform: rotate(45deg);
+    }
+
+    .submenu {
+      .submenu-group {
+        margin-bottom: 0.75rem;
+
+        .submenu-list-wrapper {
+          padding-left: 1rem;
+          margin-top: 0.5rem;
+
+          .submenu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            li {
+              margin-bottom: 0.4rem;
+
+              a {
+                display: block;
+                padding: 0.3rem 0.75rem;
+                text-decoration: none;
+                font-size: 0.95rem;
+                background-color: $color-bg-level-3;
+                color: $color-text-main;
+                border-radius: 0.25rem;
+
+                &:hover {
+                  background-color: $color-hover;
+                }
+
+                &.active {
+                  background-color: $color-active;
+                  color: $color-text-onactive;
+                  font-weight: bold;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Анимация гамбургера
+  .user-menu-toggle:checked + .user-menu-toggle-label .hamburger .line1 {
+    transform: rotate(45deg) translate(4px, 4px);
+  }
+
+  .user-menu-toggle:checked + .user-menu-toggle-label .hamburger .line2 {
+    opacity: 0;
+  }
+
+  .user-menu-toggle:checked + .user-menu-toggle-label .hamburger .line3 {
+    transform: rotate(-45deg) translate(4px, -4px);
+  }
+
+  // Адаптив
+  @media (max-width: 768px) {
+    .user-menu-toggle-label {
+      display: flex;
+    }
+
+    .user-menu {
+      display: none;
+    }
+
+    .user-menu-toggle:checked ~ .user-menu {
+      display: block;
+    }
+  }
+}

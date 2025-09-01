@@ -30,7 +30,7 @@ class CustomUser(UUIDModel, AbstractBaseUser, PermissionsMixin):
         return full or self.email
 
     def get_short_name(self):
-        return self.first_name or self.email
+        return self.first_name or self.last_name or self.email
 
     class Meta:
         verbose_name = 'Пользователя'

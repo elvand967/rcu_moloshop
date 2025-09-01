@@ -25,22 +25,27 @@
       {% endif %}
 
       <div class="form-group">
-        <label for="id_email">Email</label>
+        <label for="id_email">Email<sub>*</sub></label>
         <input type="email" name="email" id="id_email" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="id_first_name">Имя</label>
-        <input type="text" name="first_name" id="id_first_name" class="form-input">
-      </div>
-      <div class="form-group">
-        <label for="id_password">Пароль</label>
+        <label for="id_password">Пароль<sub>*</sub></label>
         <input type="password" name="password" id="id_password" class="form-input" required>
       </div>
       <div class="form-group">
-        <label for="id_password2">Повторите пароль</label>
+        <label for="id_password2">Повторите пароль<sub>*</sub></label>
         <input type="password" name="password2" id="id_password2" class="form-input" required>
       </div>
-
+      <div class="form-group">
+        <label for="id_first_name">Имя<sub>1</sub></label>
+        <input type="text" name="first_name" id="id_first_name" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="id_last_name">Фамилия<sub>1</sub></label>
+        <input type="text" name="last_name" id="id_last_name" class="form-input">
+      </div>
+      <p><sub>*</sub> - Поле, обязательное к заполнению</p>
+      <p><sub>1</sub> - Поле, рекомендуемое к заполнению для обеспечения обратной связи исполнителей</p>
       <button type="submit" class="btn-main">Зарегистрироваться</button>
     </form>
     <div class="auth-links">

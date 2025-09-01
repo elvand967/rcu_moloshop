@@ -1,32 +1,35 @@
 
 # ../apps/users/signals.py
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
-from .models.profile import UserProfile
-from django.db.models.signals import post_delete
-
-
+from .models import UserProfile
+from .utils.avatar import generate_avatar_image
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):
-    """Автоматически создаём профиль при создании пользователя."""
-    if created and not hasattr(instance, "profile"):
-        UserProfile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def save_user_profile(sender, instance, **kwargs):
-    """Обновляем профиль при сохранении пользователя."""
-    if hasattr(instance, "profile"):
-        instance.profile.save()
+    """
+    Создание профиля при регистрации пользователя.
+    Генерация дефолтной аватарки один раз.
+    """
+    if created:
+        profile = UserProfile.objects.create(user=instance)
+        if not profile.avatar:
+            profile.avatar.save(
+                f"{instance.id}.jpg",
+                generate_avatar_image(instance, size=70),
+                save=True
+            )
 
 
 @receiver(post_delete, sender=UserProfile)
-def delete_avatar_on_profile_delete(sender, instance, **kwargs):
+def delete_avatar_with_profile(sender, instance, **kwargs):
     """
-    Удаляем файл аватарки при удалении профиля.
+    Удаление аватарки при удалении профиля.
     """
+    from .utils.avatar import delete_old_avatar
     if instance.avatar:
-        instance.avatar.delete(save=False)
+        delete_old_avatar(instance.avatar.name)
+
+

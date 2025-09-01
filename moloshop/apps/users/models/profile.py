@@ -1,27 +1,18 @@
 
 # apps/users/models/profile.py
 
+from django.utils.translation import gettext_lazy as _
 import os
 from django.db import models
 from django.conf import settings
-from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from apps.core.models import UUIDModel
-from apps.users.utils.avatar import generate_avatar_image, process_uploaded_avatar
-from apps.users.utils.storages import OverwriteStorage
-
-
-def user_avatar_upload_path(instance, filename):
-    """avatars/YYYY/MM/<id>.jpg"""
-    if instance.user.date_joined:
-        year = instance.user.date_joined.year
-        month = f"{instance.user.date_joined.month:02d}"
-    else:
-        from django.utils import timezone
-        now = timezone.now()
-        year = now.year
-        month = f"{now.month:02d}"
-    ext = "jpg"
-    return os.path.join("avatars", str(year), str(month), f"{instance.user.id}.{ext}")
+from apps.users.utils.avatar import (
+    generate_avatar_image,
+    process_uploaded_avatar,
+    delete_old_avatar,
+    avatar_upload_to
+)
 
 
 class UserProfile(UUIDModel):
@@ -33,14 +24,12 @@ class UserProfile(UUIDModel):
     )
     avatar = models.ImageField(
         _("Аватар"),
-        upload_to=user_avatar_upload_path,
+        upload_to=avatar_upload_to,
         blank=True,
         null=True,
-        storage=OverwriteStorage()
     )
-    middle_name = models.CharField(_("Отчество"), max_length=50, blank=True, null=True)
     phone_number_display = models.CharField(
-        _("Телефон (как ввёл пользователь)"),
+        _("Телефон"),
         max_length=50,
         blank=True,
         help_text=_("Формат на усмотрение пользователя: +375(25)963-3344 или 103"),
@@ -65,20 +54,25 @@ class UserProfile(UUIDModel):
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Обновлен"))
 
     def save(self, *args, **kwargs):
-        # 1. Нормализация телефона
+        # обработка телефона
         if self.phone_number_display:
             self.phone_number_digits = "".join(ch for ch in self.phone_number_display if ch.isdigit())
         else:
             self.phone_number_digits = ""
 
-        # 2. Если загружена аватарка пользователем, проверяем PNG с прозрачностью
-        if self.avatar:
-            self.avatar = process_uploaded_avatar(self.avatar)
-        else:
-            # 3. Если аватарка не загружена, генерируем автоматическую
-            self.avatar = generate_avatar_image(self.user, size=400)
-
         super().save(*args, **kwargs)
+
+    def upload_avatar(self, file):
+        """Загрузить новую аватарку"""
+        delete_old_avatar(self.avatar.path if self.avatar else None)
+        processed = process_uploaded_avatar(file, user=self.user)
+        self.avatar.save(processed.name, processed, save=True)
+
+    def reset_avatar(self):
+        """Сбросить на дефолтную аватарку"""
+        delete_old_avatar(self.avatar.path if self.avatar else None)
+        default_avatar = generate_avatar_image(self.user)
+        self.avatar.save(default_avatar.name, default_avatar, save=True)
 
     def __str__(self):
         return f"Профиль {self.user.email}"

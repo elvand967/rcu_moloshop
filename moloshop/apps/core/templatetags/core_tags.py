@@ -25,10 +25,9 @@ def core_tags_main_menu(context):
 
       ]
     if user.is_authenticated:
-        # menu_items.append({'title': "Личный кабинет", 'url_name': 'userpanel:main_profile', 'children': []},)
-        menu_items.append({'title': "Выйти", 'url_name': 'users:logout', 'children': [
-            # {'title': "Выйти (web)", 'url_name': 'users:logout'},
-            # {'title': "Выйти (api)", 'url_name': 'users_api:logout'},
+        menu_items.append({'title': "Личный кабинет", 'url_name': 'users:profile_edit', 'children': [
+                {'title': "Профиль", 'url_name': 'users:profile_edit'},
+                {'title': "Выйти", 'url_name': 'users:logout'},
         ]})
     else:
         menu_items.append({'title': "Войти", 'url_name': 'users:login', 'children': [

@@ -24,13 +24,13 @@ def render_fast_nav(context):
     if user.is_authenticated:
         if path.startswith(reverse("users:profile")):
             buttons["left"] = {"url": reverse("main:includes"), "icon": "home.png", "title": "Домой"}
-            buttons["right"] = {"url": reverse("users:profile"), "icon": "settings.png", "title": "Настройки"}
+            buttons["right"] = {"url": reverse("users:profile_edit"), "icon": "settings.png", "title": "Настройки"}
         elif path.startswith(reverse("core:favorites")):
             buttons["left"] = {"url": reverse("main:includes"), "icon": "home.png", "title": "Домой"}
-            buttons["right"] = {"url": reverse("users:profile"), "icon": "profile.png", "title": "Профиль"}
+            buttons["right"] = {"url": reverse("users:profile_edit"), "icon": "profile.png", "title": "Профиль"}
         else:
             buttons["left"] = {"url": reverse("core:favorites"), "icon": "favorites.png", "title": "Избранное"}
-            buttons["right"] = {"url": reverse("users:profile"), "icon": "profile.png", "title": "Профиль"}
+            buttons["right"] = {"url": reverse("users:profile_edit"), "icon": "profile.png", "title": "Профиль"}
 
     # Неавторизованный пользователь
     else:

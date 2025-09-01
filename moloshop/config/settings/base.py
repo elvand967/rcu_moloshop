@@ -212,3 +212,17 @@ CKEDITOR_CONFIGS = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# # -----------------------------------
+# # Login / Logout redirects
+# # -----------------------------------
+#
+# # URL для @login_required, если пользователь не аутентифицирован
+# LOGIN_URL = '/users/login/'
+#
+# # Куда редиректить после успешного логина
+# LOGIN_REDIRECT_URL = '/users/profile/edit/'
+#
+# # Куда редиректить после логаута
+# LOGOUT_REDIRECT_URL = '/'
