@@ -18,13 +18,19 @@ load_dotenv(BASE_DIR / ".env")  # загрузка переменных из .en
 """
 sys.path.append(str(BASE_DIR / "apps"))
 
-
 # Безопасность
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "yes")
 
 ALLOWED_HOSTS = []
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', 465))
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() == 'true'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL= os.getenv('DEFAULT_FROM_EMAIL')
 
 # Приложения
 INSTALLED_APPS = [
@@ -52,6 +58,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'apps.users.middleware.EmailVerifiedMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"

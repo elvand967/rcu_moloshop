@@ -7,6 +7,23 @@ from django.conf import settings
 from .models import UserProfile
 from .utils.avatar import generate_avatar_image
 
+# @receiver(post_save, sender=settings.AUTH_USER_MODEL)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     """
+#     Создание профиля при регистрации пользователя.
+#     Генерация дефолтной аватарки один раз.
+#     """
+#     if created:
+#         profile = UserProfile.objects.create(user=instance)
+#         if not profile.avatar:
+#             profile.avatar.save(
+#                 f"{instance.id}.jpg",
+#                 generate_avatar_image(instance, size=70),
+#                 save=True
+#             )
+
+
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_user_profile(sender, instance, created, **kwargs):
     """
@@ -21,6 +38,9 @@ def create_user_profile(sender, instance, created, **kwargs):
                 generate_avatar_image(instance, size=70),
                 save=True
             )
+
+
+
 
 
 @receiver(post_delete, sender=UserProfile)

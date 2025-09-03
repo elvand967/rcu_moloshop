@@ -34,7 +34,7 @@
     </form>
     <div class="auth-links">
       Нет аккаунта? <a href="{% url 'users:register' %}">Зарегистрироваться</a>
-      | <a href="#">Забыли пароль? (заглушка)</a>
+      | <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
     </div>
     <div class="auth-social">
       <div class="social-divider">или с помощью</div>

@@ -5,6 +5,8 @@ from django import forms
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from apps.users.models.custom_user import CustomUser
 
+from django.contrib.auth.forms import PasswordResetForm
+
 
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
@@ -38,3 +40,8 @@ class CustomUserChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
+
+
+class UserPasswordResetForm(PasswordResetForm):
+    def get_users(self, email):
+        return CustomUser.objects.filter(email__iexact=email, is_active=True)

@@ -1,3 +1,4 @@
+from datetime import timedelta
 
 # apps/users/models/profile.py
 
@@ -14,8 +15,22 @@ from apps.users.utils.avatar import (
     avatar_upload_to
 )
 
-
 class UserProfile(UUIDModel):
+    class UserStatus(models.IntegerChoices):
+        GUEST = 0, _("Гость")
+        USER = 1, _("Пользователь")
+        EMPLOYEE = 2, _("Сотрудник")
+        MASTER = 3, _("Мастер")
+        MANAGER = 4, _("Руководитель")
+        ADMIN = 5, _("Администратор")
+        SUPERUSER = 6, _("Суперпользователь")
+
+    user_status = models.PositiveSmallIntegerField(
+        choices=UserStatus.choices,
+        default=UserStatus.GUEST,
+        verbose_name=_("Статус пользователя")
+    )
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -52,6 +67,8 @@ class UserProfile(UUIDModel):
     is_active_user = models.BooleanField(default=True, help_text=_('Активный пользователь'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Создан"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=_("Обновлен"))
+    email_code = models.CharField(max_length=6, blank=True, null=True, verbose_name=_("Код подтверждения email"))
+    email_code_created = models.DateTimeField(blank=True, null=True, verbose_name=_("Время создания кода"))
 
     def save(self, *args, **kwargs):
         # обработка телефона
@@ -73,6 +90,11 @@ class UserProfile(UUIDModel):
         delete_old_avatar(self.avatar.path if self.avatar else None)
         default_avatar = generate_avatar_image(self.user)
         self.avatar.save(default_avatar.name, default_avatar, save=True)
+
+    def is_email_code_valid(self, timeout_minutes=10):
+        if not self.email_code_created:
+            return False
+        return timezone.now() < self.email_code_created + timedelta(minutes=timeout_minutes)
 
     def __str__(self):
         return f"Профиль {self.user.email}"

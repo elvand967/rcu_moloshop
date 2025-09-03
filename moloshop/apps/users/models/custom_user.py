@@ -1,5 +1,5 @@
 
-# ../apps/users/custom_user.py
+# apps/users/models/custom_user.py
 
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
