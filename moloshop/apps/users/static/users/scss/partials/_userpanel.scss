@@ -176,4 +176,32 @@
   position: relative;
   top: -0.25em;              /* тонкая корректировка по высоте */
 }
+//------
+// Стиль ошибки email (красная рамка и фон)
+input.email-error {
+  border-color: #ff4d4d !important;
+  background-color: #fff0f0;
+  color: #b30000;
+  font-weight: 600;
+}
 
+// Стиль уведомления о непотвержденном email
+.email-verification-warning {
+  background-color: #ffe6e6;  /* светлый красный фон */
+  border: 1px solid #ff4d4d;  /* насыщенный красный бордер */
+  color: #b30000;             /* тёмно-красный текст */
+  padding: 0.5rem 1rem;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  border-radius: 0.375rem;
+  a {
+    color: #b30000;
+    font-weight: 700;
+    text-decoration: underline;
+    &:hover,
+    &:focus {
+      color: #ff0000;
+      text-decoration: none;
+    }
+  }
+}

@@ -55,7 +55,7 @@ class UserProfile(UUIDModel):
         blank=True,
         help_text=_("Автоматически генерируется из поля 'Телефон (как ввёл пользователь)'"),
     )
-    date_of_birth = models.DateField(_("Дата рождения"), null=True, blank=True)
+    date_of_birth = models.DateField(verbose_name=_("Дата рождения"), null=True, blank=True)
     bio = models.TextField(blank=True, null=True, max_length=500, verbose_name=_('О себе'))
     website = models.URLField(blank=True, null=True, verbose_name=_('Веб-сайт'))
     location = models.CharField(_("Локация"), max_length=255, blank=True)

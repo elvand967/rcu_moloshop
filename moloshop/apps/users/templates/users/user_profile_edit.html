@@ -3,7 +3,6 @@
 
 {% extends "users/base_userpanel.html" %}
 {% load static %}
-
 {% block users_content %}
 <h2 class="mb-3">Профиль пользователя</h2>
 
@@ -33,9 +32,8 @@
 </fieldset>
 
 <!-- Форма профиля -->
-<form method="post" class="profile-form">
+<form method="post" class="profile-form" novalidate>
   {% csrf_token %}
-
   <fieldset class="mb-4">
     <legend>Основная информация</legend>
     {% for field in user_form %}
@@ -44,31 +42,39 @@
           <label for="{{ field.id_for_label }}" class="field-label">
             {{ field.label }}
             {% if field.help_text %}
-              <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">&#9432;</span>
+              <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">ⓘ</span>
             {% endif %}
           </label>
         </div>
-        <div class="col-7 col-sm-12">{{ field }}</div>
+        <div class="col-7 col-sm-12">
+          {{ field }}
+          {% if field.name == 'email' and email_not_verified %}
+            <div class="email-verification-warning" role="alert">
+              Ваш почтовый ящик не подтвержден. Для завершения регистрации необходимо
+              <a href="{% url 'users:verify_email' %}">подтвердить email</a>.
+            </div>
+          {% endif %}
+        </div>
       </div>
     {% endfor %}
   </fieldset>
 
-  <fieldset class="mb-4">
-    <legend>Профиль</legend>
-    {% for field in profile_form %}
-      <div class="form-row row">
-        <div class="col-5 col-sm-12">
-          <label for="{{ field.id_for_label }}" class="field-label">
-            {{ field.label }}
-            {% if field.help_text %}
-              <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">&#9432;</span>
-            {% endif %}
-          </label>
-        </div>
-        <div class="col-7 col-sm-12">{{ field }}</div>
+<fieldset class="mb-4">
+  <legend>Профиль</legend>
+  {% for field in profile_form %}
+    <div class="form-row row">
+      <div class="col-5 col-sm-12">
+        <label for="{{ field.id_for_label }}" class="field-label">
+          {{ field.label }}
+          {% if field.help_text %}
+            <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">ⓘ</span>
+          {% endif %}
+        </label>
       </div>
-    {% endfor %}
-  </fieldset>
+      <div class="col-7 col-sm-12">{{ field }}</div>
+    </div>
+  {% endfor %}
+</fieldset>
 
   <div class="form-actions">
     <button type="submit" name="save_profile" class="btn-primary">Сохранить изменения</button>
