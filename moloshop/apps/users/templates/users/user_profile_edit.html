@@ -1,0 +1,100 @@
+
+{# apps/users/templates/users/user_profile_edit.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+{% block users_content %}
+<h2 class="mb-3">Профиль пользователя</h2>
+
+<!-- Блок аватарки -->
+<fieldset class="mb-4">
+  <legend>Аватар</legend>
+  <div class="avatar-block row mb-4">
+    <div class="avatar-image col-6 col-sm-12">
+      {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}?v={{ profile.updated_at.timestamp }}" alt="Аватар">
+      {% else %}
+        <img src="{% static 'images/default_avatar.jpg' %}" alt="Аватар">
+      {% endif %}
+    </div>
+    <div class="avatar-controls col-6 col-sm-12">
+      <form method="post" enctype="multipart/form-data" id="avatar_form">
+        {% csrf_token %}
+        <input type="file" name="avatar_file" id="id_avatar_file" style="display:none;">
+        <button type="button" id="select_avatar_btn">Изменить</button>
+      </form>
+      <form method="post" action="{% url 'users:reset_avatar' %}">
+        {% csrf_token %}
+        <button type="submit" name="reset_avatar">Сбросить</button>
+      </form>
+    </div>
+  </div>
+</fieldset>
+
+<!-- Форма профиля -->
+<form method="post" class="profile-form" novalidate>
+  {% csrf_token %}
+  <fieldset class="mb-4">
+    <legend>Основная информация</legend>
+    {% for field in user_form %}
+      <div class="form-row row">
+        <div class="col-5 col-sm-12">
+          <label for="{{ field.id_for_label }}" class="field-label">
+            {{ field.label }}
+            {% if field.help_text %}
+              <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">ⓘ</span>
+            {% endif %}
+          </label>
+        </div>
+        <div class="col-7 col-sm-12">
+          {{ field }}
+          {% if field.name == 'email' and email_not_verified %}
+            <div class="email-verification-warning" role="alert">
+              Ваш почтовый ящик не подтвержден. Для завершения регистрации необходимо
+              <a href="{% url 'users:verify_email' %}">подтвердить email</a>.
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+
+    {# Блок смены пароля #}
+    <div class="form-row row mb-4">
+      <div class="col-5 col-sm-12">
+        <a href="{% url 'users:password_change' %}" class="btn btn-link"><b>Сменить пароль</b></a>
+      </div>
+    </div>
+  </fieldset>
+
+<fieldset class="mb-4">
+  <legend>Профиль</legend>
+  {% for field in profile_form %}
+    <div class="form-row row">
+      <div class="col-5 col-sm-12">
+        <label for="{{ field.id_for_label }}" class="field-label">
+          {{ field.label }}
+          {% if field.help_text %}
+            <span class="tooltip-icon tippy-tooltip" data-tippy-content="{{ field.help_text }}">ⓘ</span>
+          {% endif %}
+        </label>
+      </div>
+      <div class="col-7 col-sm-12">{{ field }}</div>
+    </div>
+  {% endfor %}
+</fieldset>
+
+  <div class="form-actions">
+    <button type="submit" name="save_profile" class="btn-primary">Сохранить изменения</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'users/js/loading_avatar.js' %}"></script> {# Загрузка Аватарки #}
+
+{# Обслуживание подсказак (i) #}
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+<script src="{% static 'users/js/tippy-tooltip_initialization.js' %}"></script>
+{% endblock %}

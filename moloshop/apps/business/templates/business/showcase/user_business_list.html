@@ -1,0 +1,92 @@
+
+{# apps/users/templates/users/user_business_list.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+
+{% block users_content %}
+<h2 class="mb-4">Мои бизнесы</h2>
+
+{% if businesses %}
+<div class="business-list">
+    {% for business in businesses %}
+    <div class="business-card mb-4 p-3 border rounded shadow-sm">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex align-items-center">
+                {% if business.logo %}
+                <img src="{{ business.logo.url }}" alt="{{ business.title }}" class="business-logo me-3"
+                     style="width:80px; height:80px; object-fit:cover; border-radius:8px;">
+                {% else %}
+                <div class="business-logo-placeholder me-3"
+                     style="width:80px; height:80px; background:#ddd; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:bold;">
+                    {{ business.title|slice:":1" }}
+                </div>
+                {% endif %}
+                <div class="business-info">
+                    <h5 class="mb-1">{{ business.title }}</h5>
+                    {% if business.description %}
+                    <p class="mb-1 text-muted">{{ business.description }}</p>
+                    {% endif %}
+                    <p class="mb-0">
+                        Статус:
+                        {% if business.is_visible %}
+                            <span class="text-success">Активен</span>
+                        {% else %}
+                            <span class="text-danger">Неактивен</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+            <div class="business-actions d-flex flex-column gap-1">
+                <a href="#" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+            </div>
+<!-- Товары -->
+<div class="mb-3">
+    <h4 class="fw-bold">Товары:</h4>
+    {% if business.goods.all %}
+        <ul class="list-unstyled">
+        {% for goods in business.goods.all %}
+            <li class="mb-1 d-flex justify-content-between align-items-center">
+                <a href="{% url 'business:goods_edit' business.slug goods.slug %}"
+                   class="btn btn-sm btn-outline-primary">{{ goods.title }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Нет товаров</p>
+    {% endif %}
+</div>
+
+<!-- Услуги -->
+<div>
+    <h4 class="fw-bold">Услуги:</h4>
+    {% if business.services.all %}
+        <ul class="list-unstyled">
+        {% for service in business.services.all %}
+            <li class="mb-1 d-flex justify-content-between align-items-center">
+                <a href="{% url 'business:service_edit' business.slug service.slug %}"
+                   class="btn btn-sm btn-outline-primary">{{ service.title }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Нет услуг</p>
+    {% endif %}
+</div>
+
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-4">
+    <a href="#" class="btn btn-success">Добавить новый бизнес</a>
+</div>
+
+{% else %}
+<p>У вас пока нет бизнесов.</p>
+<div class="mt-2">
+    <a href="#" class="btn btn-success">Добавить новый бизнес</a>
+</div>
+{% endif %}
+{% endblock %}

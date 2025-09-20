@@ -1,0 +1,39 @@
+
+{# apps/users/templates/users/verify_email.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+{% block extra_head %}
+  <link type="text/css" href="{% static 'users/css/users.css' %}" rel="stylesheet" />
+{% endblock %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Подтверждение email</h2>
+    <p>На ваш email <b>{{ email }}</b> отправлен код подтверждения. Пожалуйста, введите его ниже:</p>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_email_code">Введите код подтверждения</label>
+          <input type="text" name="email_code" maxlength="6" required id="id_email_code" class="form-input" autofocus>
+        </div>
+        <button type="submit" class="btn-main">Подтвердить email</button>
+    </form>
+    <p class="auth-links">
+      Если вы не получили письмо,<br>
+        <a href="{% url 'users:resend_email_code' %}" id="resend-code-link" class="resend-code-link">отправить код повторно</a>.
+    </p>
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'users/js/verify_email.js' %}"></script>
+{% endblock %}

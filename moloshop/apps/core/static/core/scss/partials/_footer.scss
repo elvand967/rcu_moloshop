@@ -1,0 +1,112 @@
+
+// ../apps/core/static/core/scss/partials/_footer.scss
+
+.footer-menu {
+  background-color: $color-primary;
+  padding: 2rem 3rem;
+  min-height: 32rem;
+//   border-radius: 0.75rem 0.75rem 0 0;
+  color: $color-text-inverse;
+
+  // базовые ссылки (родители и дети)
+  a {
+    color: $color-text-inverse;
+    text-decoration: none;
+    display: inline-block; // чтобы scale работал красиво
+    transform-origin: left center;
+    transition: transform .25s ease, color .25s ease, opacity .25s ease;
+
+    &:hover {
+      transform: scale(1.15);
+      color: lighten($color-text-inverse, 10%);
+    }
+  }
+
+  .footer-block {
+    margin-bottom: 1.75rem;
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+      margin: .5rem 0 0;
+
+      li { margin: .25rem 0; }
+    }
+  }
+
+    .footer-extra {
+      border-top: 1px solid rgba(255,255,255,.15);
+      padding-top: 1rem;
+      text-align: center;
+
+      .footer-inline {
+        margin-bottom: .75rem;
+
+        // делаем контейнер flex
+        display: inline-flex;
+        align-items: center;
+//         gap: 1rem; // расстояние между заголовком и иконками
+      }
+
+      .footer-title-inline {
+        font-weight: 700;
+        display: flex;
+        align-items: center; // если там тоже есть иконка
+      }
+
+      .footer-inline-links {
+        display: inline-flex;
+        align-items: center; // выравнивание иконок по центру
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin-left: 2.0rem;
+        }
+      }
+    }
+
+    .footer-social-icon {
+      width: 28px;
+      height: 28px;
+//       перекрасим из черного в белый
+//       object-fit: contain;
+//       filter: brightness(0) invert(1);
+//       transition: transform .25s ease, opacity .25s ease;
+
+      &:hover {
+        transform: scale(1.2);
+        opacity: .85;
+      }
+    }
+  }
+
+/* ===== появление по скроллу (fade + slide-up) ===== */
+@keyframes footerFadeSlideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  will-change: opacity, transform;
+}
+
+.animate-on-reveal.is-revealed {
+  animation: footerFadeSlideUp .6s ease forwards;
+  animation-delay: calc(var(--i, 0) * 90ms); // ступенчатая задержка
+}
+
+/* уважение к prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-reveal,
+  .animate-on-reveal.is-revealed {
+//       min-height: 28rem;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

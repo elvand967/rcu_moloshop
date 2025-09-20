@@ -1,0 +1,22 @@
+{# ../apps/main/templates/main/home/_board.html #}
+{# -- 4. Доска объявлений с изображениями -- #}
+
+<section class="section board-section bg-light">
+    <div class="container">
+        <h2 class="title-lg text-center">Свежие объявления</h2>
+        <div class="grid grid-3 gap-lg">
+            {% for ad in ads %}
+                <div class="card ad-card">
+                    {% if ad.image %}
+                        <img src="{{ ad.image.url }}" alt="{{ ad.title }}">
+                    {% endif %}
+                    <h3>{{ ad.title }}</h3>
+                    <p>{{ ad.short_description }}</p>
+                    <a href="{{ ad.get_absolute_url }}" class="btn btn-primary">Подробнее</a>
+                </div>
+            {% empty %}
+                <p>Объявлений нет</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>

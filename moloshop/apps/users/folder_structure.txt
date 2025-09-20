@@ -1,0 +1,81 @@
+└── users
+    ├── __init__.py
+    ├── apps.py
+    ├── folder_structure.txt
+    ├── managers.py
+    ├── middleware.py
+    ├── middleware_old.py
+    ├── signals.py
+    ├── urls.py
+    ├── __pycache__ [содержимое скрыто]
+    ├── admin
+    │   ├── __init__.py
+    │   ├── menu.py
+    │   ├── profile_admin.py
+    │   ├── user_admin.py
+    │   └── __pycache__ [содержимое скрыто]
+    ├── forms
+    │   ├── __init__.py
+    │   ├── custom_user.py
+    │   ├── profile_menu_category_form.py
+    │   ├── user_profile_form.py
+    │   └── __pycache__ [содержимое скрыто]
+    ├── migrations [содержимое скрыто]
+    ├── models
+    │   ├── __init__.py
+    │   ├── custom_user.py
+    │   ├── menu.py
+    │   ├── profile.py
+    │   └── __pycache__ [содержимое скрыто]
+    ├── static
+    │   └── users
+    │       ├── css
+    │       │   └── users.css
+    │       ├── js
+    │       │   ├── loading_avatar.js
+    │       │   └── tippy-tooltip_initialization.js
+    │       └── scss
+    │           ├── users.scss
+    │           └── partials
+    │               ├── _custom_user.scss
+    │               ├── _usermenu.scss
+    │               └── _userpanel.scss
+    ├── templates
+    │   └── users
+    │       ├── base_userpanel.html
+    │       ├── login.html
+    │       ├── logout.html
+    │       ├── profile.html
+    │       ├── register.html
+    │       ├── user_profile_edit.html
+    │       ├── verify_email.html
+    │       ├── components
+    │       │   ├── confirmation_email.html
+    │       │   ├── password_change.html
+    │       │   ├── password_change_done.html
+    │       │   ├── password_reset.html
+    │       │   ├── password_reset_complete.html
+    │       │   ├── password_reset_confirm.html
+    │       │   ├── password_reset_done.html
+    │       │   ├── password_reset_email.html
+    │       │   ├── password_reset_email.txt
+    │       │   ├── password_reset_subject.txt
+    │       │   └── user_menu.html
+    │       └── includes
+    │           └── users-header.html
+    ├── templatetags
+    │   ├── profile_menu.py
+    │   └── __pycache__ [содержимое скрыто]
+    ├── utils
+    │   ├── __init__.py
+    │   ├── avatar.py
+    │   ├── email_utils.py
+    │   ├── storages.py
+    │   └── __pycache__ [содержимое скрыто]
+    └── views
+        ├── __init__.py
+        ├── log.py
+        ├── profiles.py
+        ├── register.py
+        ├── verify_email.py
+        └── __pycache__ [содержимое скрыто]

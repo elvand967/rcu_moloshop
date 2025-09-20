@@ -1,0 +1,30 @@
+// moloshop/apps/core/static/core/scss/global_core.scss
+// global_core.scss — основной SCSS-файл для сборки глобальных стилей проекта
+
+// Переменные и настройки
+@import 'partials/variables';
+@import 'partials/mixins';
+
+// Глобальные стили
+@import 'partials/globals';
+
+// Сетка
+@import 'partials/grid';
+
+// Утилиты (миксины, функции)
+@import 'partials/utilities';
+
+// Главное горизонтальное меню
+@import 'partials/main_menu';
+
+// Быстрая навигация/скрол
+@import 'partials/fast_scroll_nav';
+
+// Подвал
+@import 'partials/footer';
+
+// Стилизация и адоптация изображений и таблиц для WYSIWYG-редактора CKEditor
+@import 'partials/richtext';
+
+// Кастомная тема стилей подсказки Tippy.js
+@import 'partials/custom-tooltip';

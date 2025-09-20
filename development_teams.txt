@@ -1,0 +1,35 @@
+
+Запуск сервера:
+python manage.py runserver
+=========================
+
+Запуск Celery на Windows
+celery -A moloshop.config worker -l info -P solo
+=========================
+
+Создание миграций новых моделей:
+python manage.py makemigrations
+
+Миграции:
+python manage.py migrate
+=========================
+
+список всех зависимостей в виртуальном окружении:
+    создать:
+pip freeze > requirements.txt
+    установить:
+pip install -r requirements.txt
+=========================
+
+Меню личного кабинета
+Передача параметров в views_service.py
+{"slug": "privacy-policy"}             # Политика конфиденциальности
+{"slug": "service-rules"}              # Правила сервиса
+{"slug": "registration-on-the-site"}   # Инструкция по регистрации на сайте
+=========================
+
+Загрузить тестовых пользователей; бизнесы; товары и услуги в БД
+apps/business/management/commands/generate_test_businesses.py
+Выполнить команду:
+(.venv) D:\PythonProject\rcu_moloshop\moloshop> python manage.py generate_test_businesses
+=========================

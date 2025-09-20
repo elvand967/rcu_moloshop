@@ -1,0 +1,200 @@
+// ../apps/core/static/core/scss/partials/_globals.scss
+// ==================== _globals.scss ====================
+// Сброс базовых стилей (reset)
+// ================================================
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+  vertical-align: baseline;
+}
+
+html, body {
+  height: 100%;
+  margin: 0; // убрать отступы браузера, чтобы не было отступа сверху/снизу по умолчанию
+  min-height: 100vh; // минимальная высота viewport для body
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+    outline: none;
+  }
+}
+
+img,
+picture,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  border-radius: 0;
+  outline: none;
+
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: $color-primary-dark;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: $color-text;
+//   background-color: $color-background;
+//   background: linear-gradient(to bottom, $color-secondary-light, $color-accent-light);
+//   background: linear-gradient(to bottom, $color-secondary-light, $color-accent-light);
+
+  // линейный градиент с левого верхнего угла к правому нижнему
+  background: linear-gradient(to bottom right, $color-background, #C2E8E1);
+  background-repeat: no-repeat; // чтобы градиент не повторялся
+  background-attachment: fixed; // опционально, чтобы градиент не скроллился вместе с контентом
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+}
+
+.container {
+  max-width: $container-max-width;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+p, span, label, a {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: $color-text;
+}
+
+small {
+  font-size: 0.875rem;
+  color: $color-text-light;
+}
+
+[disabled],
+[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  border: 0 !important;
+}
+
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid $color-divider;
+  color: $color-text;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: $color-text;
+  background-color: $color-background-light;
+  border: 1px solid $color-divider;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $color-primary;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($color-primary, 0.3);
+  }
+}
+
+// ==================== LAYOUT GRID (sticky footer) ====================
+// Используется в base.html: .site > header.site-header + main.site-main + footer.site-footer
+
+.site {
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: 100svh;
+
+  display: grid;
+  grid-template-rows: auto 1fr auto; // header | main | footer
+}
+
+.site-header { z-index: 10; }
+.site-main   { min-width: 0; }
+.site-footer { /* без margin-top */ }
+

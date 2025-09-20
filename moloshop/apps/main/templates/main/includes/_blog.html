@@ -1,0 +1,21 @@
+
+{# ../apps/main/templates/main/home/_blog.html #}
+{# -- 5. Блог -- #}
+
+<section class="section blog-section bg-light">
+    <div class="container">
+        <h2 class="title-lg">Последние статьи</h2>
+        <div class="grid grid-3 gap-md">
+            {% for post in blog_posts %}
+                <article class="blog-card">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.short_description }}</p>
+                    <a href="{{ post.get_absolute_url }}">Читать</a>
+                </article>
+            {% empty %}
+                <p>Нет опубликованных статей</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+

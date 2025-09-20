@@ -1,0 +1,393 @@
+/// ==============================
+/// Breakpoints (используются в адаптиве)
+/// ==============================
+
+$grid-columns: 12;
+
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+/// ==============================
+/// Display
+/// ==============================
+
+// Скрыть элемент
+.d-none          { display: none !important; }
+// Сделать элемент блочным
+.d-block         { display: block !important; }
+// Сделать элемент строчным
+.d-inline        { display: inline !important; }
+// Сделать элемент строчно-блочным
+.d-inline-block  { display: inline-block !important; }
+// Сделать элемент flex-контейнером
+.d-flex          { display: flex !important; }
+// Сделать элемент строчным flex-контейнером
+.d-inline-flex   { display: inline-flex !important; }
+
+/// ==============================
+/// Display - адаптивные
+/// ==============================
+
+// Скрыть элемент при ширине экрана ≤ размера брейкпоинта
+@each $label, $size in $breakpoints {
+  @media (max-width: $size) {
+    .d-none-#{$label}-down {
+      display: none !important;
+    }
+  }
+}
+
+/// ==============================
+/// Visibility (видимость)
+/// ==============================
+
+// Сделать элемент видимым (visibility: visible)
+.visible          { visibility: visible !important; }
+// Сделать элемент невидимым (visibility: hidden)
+.invisible        { visibility: hidden !important; }
+
+// Дополнительные классы видимости
+// Скрыть элемент, но он остаётся в потоке документа
+.visibility-hidden  { visibility: hidden !important; }
+// Сделать элемент видимым, если он был скрыт через visibility
+.visibility-visible { visibility: visible !important; }
+
+/// ==============================
+/// Width & Height (ширина и высота)
+/// ==============================
+
+// Занять 100% ширины контейнера
+.w-100       { width: 100% !important; }
+// Занять 100% высоты контейнера
+.h-100       { height: 100% !important; }
+// Высота по содержимому (auto)
+.h-auto      { height: auto !important; }
+// Максимальная ширина 100%
+.max-w-100   { max-width: 100% !important; }
+// Максимальная высота 100%
+.max-h-100   { max-height: 100% !important; }
+
+/// ==============================
+/// Margin & Padding (внешние и внутренние отступы 0..5 => 0..1.25rem)
+/// ==============================
+
+@for $i from 0 through 5 {
+  $step: 0.25rem * $i;
+
+  // Внешние отступы (margin)
+  .m-#{$i}  { margin: $step !important; }            // Отступ со всех сторон
+  .mt-#{$i} { margin-top: $step !important; }        // Отступ сверху
+  .mr-#{$i} { margin-right: $step !important; }      // Отступ справа
+  .mb-#{$i} { margin-bottom: $step !important; }     // Отступ снизу
+  .ml-#{$i} { margin-left: $step !important; }       // Отступ слева
+  .mx-#{$i} { margin-left: $step !important; margin-right: $step !important; } // Отступ по горизонтали
+  .my-#{$i} { margin-top: $step !important; margin-bottom: $step !important; } // Отступ по вертикали
+
+  // Внутренние отступы (padding)
+  .p-#{$i}  { padding: $step !important; }           // Внутренний отступ со всех сторон
+  .pt-#{$i} { padding-top: $step !important; }       // Внутренний отступ сверху
+  .pr-#{$i} { padding-right: $step !important; }     // Внутренний отступ справа
+  .pb-#{$i} { padding-bottom: $step !important; }    // Внутренний отступ снизу
+  .pl-#{$i} { padding-left: $step !important; }      // Внутренний отступ слева
+  .px-#{$i} { padding-left: $step !important; padding-right: $step !important; } // Внутренний отступ по горизонтали
+  .py-#{$i} { padding-top: $step !important; padding-bottom: $step !important; } // Внутренний отступ по вертикали
+}
+
+// Горизонтальное центрирование блока через margin auto
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+// Вертикальное центрирование блока через margin auto
+.my-auto { margin-top: auto !important; margin-bottom: auto !important; }
+
+/// ==============================
+/// Text (текстовые стили)
+/// ==============================
+
+// Выравнивание текста
+.text-left       { text-align: left !important; }
+.text-center     { text-align: center !important; }
+.text-right      { text-align: right !important; }
+
+// Управление переносами строк
+.text-nowrap     { white-space: nowrap !important; }      // Запрет переноса строк
+.text-wrap       { white-space: normal !important; }      // Разрешение переноса строк
+.text-pre        { white-space: pre !important; }         // Сохранение пробелов и переносов
+.text-pre-line   { white-space: pre-line !important; }    // Переносы, но пробелы схлопываются
+.text-pre-wrap   { white-space: pre-wrap !important; }    // Перенос и сохранение пробелов
+
+// Трансформация текста
+.text-lowercase  { text-transform: lowercase !important; }    // В нижний регистр
+.text-uppercase  { text-transform: uppercase !important; }    // В верхний регистр
+.text-capitalize { text-transform: capitalize !important; }   // Первая буква каждого слова заглавная
+
+// Управление переносом слов
+.text-break      {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
+} // Перенос слов при необходимости
+.text-break-word { word-break: break-word !important; }     // Принудительный перенос слов
+
+// Украшения текста
+.text-underline      { text-decoration: underline !important; }  // Подчеркивание
+.text-line-through   { text-decoration: line-through !important; } // Перечеркивание
+.text-transparent    { color: transparent !important; }         // Прозрачный текст
+.text-decoration-none {text-decoration: none !important;}
+
+/// ==============================
+/// Font Size (размер шрифта)
+/// ==============================
+
+.font-xs  { font-size: 0.75rem !important; }
+.font-sm  { font-size: 0.875rem !important; }
+.font-md  { font-size: 1rem !important; }
+.font-lg  { font-size: 1.25rem !important; }
+.font-xl  { font-size: 1.5rem !important; }
+.font-xxl { font-size: 2rem !important; }
+
+/// ==============================
+/// Font Weight (начертание шрифта)
+/// ==============================
+
+.fw-normal { font-weight: normal !important; }   // Обычный вес
+.fw-medium { font-weight: 500 !important; }      // Средний вес
+.fw-bold   { font-weight: bold !important; }     // Жирный
+
+/// ==============================
+/// Font Style & Text Transform (стиль и трансформация шрифта)
+/// ==============================
+
+.italic      { font-style: italic !important; }      // Курсив
+.uppercase   { text-transform: uppercase !important; } // Верхний регистр (альтернативный класс)
+.lowercase   { text-transform: lowercase !important; } // Нижний регистр (альтернативный класс)
+.normalcase  { text-transform: none !important; }      // Без трансформации
+
+/// ==============================
+/// Cursor (курсор мыши)
+/// ==============================
+
+.cursor-auto        { cursor: auto !important; }               // Автоматический
+.cursor-pointer     { cursor: pointer !important; }            // Указатель (рука)
+.cursor-default     { cursor: default !important; }            // Стандартный
+.cursor-text        { cursor: text !important; }               // Ввод текста
+.cursor-move        { cursor: move !important; }               // Перемещение
+.cursor-not-allowed { cursor: not-allowed !important; }        // Запрещённый
+
+/// ==============================
+/// Float & Clearfix (обтекание и clearfix)
+/// ==============================
+
+.float-left  { float: left !important; }   // Обтекание слева
+.float-right { float: right !important; }  // Обтекание справа
+.float-none  { float: none !important; }   // Отключить обтекание
+
+// Clearfix для обтекания float элементов (чтобы родитель "охватывал" плавающие элементы)
+.clearfix {
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+/// ==============================
+/// Position helpers (позиционирование)
+/// ==============================
+
+.position-relative { position: relative !important; }    // Относительное позиционирование
+.position-absolute { position: absolute !important; }    // Абсолютное позиционирование
+.position-fixed    { position: fixed !important; }       // Фиксированное позиционирование
+.position-sticky   { position: sticky !important; }      // Липкое позиционирование
+
+/// ==============================
+/// Z-index (слои)
+/// ==============================
+
+.z-0   { z-index: 0 !important; }
+.z-1   { z-index: 1 !important; }
+.z-10  { z-index: 10 !important; }
+.z-100 { z-index: 100 !important; }
+
+/// ==============================
+/// Borders and Radius (границы и скругления)
+/// ==============================
+
+// Рамка 1px сплошная с серым цветом со всех сторон
+.border        { border: 1px solid #dee2e6 !important; }
+// Без рамки
+.border-0      { border: 0 !important; }
+// Конкретные стороны рамки
+.border-top    { border-top: 1px solid #dee2e6 !important; }
+.border-bottom { border-bottom: 1px solid #dee2e6 !important; }
+.border-left   { border-left: 1px solid #dee2e6 !important; }
+.border-right  { border-right: 1px solid #dee2e6 !important; }
+
+// Скругления углов
+.rounded      { border-radius: 0.5rem !important; }   // Обычное скругление
+.rounded-sm   { border-radius: 0.25rem !important; }  // Маленькое скругление
+.rounded-lg   { border-radius: 1rem !important; }     // Большое скругление
+.rounded-pill { border-radius: 50rem !important; }    // Скругление в форме «пилюли»
+
+/// ==============================
+/// Overflow helpers (управление переполнением)
+/// ==============================
+
+.overflow-visible   { overflow: visible !important; }   // Показывать переполнение
+.overflow-hidden    { overflow: hidden !important; }    // Скрывать переполнение
+.overflow-scroll    { overflow: scroll !important; }    // Всегда показывать скроллбар
+
+.overflow-auto      { overflow: auto !important; }      // Показывать скроллбар при необходимости
+.overflow-x-auto    { overflow-x: auto !important; }    // Горизонтальный overflow auto
+.overflow-y-auto    { overflow-y: auto !important; }    // Вертикальный overflow auto
+
+.overflow-x-hidden  { overflow-x: hidden !important; }  // Скрыть горизонтальный overflow
+.overflow-y-hidden  { overflow-y: hidden !important; }  // Скрыть вертикальный overflow
+
+/// ==============================
+/// Vertical align (вертикальное выравнивание)
+/// ==============================
+
+.align-baseline     { vertical-align: baseline !important; }     // По базовой линии текста
+.align-top          { vertical-align: top !important; }          // По верхнему краю
+.align-middle       { vertical-align: middle !important; }       // По центру по вертикали
+.align-bottom       { vertical-align: bottom !important; }       // По нижнему краю
+.align-text-top     { vertical-align: text-top !important; }     // Верх текста
+.align-text-bottom  { vertical-align: text-bottom !important; }  // Низ текста
+
+/// ==============================
+/// Text overflow (обрезка текста с многоточием)
+/// ==============================
+
+.text-truncate {
+  overflow: hidden !important;         // Скрыть излишек
+  text-overflow: ellipsis !important;  // Добавить многоточие
+  white-space: nowrap !important;      // Запретить переносы
+}
+
+/// ==============================
+/// Background colors (фоновый цвет)
+/// ==============================
+
+.bg-primary      { background-color: #4AC6FF !important; }   // Основной цвет
+.bg-secondary    { background-color: #6c757d !important; }   // Вторичный
+.bg-success      { background-color: #28a745 !important; }   // Успешный (зелёный)
+.bg-danger       { background-color: #dc3545 !important; }   // Ошибка (красный)
+.bg-warning      { background-color: #ffc107 !important; }   // Внимание (жёлтый)
+.bg-info         { background-color: #17a2b8 !important; }   // Информация (голубой)
+.bg-light        { background-color: #f8f9fa !important; }   // Светлый фон
+.bg-dark         { background-color: #343a40 !important; }   // Тёмный фон
+.bg-white        { background-color: #fff !important; }      // Белый фон
+.bg-transparent  { background-color: transparent !important; } // Прозрачный фон
+
+/// ==============================
+/// Text colors (цвет текста)
+/// ==============================
+
+.text-primary      { color: #4AC6FF !important; }
+.text-secondary    { color: #6c757d !important; }
+.text-success      { color: #28a745 !important; }
+.text-danger       { color: #dc3545 !important; }
+.text-warning      { color: #ffc107 !important; }
+.text-info         { color: #17a2b8 !important; }
+.text-light        { color: #f8f9fa !important; }
+.text-dark         { color: #343a40 !important; }
+.text-white        { color: #fff !important; }
+
+/// ==============================
+/// Shadow (тени)
+/// ==============================
+
+// Убрать тень
+.shadow-none  { box-shadow: none !important; }
+// Маленькая тень
+.shadow-sm    { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important; }
+// Обычная тень
+.shadow       { box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important; }
+// Крупная тень
+.shadow-lg    { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important; }
+// Очень большая тень
+.shadow-xl    { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2) !important; }
+
+/// ==============================
+/// Opacity (прозрачность от 0% до 100% с шагом 10%)
+/// ==============================
+
+@for $i from 0 through 10 {
+  $value: $i * 0.1;
+
+  .opacity-#{$i * 10} {
+    opacity: $value !important;
+  }
+}
+
+/// ==============================
+/// Flex utils (Flexbox утилиты)
+/// ==============================
+
+// Направление flex-контейнера в строку
+.flex-row        { flex-direction: row !important; }
+// Направление flex-контейнера в колонку
+.flex-column     { flex-direction: column !important; }
+// Растягивает flex-элемент, занимает всё свободное пространство
+.flex-grow       { flex-grow: 1 !important; }
+// Запрещает сжатие flex-элемента
+.flex-shrink-0   { flex-shrink: 0 !important; }
+// Разрешает сжатие flex-элемента (по умолчанию)
+.flex-shrink     { flex-shrink: 1 !important; }
+// Разрешает перенос flex-элементов на новую строку
+.flex-wrap       { flex-wrap: wrap !important; }
+// Запрещает перенос flex-элементов, все в одной строке
+.flex-nowrap     { flex-wrap: nowrap !important; }
+
+// Выравнивание flex-элементов по вертикали (ось cross-axis)
+.align-items-start   { align-items: flex-start !important; }    // По началу оси (сверху)
+.align-items-center  { align-items: center !important; }        // По центру
+.align-items-end     { align-items: flex-end !important; }      // По концу оси (снизу)
+.align-items-stretch { align-items: stretch !important; }       // Растянуть по высоте
+
+// Индивидуальное вертикальное выравнивание flex-элемента
+.align-self-start    { align-self: flex-start !important; }
+.align-self-center   { align-self: center !important; }
+.align-self-end      { align-self: flex-end !important; }
+.align-self-stretch  { align-self: stretch !important; }
+
+// Горизонтальное выравнивание flex-элементов (main axis)
+.justify-start    { justify-content: flex-start !important; }    // По началу оси
+.justify-center   { justify-content: center !important; }        // По центру
+.justify-end      { justify-content: flex-end !important; }      // По концу оси
+.justify-between  { justify-content: space-between !important; } // Равномерно без отступов по краям
+.justify-around   { justify-content: space-around !important; }  // Окружающие отступы между элементами
+.justify-evenly   { justify-content: space-evenly !important; }  // Равные отступы между элементами включая края
+
+/// ==============================
+/// Order (порядок элементов flex) — для desktop и адаптива
+/// ==============================
+
+// Задать порядок flex-элемента (1..12)
+@for $i from 1 through $grid-columns {
+  .order-#{$i} {
+    order: $i !important;
+  }
+}
+
+// Поместить элемент в начало
+.order-first { order: -999 !important; }
+// Поместить элемент в конец
+.order-last  { order: 999 !important; }
+
+// Адаптивное управление порядком по брейкпоинтам
+@each $label, $size in $breakpoints {
+  @media (max-width: $size) {
+    @for $i from 1 through $grid-columns {
+      .order-#{$label}-#{$i} {
+        order: $i !important;
+      }
+    }
+    .order-#{$label}-first { order: -999 !important; }
+    .order-#{$label}-last  { order: 999 !important; }
+  }
+}

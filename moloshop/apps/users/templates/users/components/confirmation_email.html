@@ -1,0 +1,63 @@
+
+{# apps/users/templates/users/components/confirmation_email.html #}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Подтверждение регистрации на Moloshop.by</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333333;
+      padding: 20px;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #007bff;
+    }
+    .code {
+      font-size: 24px;
+      font-weight: bold;
+      background: #e9ecef;
+      padding: 10px 20px;
+      display: inline-block;
+      border-radius: 6px;
+      letter-spacing: 3px;
+      margin: 20px 0;
+    }
+    p {
+      line-height: 1.6;
+    }
+    .footer {
+      font-size: 12px;
+      color: #888888;
+      margin-top: 30px;
+      border-top: 1px solid #dddddd;
+      padding-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h2>Здравствуйте{% if first_name %}, {{ first_name }}{% endif %}!</h2>
+    <p>Спасибо за регистрацию на Moloshop.by.</p>
+    <p>Ваш код подтверждения регистрации:</p>
+    <div class="code">{{ code }}</div>
+    <p>Введите этот код на странице подтверждения, чтобы завершить регистрацию.</p>
+    <p>Если вы не регистрировались, просто проигнорируйте это письмо.</p>
+    <p class="footer">
+      Это письмо создано автоматически, на него не нужно отвечать.<br>
+      С уважением, команда Moloshop.by
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+// moloshop/apps/core/static/core/scss/core.scss
+// core.scss — основной SCSS-файл для сборки стилей core
+
+// Задействуем переменные и миксины используемые в блоках страницы, компонентах и т.д.
+// Переменные в конечном core.css будут заменены на их значения
+@import 'partials/variables';
+@import 'partials/mixins';
+
+
+// Блоки страницы
+// @import 'layout';
+// @import 'header';
+// @import 'footer';
+
+// Компоненты
+// @import 'buttons';

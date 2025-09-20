@@ -1,0 +1,31 @@
+
+// apps/core/static/core/scss/partials/_custom-tooltip.scss
+
+/* Кастомная тема для Tippy */
+.tippy-box[data-theme~='custom-tooltip'] {
+  background-color: $color-primary-dark; /* темный фон */
+  color: #ffffff; /* белый текст */
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  font-size: 0.9rem;
+  padding: 6px 10px;
+  max-width: 260px;
+  line-height: 1.3;
+}
+
+/* Цвет стрелки подгоняем под фон */
+.tippy-box[data-theme~='custom-tooltip'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: $color-primary-dark;
+}
+
+.tippy-box[data-theme~='custom-tooltip'][data-placement^='bottom'] > .tippy-arrow::before {
+  border-bottom-color: $color-primary-dark;
+}
+
+.tippy-box[data-theme~='custom-tooltip'][data-placement^='left'] > .tippy-arrow::before {
+  border-left-color: $color-primary-dark;
+}
+
+.tippy-box[data-theme~='custom-tooltip'][data-placement^='right'] > .tippy-arrow::before {
+  border-right-color: $color-primary-dark;
+}

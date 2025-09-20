@@ -1,0 +1,379 @@
+└── rcu_moloshop
+    ├── .gitignore
+    ├── development_teams.txt
+    ├── requirements.txt
+    ├── .git [содержимое скрыто]
+    ├── .idea [содержимое скрыто]
+    ├── .venv [содержимое скрыто]
+    └── moloshop
+        ├── .env
+        ├── .env.rar
+        ├── db.sqlite3
+        ├── manage.py
+        ├── apps
+        │   ├── __init__.py
+        │   ├── __pycache__ [содержимое скрыто]
+        │   ├── business
+        │   │   ├── __init__.py
+        │   │   ├── apps.py
+        │   │   ├── signals.py
+        │   │   ├── tests.py
+        │   │   ├── urls.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── admin
+        │   │   │   ├── __init__.py
+        │   │   │   ├── business.py
+        │   │   │   ├── category.py
+        │   │   │   ├── goods.py
+        │   │   │   ├── landing.py
+        │   │   │   ├── services.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── forms
+        │   │   │   ├── __init__.py
+        │   │   │   ├── edit_products_item.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── management
+        │   │   │   └── commands
+        │   │   │       ├── generate_test_businesses.py
+        │   │   │       └── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   ├── business.py
+        │   │   │   ├── landing.py
+        │   │   │   ├── order.py
+        │   │   │   ├── products.py
+        │   │   │   ├── promotion.py
+        │   │   │   ├── staff.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── business
+        │   │   │       ├── css
+        │   │   │       │   └── business.css
+        │   │   │       ├── images
+        │   │   │       ├── js
+        │   │   │       └── scss
+        │   │   │           └── business.scss
+        │   │   ├── templates
+        │   │   │   └── business
+        │   │   │       ├── base
+        │   │   │       │   ├── base1.html
+        │   │   │       │   ├── base2.html
+        │   │   │       │   └── base3.html
+        │   │   │       ├── landing
+        │   │   │       │   ├── landing_detail.html
+        │   │   │       │   ├── landing_edit.html
+        │   │   │       │   └── landing_list.html
+        │   │   │       ├── order
+        │   │   │       │   ├── order_detail.html
+        │   │   │       │   └── order_list.html
+        │   │   │       ├── products
+        │   │   │       │   ├── edit_products.html
+        │   │   │       │   ├── goods
+        │   │   │       │   │   ├── goods_detail.html
+        │   │   │       │   │   └── goods_list.html
+        │   │   │       │   └── service
+        │   │   │       │       ├── service_detail.html
+        │   │   │       │       └── service_list.html
+        │   │   │       ├── promotion
+        │   │   │       │   └── promotion_list.html
+        │   │   │       └── showcase
+        │   │   │           └── user_business_list.html
+        │   │   ├── templatetags
+        │   │   │   ├── __init__.py
+        │   │   │   ├── business_tags.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── utils
+        │   │   │   ├── __init__.py
+        │   │   │   ├── image_utils.py
+        │   │   │   ├── master_time.py
+        │   │   │   ├── pdf_utils.py
+        │   │   │   ├── seo_utils.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   └── views
+        │   │       ├── __init__.py
+        │   │       ├── business_list.py
+        │   │       ├── edit_views.py
+        │   │       ├── landing_views.py
+        │   │       ├── order_views.py
+        │   │       ├── promotion_views.py
+        │   │       └── __pycache__ [содержимое скрыто]
+        │   ├── core
+        │   │   ├── __init__.py
+        │   │   ├── apps.py
+        │   │   ├── signals.py
+        │   │   ├── tests.py
+        │   │   ├── urls.py
+        │   │   ├── views.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── admin
+        │   │   │   ├── __init__.py
+        │   │   │   ├── core_documents.py
+        │   │   │   ├── footer_menu.py
+        │   │   │   ├── seo_slug.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── forms
+        │   │   │   ├── __init__.py
+        │   │   │   ├── footer_menu.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   ├── abstract.py
+        │   │   │   ├── core_documents.py
+        │   │   │   ├── footer_menu.py
+        │   │   │   ├── seo.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── core
+        │   │   │       ├── css
+        │   │   │       │   ├── core.css
+        │   │   │       │   └── global_core.css
+        │   │   │       ├── img
+        │   │   │       │   ├── logo.ico
+        │   │   │       │   ├── logo.png
+        │   │   │       │   ├── logo_mail.png
+        │   │   │       │   └── icons
+        │   │   │       │       ├── chevron-down.ico
+        │   │   │       │       ├── chevron-up.ico
+        │   │   │       │       ├── favorites.ico
+        │   │   │       │       ├── home.ico
+        │   │   │       │       ├── login.ico
+        │   │   │       │       ├── profile.ico
+        │   │   │       │       ├── register.ico
+        │   │   │       │       ├── settings.ico
+        │   │   │       │       └── png
+        │   │   │       │           ├── chevron-down.png
+        │   │   │       │           ├── chevron-up.png
+        │   │   │       │           ├── favorites.png
+        │   │   │       │           ├── home.png
+        │   │   │       │           ├── login.png
+        │   │   │       │           ├── profile.png
+        │   │   │       │           ├── register.png
+        │   │   │       │           └── settings.png
+        │   │   │       ├── js
+        │   │   │       │   ├── fast_nav.js
+        │   │   │       │   ├── fast_nav_old4.js
+        │   │   │       │   ├── footer_animations.js
+        │   │   │       │   ├── parallax_effect.js
+        │   │   │       │   ├── submenu_arrows.js
+        │   │   │       │   └── ckeditor
+        │   │   │       │       └── styles.js
+        │   │   │       └── scss
+        │   │   │           ├── _buttons.scss
+        │   │   │           ├── _header.scss
+        │   │   │           ├── _layout.scss
+        │   │   │           ├── core.scss
+        │   │   │           ├── global_core.scss
+        │   │   │           └── partials
+        │   │   │               ├── _ckeditor_styles.scss
+        │   │   │               ├── _custom-tooltip.scss
+        │   │   │               ├── _fast_scroll_nav.scss
+        │   │   │               ├── _footer.scss
+        │   │   │               ├── _globals.scss
+        │   │   │               ├── _grid.scss
+        │   │   │               ├── _main_menu.scss
+        │   │   │               ├── _mixins.scss
+        │   │   │               ├── _richtext.scss
+        │   │   │               ├── _utilities.scss
+        │   │   │               └── _variables.scss
+        │   │   ├── templates
+        │   │   │   └── core
+        │   │   │       ├── base.html
+        │   │   │       ├── docs.html
+        │   │   │       ├── emails
+        │   │   │       ├── includes
+        │   │   │       │   ├── core_header.html
+        │   │   │       │   ├── fast_scroll_nav.html
+        │   │   │       │   ├── fast_scroll_nav_old.html
+        │   │   │       │   ├── footer_menu.html
+        │   │   │       │   └── main_menu.html
+        │   │   │       └── temp
+        │   │   │           ├── about.html
+        │   │   │           ├── board.html
+        │   │   │           ├── fag.html
+        │   │   │           ├── favorites.html
+        │   │   │           ├── feedback.html
+        │   │   │           ├── home.html
+        │   │   │           ├── portfolio.html
+        │   │   │           └── showcase.html
+        │   │   ├── templatetags
+        │   │   │   ├── __init__.py
+        │   │   │   ├── core_tags.py
+        │   │   │   ├── core_tags_old.py
+        │   │   │   ├── fast_nav.py
+        │   │   │   ├── footer_menu.py
+        │   │   │   ├── string_filters.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   └── utils
+        │   │       ├── image_processor.py
+        │   │       ├── image_processor_start.py
+        │   │       ├── load_seo_data.py
+        │   │       ├── seo_replacements.json
+        │   │       ├── slugify_seo.py
+        │   │       ├── stop_words.json
+        │   │       ├── url_registry.py
+        │   │       ├── util_universal_process_image.py
+        │   │       └── __pycache__ [содержимое скрыто]
+        │   ├── main
+        │   │   ├── __init__.py
+        │   │   ├── admin.py
+        │   │   ├── apps.py
+        │   │   ├── tests.py
+        │   │   ├── urls.py
+        │   │   ├── views.py
+        │   │   ├── __pycache__ [содержимое скрыто]
+        │   │   ├── migrations [содержимое скрыто]
+        │   │   ├── models
+        │   │   │   ├── __init__.py
+        │   │   │   └── __pycache__ [содержимое скрыто]
+        │   │   ├── static
+        │   │   │   └── main
+        │   │   │       ├── css
+        │   │   │       │   └── main.css
+        │   │   │       ├── img
+        │   │   │       │   └── main-banner.jpg
+        │   │   │       └── scss
+        │   │   │           ├── main.scss
+        │   │   │           └── partials
+        │   │   │               ├── _blog.scss
+        │   │   │               ├── _board.scss
+        │   │   │               ├── _header.scss
+        │   │   │               ├── _marketplace.scss
+        │   │   │               ├── _offices.scss
+        │   │   │               ├── _portfolio.scss
+        │   │   │               └── _search.scss
+        │   │   └── templates
+        │   │       └── main
+        │   │           ├── base_home.html
+        │   │           ├── home.html
+        │   │           ├── home_old.html
+        │   │           └── includes
+        │   │               ├── _blog.html
+        │   │               ├── _board.html
+        │   │               ├── _marketplace.html
+        │   │               ├── _offices.html
+        │   │               ├── _offices_old.html
+        │   │               ├── _portfolio.html
+        │   │               ├── _search.html
+        │   │               └── main_header.html
+        │   └── users
+        │       ├── __init__.py
+        │       ├── apps.py
+        │       ├── folder_structure.txt
+        │       ├── managers.py
+        │       ├── middleware.py
+        │       ├── middleware_old.py
+        │       ├── signals.py
+        │       ├── urls.py
+        │       ├── __pycache__ [содержимое скрыто]
+        │       ├── admin
+        │       │   ├── __init__.py
+        │       │   ├── menu.py
+        │       │   ├── profile_admin.py
+        │       │   ├── user_admin.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── forms
+        │       │   ├── __init__.py
+        │       │   ├── custom_user.py
+        │       │   ├── profile_menu_category_form.py
+        │       │   ├── user_profile_form.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── migrations [содержимое скрыто]
+        │       ├── models
+        │       │   ├── __init__.py
+        │       │   ├── custom_user.py
+        │       │   ├── menu.py
+        │       │   ├── profile.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── static
+        │       │   └── users
+        │       │       ├── css
+        │       │       │   └── users.css
+        │       │       ├── js
+        │       │       │   ├── loading_avatar.js
+        │       │       │   └── tippy-tooltip_initialization.js
+        │       │       └── scss
+        │       │           ├── users.scss
+        │       │           └── partials
+        │       │               ├── _custom_user.scss
+        │       │               ├── _usermenu.scss
+        │       │               └── _userpanel.scss
+        │       ├── templates
+        │       │   └── users
+        │       │       ├── base_userpanel.html
+        │       │       ├── login.html
+        │       │       ├── logout.html
+        │       │       ├── profile.html
+        │       │       ├── register.html
+        │       │       ├── user_profile_edit.html
+        │       │       ├── verify_email.html
+        │       │       ├── components
+        │       │       │   ├── confirmation_email.html
+        │       │       │   ├── password_change.html
+        │       │       │   ├── password_change_done.html
+        │       │       │   ├── password_reset.html
+        │       │       │   ├── password_reset_complete.html
+        │       │       │   ├── password_reset_confirm.html
+        │       │       │   ├── password_reset_done.html
+        │       │       │   ├── password_reset_email.html
+        │       │       │   ├── password_reset_email.txt
+        │       │       │   ├── password_reset_subject.txt
+        │       │       │   └── user_menu.html
+        │       │       └── includes
+        │       │           └── users-header.html
+        │       ├── templatetags
+        │       │   ├── profile_menu.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       ├── utils
+        │       │   ├── __init__.py
+        │       │   ├── avatar.py
+        │       │   ├── email_utils.py
+        │       │   ├── storages.py
+        │       │   └── __pycache__ [содержимое скрыто]
+        │       └── views
+        │           ├── __init__.py
+        │           ├── log.py
+        │           ├── profiles.py
+        │           ├── register.py
+        │           ├── verify_email.py
+        │           └── __pycache__ [содержимое скрыто]
+        ├── assets
+        │   ├── compiler_scss.py
+        │   └── my_scripts
+        │       ├── backupDB_GUI_zip.py
+        │       ├── generate_folder_structure.py
+        │       └── backup_folder
+        │           ├── db_backup_20250811_1949.zip
+        │           ├── db_backup_20250825_1456.zip
+        │           └── db_backup_20250904_1916.zip
+        ├── config
+        │   ├── __init__.py
+        │   ├── asgi.py
+        │   ├── urls.py
+        │   ├── wsgi.py
+        │   ├── __pycache__ [содержимое скрыто]
+        │   └── settings
+        │       ├── __init__.py
+        │       ├── base.py
+        │       ├── dev.py
+        │       ├── prod.py
+        │       └── __pycache__ [содержимое скрыто]
+        ├── media [содержимое скрыто]
+        └── static
+            ├── fonts
+            │   ├── DejaVuSans-Bold.ttf
+            │   ├── DejaVuSans-BoldOblique.ttf
+            │   ├── DejaVuSans-ExtraLight.ttf
+            │   ├── DejaVuSans-Oblique.ttf
+            │   ├── DejaVuSans.ttf
+            │   ├── DejaVuSansCondensed-Bold.ttf
+            │   ├── DejaVuSansCondensed-BoldOblique.ttf
+            │   ├── DejaVuSansCondensed-Oblique.ttf
+            │   ├── DejaVuSansCondensed.ttf
+            │   ├── DejaVuSansMono-Bold.ttf
+            │   ├── DejaVuSansMono-BoldOblique.ttf
+            │   ├── DejaVuSansMono-Oblique.ttf
+            │   └── DejaVuSansMono.ttf
+            └── images
+                └── default_avatar.jpg

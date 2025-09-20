@@ -1,0 +1,49 @@
+
+{# moloshop/apps/users/templates/users/login.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link type="text/css" href="{% static 'users/css/users.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Вход</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      <div class="form-group">
+        <label for="id_email">Email</label>
+        <input type="email" name="email" id="id_email" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="id_password">Пароль</label>
+        <input type="password" name="password" id="id_password" class="form-input" required>
+      </div>
+      <button type="submit" class="btn-main">Войти</button>
+    </form>
+    <div class="auth-links">
+      Нет аккаунта? <a href="{% url 'users:register' %}">Зарегистрироваться</a>
+      | <a href="{% url 'users:password_reset' %}">Забыли пароль?</a>
+    </div>
+    <div class="auth-social">
+      <div class="social-divider">или с помощью</div>
+      <a class="btn-social btn-google" href="#">Google (заглушка)</a>
+      <a class="btn-social btn-vk" href="#">VK (заглушка)</a>
+      <a class="btn-social btn-github" href="#">GitHub (заглушка)</a>
+      <a class="btn-social btn-yandex" href="#">Yandex (заглушка)</a>
+      <a class="btn-social btn-phone" href="#">Телефон (заглушка)</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

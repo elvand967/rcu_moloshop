@@ -1,0 +1,70 @@
+// ../apps/main/static/main/scss/home/_board.scss
+
+.board-section {
+  padding: 3rem 0;
+//   background-color: $surface-alt;
+
+  .title-lg {
+    color: $primary-color;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $gap-md;
+
+    @media (max-width: $breakpoint-lg) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: $breakpoint-sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ad-card {
+    background: $surface-color;
+    border-radius: $border-radius-md;
+    box-shadow: $shadow-sm;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      box-shadow: $shadow-md;
+      transform: translateY(-3px);
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: $text-color;
+      margin-bottom: 0.6rem;
+      @include truncate(2); // обрезка заголовка до 2 строк, если миксин есть
+    }
+
+    p {
+      color: $text-muted;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+
+    a {
+      align-self: flex-start;
+      color: $primary-color;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $primary-dark;
+        text-decoration: underline;
+      }
+    }
+  }
+}

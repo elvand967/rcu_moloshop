@@ -1,0 +1,15 @@
+
+// apps/users/static/users/scss/users.scss
+
+// ========== users.scss ==========
+@import 'variables';
+@import 'mixins';
+
+// Начальные стили
+@import 'partials/custom_user';
+
+// Вертикальное меню профиля
+@import 'partials/usermenu';
+
+// Стили редактора профиля
+@import 'partials/userpanel';

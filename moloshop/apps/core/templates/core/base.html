@@ -1,0 +1,52 @@
+{# moloshop/apps/core/templates/core/base.html #}
+
+{% load static %}
+{% load core_tags %}
+{% load footer_menu %}
+{% load fast_nav %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Moloshop.by — каталог услуг и объявлений от исполнителей и компаний.">
+  <meta property="og:title" content="Moloshop.by — Услуги и исполнители рядом Найдите нужную услугу быстро и удобно!">
+  <meta property="og:description"
+    content="Платформа поиска и заказа услуг. Категории, витрина, отзывы и истории успеха." />
+  <title>Moloshop.by — Найти услугу</title>
+  <link rel="icon" href="{% static 'core/img/logo.ico' %}" type="image/x-icon" />
+  <link type="text/css" href="{% static 'core/css/global_core.css' %}" rel="stylesheet" />
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+<!--  <div class="site">-->
+    <header class="main-header">
+    <nav class="navbar" role="navigation" aria-label="Главное меню">
+      {% core_tags_main_menu %}
+    </nav>
+      {% block header %}{% endblock %}
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    {# Вставляем фиксированный блок быстрых кнопок + авто-скрол #}
+    {% render_fast_nav %}
+
+    <footer class="site-footer">
+      {% render_footer_menu %}
+    </footer>
+<!--  </div>-->
+
+  <script src="{% static 'core/js/fast_nav.js' %}"></script>
+  <script src="{% static 'core/js/footer_animations.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+.section.offices-section {
+  padding: 4rem 0;
+//   background-color: $color-background;
+
+  .container {
+    max-width: $container-max-width;
+    padding-left: $container-padding;
+    padding-right: $container-padding;
+  }
+
+  .title-lg {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $color-primary-dark;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .grid.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $gutter-width;
+
+    @include media-max(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include media-max(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .card {
+    background-color: $color-surface;
+    border: 1px solid $color-divider;
+    border-radius: 8px;
+    box-shadow: $color-shadow;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+
+    &:hover,
+    &:focus-within {
+      box-shadow: $color-shadow-strong;
+      border-color: $color-primary;
+    }
+
+    img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      user-select: none;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: $color-primary-dark;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1rem;
+      color: $color-text-light;
+      margin-bottom: 1.25rem;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .btn.btn-outline {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: $color-primary;
+      border: 2px solid $color-primary;
+      border-radius: 4px;
+      background-color: transparent;
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover,
+      &:focus {
+        background-color: $color-primary;
+        color: $color-text-inverse;
+        border-color: $color-primary-dark;
+        outline: none;
+      }
+    }
+  } // .card
+
+  p:empty {
+    font-style: italic;
+    color: $color-text-light;
+    text-align: center;
+    padding: 2rem;
+  }
+}

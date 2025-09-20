@@ -1,0 +1,161 @@
+
+// moloshop/apps/core/static/core/scss/_variables.scss
+
+// ================================
+//       Moloshop.by — Variables
+// ================================
+
+// ==== Основные цвета ====
+$color-primary:       #2c7e73 !default; // Основной фирменный цвет (кнопки, активные элементы)
+$color-primary-light: #3da390 !default; // Осветлённый вариант (hover, фоновые акценты)
+$color-primary-dark:  #205c54 !default; // Тёмный вариант (нажатые элементы, активные состояния)
+
+$color-secondary:       #3fa58c !default; // Дополнительный акцент
+$color-secondary-light: #60c0a8 !default; // Светлее (hover)
+$color-secondary-dark:  #2e7b69 !default; // Темнее (active)
+
+$color-accent:       #5dc2ae !default; // Яркий акцент (иконки, выделения)
+$color-accent-light: #7dd7c6 !default; // Светлее (hover, фоны)
+$color-accent-dark:  #429988 !default; // Темнее (нажатые элементы)
+
+$color-background:       #f5f7f9 !default; // Цвет фона страницы
+$color-background-light: #ffffff !default; // Белоснежный вариант (карточки, панели)
+$color-background-dark:  #e6e9ec !default; // Немного темнее (разделы, альтернативные блоки)
+
+$color-surface:       #ffffff !default; // Поверхности (панели, карточки)
+$color-surface-light: #fdfdfd !default; // Ещё светлее (hover фона)
+$color-surface-dark:  #f0f2f3 !default; // Чуть темнее (разделение элементов)
+
+$color-text:           #1f2d2b !default; // Основной текст
+$color-text-light:     #5a6e6a !default; // Вторичный текст, подписи
+$color-text-inverse:   #ffffff !default; // Текст на тёмном фоне
+
+// ==== Статусные цвета ====
+$color-success:       #4caf50 !default; // Успех
+$color-success-light: #6ec071 !default; // Hover фон
+$color-success-dark:  #3a8f3d !default; // Active
+
+$color-warning:       #ff9800 !default; // Предупреждение
+$color-warning-light: #ffb84d !default; // Hover фон
+$color-warning-dark:  #cc7a00 !default; // Active
+
+$color-error:         #f44336 !default; // Ошибка
+$color-error-light:   #f77066 !default; // Hover фон
+$color-error-dark:    #c23328 !default; // Active
+
+$color-info:          #2196f3 !default; // Информация
+$color-info-light:    #64b5f6 !default; // Hover фон
+$color-info-dark:     #1976d2 !default; // Active
+
+// ==== Разделители и тени ====
+$color-divider:       #e0e0e0 !default; // Линии разделения
+$color-divider-dark:  #bdbdbd !default; // Более тёмный разделитель
+
+$color-shadow:        rgba(0, 0, 0, 0.1) !default; // Базовая тень
+$color-shadow-strong: rgba(0, 0, 0, 0.2) !default; // Усиленная тень для модалок и hover
+
+// ==== UI специфичные цвета и тени ====
+$color-focus-outline:     $color-accent !default;                // Цвет паддинга фокуса (outline)
+$color-shadow-menu:       rgba(63, 165, 140, 0.15) !default;     // Тень для выпадающих меню ($color-secondary с прозрачностью)
+
+$color-navbar-bg:         $color-primary-light !default;         // Фон главного меню (navbar)
+$color-dropdown-bg:       $color-primary-light !default;         // Фон подменю десктопа
+$color-dropdown-bg-mobile:$color-secondary-dark !default;        // Фон подменю мобильного меню
+$color-dropdown-border:   $color-surface-light !default;         // Бордер подменю
+
+$color-link-on-dark:      $color-text-inverse !default;           // Цвет текста на тёмном фоне (ссылки, кнопки)
+
+$color-btn-main-bg:           $color-primary !default;             // Основной цвет фона кнопок действия
+$color-btn-main-bg-hover:     $color-primary-dark !default;        // Hover цвет кнопок
+$color-btn-main-text:         $color-text-inverse !default;        // Цвет текста в кнопках
+
+// Цвета для сообщений (alert, notification)
+$color-msg-success-bg: $color-success !default;
+$color-msg-success-text: $color-surface !default;
+$color-msg-error-bg:   $color-error-light !default;
+$color-msg-error-text: $color-text-inverse !default;
+$color-msg-info-bg:    $color-info !default;
+$color-msg-info-text:  $color-text-inverse !default;
+$color-msg-warning-bg: #FFB300 !default; // Можно заменить на $color-warning
+$color-msg-warning-text: #FFF !default;
+
+$color-link-accent:     $color-accent !default;                  // Акцентный цвет ссылок
+
+$color-shadow-card:     rgba(0, 0, 0, 0.12) !default;            // Тень для карточек
+$color-shadow-hover:    rgba(0, 0, 0, 0.2) !default;             // Тень для hover в карточках и кнопках
+$color-shadow-modal:    rgba(0, 0, 0, 0.25) !default;            // Тень для модальных окон
+
+// доводка меню личного кабинета
+
+// --- Цветовая схема на основе #B3DCFF ---
+$color-bg-level-1: #B3DCFF;            // фон главного раздела
+$color-bg-level-2: #D0E8FF;            // фон подуровня
+$color-bg-level-3: #E5F3FF;            // фон самого глубокого уровня
+
+$color-hover: #A0CBEF;                 // при наведении
+$color-active: #75B8FF;                // активная ссылка
+
+$color-text-main: #003366;            // основной текст
+$color-text-onactive: #ffffff;        // текст на активной кнопке
+
+// Цвета соцсетей (можно далее в отдельный файл вынести)
+$color-social-google:  #DB4437 !default;
+$color-social-vk:      #4C75A3 !default;
+$color-social-github:  #24292e !default;
+$color-social-yandex-bg:#FFCC00 !default;
+$color-social-yandex-color:#1F4E79 !default;
+
+
+//========================================
+// из старой разработки
+//========================================
+
+// Размер контейнера
+$container-max-width: 1200px;
+$container-padding: 1rem;
+
+// Отступы между колонками
+$gutter-width: 1rem;
+
+// Количество колонок в сетке
+$grid-columns: 12;
+
+// Точки брейкпоинтов (максимальная ширина)
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+// Упрощённые переменные
+$breakpoint-sm: map-get($breakpoints, sm);
+$breakpoint-md: map-get($breakpoints, md);
+$breakpoint-lg: map-get($breakpoints, lg);
+$breakpoint-xl: map-get($breakpoints, xl);
+// ==========================
+// Миксины для медиа-запросов
+// ==========================
+
+// Макс. ширина
+@mixin media-max($point) {
+  @media (max-width: map-get($breakpoints, $point)) {
+    @content;
+  }
+}
+
+// Мин. ширина
+@mixin media-min($point) {
+  @media (min-width: map-get($breakpoints, $point)) {
+    @content;
+  }
+}
+/*
+Теперь в любом месте можно писать:
+.section {
+  padding: 3rem 0;
+
+  @include media-max(md) {
+    padding: 2rem 0;
+  }
+}
+*/

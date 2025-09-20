@@ -1,0 +1,20 @@
+
+{# ../apps/main/templates/main/home/_portfolio.html #}
+{# -- 6. Портфолио -- #}
+
+<section class="section portfolio-section">
+    <div class="container">
+        <h2 class="title-lg">Работы наших пользователей</h2>
+        <div class="grid grid-4 gap-md">
+            {% for item in portfolio_items %}
+                <div class="portfolio-card">
+                    <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                    <h3>{{ item.title }}</h3>
+                </div>
+            {% empty %}
+                <p>Портфолио пока пустое</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+

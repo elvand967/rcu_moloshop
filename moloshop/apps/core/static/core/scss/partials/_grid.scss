@@ -1,0 +1,95 @@
+// moloshop/apps/core/static/core/scss/_grid.scss
+@import 'variables';
+
+// ========== Container ==========
+.container {
+  max-width: $container-max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $container-padding;
+  padding-right: $container-padding;
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 100% !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+// ========== Row ==========
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -($gutter-width / 2);
+  margin-right: -($gutter-width / 2);
+}
+
+// ========== Колонки по умолчанию ==========
+[class*="col-"] {
+  padding-left: ($gutter-width / 2);
+  padding-right: ($gutter-width / 2);
+  box-sizing: border-box;
+}
+
+// col-1 ... col-12 (по умолчанию — desktop)
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    flex: 0 0 auto;
+    width: percentage($i / $grid-columns);
+  }
+
+  .offset-#{$i} {
+    margin-left: percentage($i / $grid-columns);
+  }
+
+  .order-#{$i} {
+    order: $i !important;
+  }
+}
+.order-first { order: -999 !important; }
+.order-last  { order: 999 !important; }
+
+// ========== Адаптивные брейкпоинты ==========
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+@each $label, $breakpoint in $breakpoints {
+  @media (max-width: $breakpoint) {
+    @for $i from 1 through $grid-columns {
+      .col-#{$label}-#{$i} {
+        flex: 0 0 auto;
+        width: percentage($i / $grid-columns) !important;
+      }
+
+      .offset-#{$label}-#{$i} {
+        margin-left: percentage($i / $grid-columns) !important;
+      }
+
+      .order-#{$label}-#{$i} {
+        order: $i !important;
+      }
+    }
+
+    .order-#{$label}-first { order: -999 !important; }
+    .order-#{$label}-last  { order: 999 !important; }
+  }
+
+  // Align-self & Align-items per breakpoint
+  @media (min-width: $breakpoint) {
+    .align-items-#{$label}-start    { align-items: flex-start !important; }
+    .align-items-#{$label}-center   { align-items: center !important; }
+    .align-items-#{$label}-end      { align-items: flex-end !important; }
+    .align-items-#{$label}-stretch  { align-items: stretch !important; }
+
+    .align-self-#{$label}-start     { align-self: flex-start !important; }
+    .align-self-#{$label}-center    { align-self: center !important; }
+    .align-self-#{$label}-end       { align-self: flex-end !important; }
+    .align-self-#{$label}-stretch   { align-self: stretch !important; }
+  }
+}

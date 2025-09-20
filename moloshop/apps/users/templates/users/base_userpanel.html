@@ -1,0 +1,39 @@
+
+{# users/base_userpanel.html #}
+
+{# Наследуем базовый шаблон #}
+{% extends "core/base.html" %}
+
+{% load static %}
+{% load profile_menu %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block extra_head %}
+{# Добавим стили пакета apps/users #}
+<link href="{% static 'users/css/users.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row my-4">
+
+  <nav class="col-3 col-md-12">{# render_user_menu #}
+      {% render_user_menu %}
+  </nav>
+
+  <main class="col-6 col-md-12">{% block users_content %}{% endblock %}
+  </main>
+
+  <aside class="col-3 col-md-12">
+    {# Рекламные блоки #}
+    {% with ""|center:3 as repeat_range %}
+          {% for _ in repeat_range %}
+            <div style="width: 100%; height: 200px; margin-bottom: .25rem; background-color: #00FF00; border: 1px solid #ccc; border-radius: 0.5rem;">
+              <h3>Рекламный блок</h3>
+            </div>
+          {% endfor %}
+        {% endwith %}
+  </aside>
+</div>
+{% endblock %}
+{% block sidebar %}{# Можно оставить пустым или убрать #}{% endblock %}

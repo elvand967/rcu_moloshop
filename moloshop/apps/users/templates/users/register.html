@@ -1,0 +1,64 @@
+
+{# moloshop/apps/users/templates/users/register.html #}
+
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+  <link type="text/css" href="{% static 'users/css/users.css' %}" rel="stylesheet" />
+{% endblock %}
+
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">Регистрация</h2>
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li class="message {{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="id_email">Email<sub>*</sub></label>
+        <input type="email" name="email" id="id_email" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="id_password">Пароль<sub>*</sub></label>
+        <input type="password" name="password" id="id_password" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="id_password2">Повторите пароль<sub>*</sub></label>
+        <input type="password" name="password2" id="id_password2" class="form-input" required>
+      </div>
+      <div class="form-group">
+        <label for="id_first_name">Имя<sub>1</sub></label>
+        <input type="text" name="first_name" id="id_first_name" class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="id_last_name">Фамилия<sub>1</sub></label>
+        <input type="text" name="last_name" id="id_last_name" class="form-input">
+      </div>
+      <p><sub>*</sub> - Поле, обязательное к заполнению</p>
+      <p><sub>1</sub> - Поле, рекомендуемое к заполнению для обеспечения обратной связи исполнителей</p>
+      <button type="submit" class="btn-main">Зарегистрироваться</button>
+    </form>
+    <div class="auth-links">
+      Уже есть аккаунт? <a href="{% url 'users:login' %}">Войти</a>
+    </div>
+    <div class="auth-social">
+      <div class="social-divider">или с помощью</div>
+      <a class="btn-social btn-google" href="#">Google (заглушка)</a>
+      <a class="btn-social btn-vk" href="#">VK (заглушка)</a>
+      <a class="btn-social btn-github" href="#">GitHub (заглушка)</a>
+      <a class="btn-social btn-yandex" href="#">Yandex (заглушка)</a>
+      <a class="btn-social btn-phone" href="#">Телефон (заглушка)</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

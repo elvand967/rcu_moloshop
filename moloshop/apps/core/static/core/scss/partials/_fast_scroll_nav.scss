@@ -1,0 +1,83 @@
+
+// ../apps/core/static/core/scss/partials/_fast_scroll_nav.scss
+
+.fast-scroll-nav-fixed {
+  position: fixed;
+  bottom: -.25rem;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+
+  .fast-scroll-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.75rem 0.75rem 0 0;
+    background-color: $color-primary;
+
+
+
+    .fast-scroll-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.75rem;
+      height: 2.75rem;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+
+      img {  // размер иконок
+        width: 1.75rem;
+        height: 1.75rem;
+//         // Перекрасим черные иконки в белый цвет
+//         object-fit: contain;
+//         filter: brightness(0) invert(1);
+//         transition: transform .25s ease, opacity .25s ease;
+      }
+
+      &:hover {
+        background-color: $color-primary;
+        transform: scale(1.1);
+      }
+    }
+
+    .up, .down {
+      top: -1.5rem; // приподнимаем на половину высоты кнопки
+      position: relative;
+      background-color: $color-primary;
+      width: 3.0rem;
+      height: 3.0rem;
+      border-radius: 50%;
+      border: 2px solid #fff;
+//       color: $color-text-inverse;
+    }
+  }
+
+  // Скрытие блока
+  &.d-none {
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+// Адаптивность для мобильных
+@media (max-width: 768px) {
+  .fast-scroll-nav-fixed {
+    padding: 0.3rem 0;
+
+    .fast-scroll-nav {
+      .fast-scroll-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+
+        img {
+          width: 1.75rem;
+          height: 1.75rem;
+        }
+      }
+    }
+  }
+}

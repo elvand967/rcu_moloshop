@@ -1,0 +1,57 @@
+// ../apps/main/static/main/scss/home/_blog.scss
+
+.blog-section {
+    padding: $section-padding 0;
+
+    .container {
+        text-align: center;
+    }
+
+    h2.title-lg {
+        margin-bottom: $gap-lg;
+        color: $color-dark;
+    }
+
+    .grid {
+        display: grid;
+        gap: $gap-md;
+
+        @include respond-to(md) {
+            grid-template-columns: 1fr 1fr;
+        }
+        @include respond-to(sm) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .blog-card {
+        @include card-base; // общий стиль карточек
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: $gap-md;
+
+        h3 {
+            font-size: $font-lg;
+            margin-bottom: $gap-sm;
+            color: $color-primary;
+        }
+
+        p {
+            flex-grow: 1;
+            font-size: $font-md;
+            color: $color-text;
+            margin-bottom: $gap-sm;
+        }
+
+        a {
+            @include btn-outline; // кнопка в стиле outline
+            text-align: center;
+            margin-top: auto;
+        }
+
+        &:hover {
+            @include card-hover;
+        }
+    }
+}
