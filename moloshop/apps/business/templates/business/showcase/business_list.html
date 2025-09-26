@@ -1,0 +1,152 @@
+{# apps/business/templates/business/showcase/user_business_list.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+
+{% block users_content %}
+<h2 class="mb-4">Мои бизнесы</h2>
+
+{% if businesses %}
+<div class="business-list" style="display:flex; flex-wrap:wrap; gap:1rem;">
+    {% for business in businesses %}
+    <div class="business-card" style="position: relative; border:1px solid #ccc; border-radius:8px; padding:1rem; width:250px;">
+
+        {# ===== Верхние кнопки: Редактировать, Просмотреть, Удалить ===== #}
+        <div style="position:absolute; top:0.5rem; right:0.5rem; display:flex; gap:0.25rem;">
+            <a href="{% url 'business:business_edit' business.slug %}" title="Редактировать"
+               style="text-decoration:none; font-weight:bold;">✏️</a>
+            <a href="{% url 'business:business_detail' business.slug %}" title="Просмотреть"
+               style="text-decoration:none; font-weight:bold;">👁</a>
+            <button type="button"
+                    onclick="confirmDelete('{{ business.slug }}', '{{ business.title }}')"
+                    title="Удалить"
+                    style="text-decoration:none; font-weight:bold; color:red; background:none; border:none; cursor:pointer;">
+                🗑
+            </button>
+        </div>
+
+        {# Скрытая форма для удаления бизнеса #}
+        <form id="delete-form-{{ business.slug }}" method="post" action="{% url 'business:business_delete' business.slug %}" style="display:none;">
+            {% csrf_token %}
+        </form>
+
+        {# Логотип или заглушка #}
+        {% if business.logo %}
+        <img src="{{ business.logo.url }}" alt="{{ business.title }}" style="width:100%; height:120px; object-fit:cover; border-radius:6px;">
+        {% else %}
+        <div style="width:100%; height:120px; background:#ddd; display:flex; align-items:center; justify-content:center; border-radius:6px;">
+            {{ business.title|slice:":1" }}
+        </div>
+        {% endif %}
+
+        <h5 style="margin-top:0.5rem;">{{ business.title }}</h5>
+        {% if business.description %}
+        <p style="font-size:0.9rem; color:#666;">{{ business.description|truncatewords:15 }}</p>
+        {% endif %}
+
+        <p style="font-size:0.85rem;">
+            Статус:
+            {% if business.is_visible %}
+                <span style="color:green;">Активен</span>
+            {% else %}
+                <span style="color:red;">Неактивен</span>
+            {% endif %}
+        </p>
+
+        {# ===== Превью товаров ===== #}
+        <div>
+            <strong>Товары:</strong>
+            <div style="display:flex; flex-wrap:wrap; gap:0.25rem; margin-top:0.25rem;">
+                {% for product in business.products.all %}
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                    {% elif product.media.all %}
+                        {% with gallery=product.media.all|slice:":1" %}
+                            {% for img in gallery %}
+                                <img src="{{ img.image.url }}" alt="{{ product.title }}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                            {% endfor %}
+                        {% endwith %}
+                    {% else %}
+                        <div style="width:50px; height:50px; background:#ccc; display:flex; align-items:center; justify-content:center; border-radius:4px;">
+                            {{ product.title|slice:":1" }}
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <span style="font-size:0.75rem; color:#666;">Нет товаров</span>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# ===== Превью услуг ===== #}
+        <div style="margin-top:0.5rem;">
+            <strong>Услуги:</strong>
+            <div style="display:flex; flex-wrap:wrap; gap:0.25rem; margin-top:0.25rem;">
+                {% for service in business.services.all %}
+                    {% if service.image %}
+                        <img src="{{ service.image.url }}" alt="{{ service.title }}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                    {% elif service.media.all %}
+                        {% with gallery=service.media.all|slice:":1" %}
+                            {% for img in gallery %}
+                                <img src="{{ img.image.url }}" alt="{{ service.title }}" style="width:50px; height:50px; object-fit:cover; border-radius:4px;">
+                            {% endfor %}
+                        {% endwith %}
+                    {% else %}
+                        <div style="width:50px; height:50px; background:#ccc; display:flex; align-items:center; justify-content:center; border-radius:4px;">
+                            {{ service.title|slice:":1" }}
+                        </div>
+                    {% endif %}
+                {% empty %}
+                    <span style="font-size:0.75rem; color:#666;">Нет услуг</span>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+{# Кнопка добавления нового бизнеса #}
+<div style="position: relative; margin-top:2rem;">
+    <a href="{% url 'business:business_create' %}"
+       style="position: absolute; top: 0; right: 0; padding: 0.5rem 1rem; background:#28a745; color:#fff; text-decoration:none; border-radius:4px;">
+        + Добавить бизнес
+    </a>
+</div>
+
+{% else %}
+<p>У вас пока нет бизнесов.</p>
+<div style="position: relative; margin-top:2rem;">
+    <a href="{% url 'business:business_create' %}"
+       style="position: absolute; top: 0; right: 0; padding: 0.5rem 1rem; background:#28a745; color:#fff; text-decoration:none; border-radius:4px;">
+        + Добавить бизнес
+    </a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'core/js/libs/sweetalert2.all.min.js' %}"></script>
+<script>
+function confirmDelete(slug, title) {
+    Swal.fire({
+        title: 'Вы уверены?',
+        text: `Вы хотите удалить бизнес "${title}"?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Да',
+        cancelButtonText: 'Нет',
+        reverseButtons: true,
+        focusCancel: true,
+        background: '#f0f0f0',
+        color: '#333',
+        iconColor: '#ff0000',
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#dc3545',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + slug).submit();
+        }
+    });
+}
+</script>
+{% endblock %}

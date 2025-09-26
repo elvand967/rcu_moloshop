@@ -11,6 +11,7 @@ User = get_user_model()
 
 
 class Business(NamedSlugModel):
+
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -18,8 +19,9 @@ class Business(NamedSlugModel):
         verbose_name="Владелец",
     )
     subtitle = models.CharField(max_length=255, blank=True, null=True)
-    favicon = models.ImageField(upload_to="business/favicons/", blank=True, null=True, verbose_name="favicon.ico")
-    logo = models.ImageField(upload_to="business/logos/", blank=True, null=True)
+    # поля использует upload_to для дефолтного пути загрузки.
+    favicon = models.ImageField(upload_to="business_favicons/", blank=True, null=True, verbose_name="favicon.ico")
+    logo = models.ImageField(upload_to="business_logos/", blank=True, null=True)
     description = models.TextField(blank=True, verbose_name="Общее описание бизнеса")
     order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
     is_visible = models.BooleanField(default=True, verbose_name="Активированный бизнес")

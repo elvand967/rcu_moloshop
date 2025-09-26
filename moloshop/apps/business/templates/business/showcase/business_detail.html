@@ -1,0 +1,76 @@
+
+{# apps/business/templates/business/showcase/business_detail.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+
+{% block users_content %}
+<div class="container my-4">
+    <div class="card p-4 shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>{{ business.title }}</h2>
+            <a href="{% url 'business:business_edit' business.slug %}" class="btn btn-outline-secondary">
+                <i class="bi bi-pencil"></i> Редактировать
+            </a>
+        </div>
+
+        {% if business.logo %}
+        <div class="mb-3">
+            <img src="{{ business.logo.url }}" alt="{{ business.title }}"
+                 style="width:150px; height:150px; object-fit:cover; border-radius:12px;">
+        </div>
+        {% endif %}
+
+        {% if business.description %}
+        <p>{{ business.description }}</p>
+        {% endif %}
+
+        <p>
+            Статус:
+            {% if business.is_visible %}
+                <span class="text-success">Активен</span>
+            {% else %}
+                <span class="text-danger">Неактивен</span>
+            {% endif %}
+        </p>
+
+        <hr>
+
+        <h4>Товары</h4>
+        {% if business.goods.all %}
+            <div class="d-flex flex-wrap gap-3">
+            {% for goods in business.goods.all %}
+                <div class="card p-2" style="width:150px;">
+                    {% if goods.image %}
+                    <img src="{{ goods.image.url }}" alt="{{ goods.title }}" style="width:100%; height:100px; object-fit:cover; border-radius:6px;">
+                    {% endif %}
+                    <div class="mt-1">
+                        <strong>{{ goods.title }}</strong>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Нет товаров</p>
+        {% endif %}
+
+        <h4 class="mt-4">Услуги</h4>
+        {% if business.services.all %}
+            <div class="d-flex flex-wrap gap-3">
+            {% for service in business.services.all %}
+                <div class="card p-2" style="width:150px;">
+                    {% if service.image %}
+                    <img src="{{ service.image.url }}" alt="{{ service.title }}" style="width:100%; height:100px; object-fit:cover; border-radius:6px;">
+                    {% endif %}
+                    <div class="mt-1">
+                        <strong>{{ service.title }}</strong>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">Нет услуг</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

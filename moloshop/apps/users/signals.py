@@ -1,5 +1,5 @@
 
-# ../apps/users/signals.py
+# ../apps/users/slug_signals.py
 
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
@@ -24,11 +24,15 @@ def create_user_profile(sender, instance, created, **kwargs):
             )
 
 
-@receiver(post_delete, sender=UserProfile)
-def delete_avatar_with_profile(sender, instance, **kwargs):
-    """
-    Удаление аватарки при удалении профиля.
-    """
-    from .utils.avatar import delete_old_avatar
-    if instance.avatar:
-        delete_old_avatar(instance.avatar.name)
+# '''
+# Обработка глобального сигнала "post_delete" производится в apps/core/signals/delete_media_signals.py
+# по которому удаляются все картинки сущностей любой модели при удалении таковой
+# '''
+# @receiver(post_delete, sender=UserProfile)
+# def delete_avatar_with_profile(sender, instance, **kwargs):
+#     """
+#     Удаление аватарки при удалении профиля.
+#     """
+#     from .utils.avatar import delete_old_avatar
+#     if instance.avatar:
+#         delete_old_avatar(instance.avatar.name)

@@ -10,4 +10,4 @@ class CoreConfig(AppConfig):
     verbose_name_plural = 'Общие утилиты, миксины, базовые модели'
 
     def ready(self):
-        import apps.core.signals  # Глобально слушаем сигналы экземпляров моделей с пустым 'slug'
+        import apps.core.signals  # автоматически подгрузит slug_signals и media_signals

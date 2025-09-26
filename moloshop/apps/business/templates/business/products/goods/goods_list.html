@@ -1,13 +1,15 @@
-{% extends "business/base.html" %}
+{% extends "base.html" %}
 {% block content %}
-<h1>Товары {{ business.title }}</h1>
-<ul>
-  {% for product in products %}
-    <li>
-      <a href="{% url 'business:product_detail' business.slug product.slug %}">
-        {{ product.title }} – {{ product.price }} BYN
-      </a>
-    </li>
-  {% endfor %}
-</ul>
+  <h1>Товары</h1>
+  <ul>
+    {% for item in items %}
+      <li>
+        {{ item.name }} <br>
+        {% if item.image %}
+          <img src="{{ item.image.url }}" style="max-width:150px;">
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}
+

@@ -1,0 +1,85 @@
+{# apps/business/templates/business/showcase/business_edit.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+
+{% block users_content %}
+<div class="container" style="margin-top:2rem; margin-bottom:2rem;">
+    <h2>{{ form.instance.pk|yesno:"Редактирование бизнеса,Создание нового бизнеса" }}</h2>
+
+    <div style="border:1px solid #ccc; border-radius:8px; padding:1rem;">
+
+        {# ===== Фавикон ===== #}
+        <fieldset style="margin-top: 1rem;">
+          <legend>Фавикон</legend>
+          {% if business.favicon and business.favicon.url %}
+            <img id="favicon_preview" src="{{ business.favicon.url }}" alt="Фавикон" style="width: 64px; height:64px; display: block;">
+          {% else %}
+            <img id="favicon_preview" src="{% static 'business/img/placeholder_favicon.png' %}" alt="Фавикон" style="width:64px; height:64px;">
+          {% endif %}
+
+          <form id="favicon_upload_form" enctype="multipart/form-data" method="post"
+                data-upload-url="{% url 'business:upload_favicon' business_slug=business.slug %}"
+                data-delete-url="{% url 'business:delete_favicon' business_slug=business.slug %}">
+            {% csrf_token %}
+            <input type="file" name="favicon" id="id_favicon_file" hidden>
+            <button type="button" id="select_favicon_btn">Загрузить фавикон</button>
+            <button type="button" id="delete_favicon_btn">Удалить</button>
+          </form>
+        </fieldset>
+
+        {# ===== Логотип ===== #}
+        <fieldset style="margin-top: 1rem;">
+          <legend>Логотип</legend>
+          {% if business.logo and business.logo.url %}
+            <img id="logo_preview" src="{{ business.logo.url }}" alt="Логотип" style="max-width: 128px; max-height: 128px; display: block;">
+          {% else %}
+            <img id="logo_preview" src="{% static 'business/img/placeholder_logo.png' %}" alt="Логотип" style="max-width:128px; max-height:128px;">
+          {% endif %}
+
+          <form id="logo_upload_form" enctype="multipart/form-data" method="post"
+                data-upload-url="{% url 'business:upload_logo' business_slug=business.slug %}"
+                data-delete-url="{% url 'business:delete_logo' business_slug=business.slug %}">
+            {% csrf_token %}
+            <input type="file" name="logo" id="id_logo_file" hidden>
+            <button type="button" id="select_logo_btn">Загрузить логотип</button>
+            <button type="button" id="delete_logo_btn">Удалить</button>
+          </form>
+        </fieldset>
+
+        {# ===== Основная форма бизнеса ===== #}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                {% if field.name not in "logo favicon" %}
+                    <div style="margin-bottom:1rem;">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} *{% endif %}</label>
+                        <div>{{ field }}</div>
+                        {% for error in field.errors %}
+                            <div style="color:red;">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div style="margin-bottom:1rem;">
+                <button type="submit" style="padding:0.5rem 1rem; background:#007bff; color:#fff; border:none; border-radius:4px;">
+                    {{ form.instance.pk|yesno:"Сохранить изменения,Создать бизнес" }}
+                </button>
+                <a href="{% url 'business:business_list' %}"
+                   style="margin-left:1rem; padding:0.5rem 1rem; background:#6c757d; color:#fff; text-decoration:none; border-radius:4px;">
+                   Отмена
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const STATIC_URL = "{% get_static_prefix %}";
+</script>
+<script src="{% static 'business/js/business_upload.js' %}"></script>
+{% endblock %}
+

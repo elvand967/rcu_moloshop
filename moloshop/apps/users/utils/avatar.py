@@ -73,7 +73,7 @@ def avatar_upload_to(instance, filename):
     ext = "jpg"
     return os.path.join("avatars", str(year), str(month), f"{instance.user.id}.{ext}")
 
-def generate_avatar_image(user, size=70):
+def generate_avatar_image(user, size=128):
     text = generate_avatar_text(user)
     bg_color, text_color = random_colors(seed=user.email or str(user.pk))
     img = Image.new("RGB", (size, size), bg_color)
@@ -91,7 +91,7 @@ def generate_avatar_image(user, size=70):
     img.save(buffer, format="JPEG", quality=90)
     return ContentFile(buffer.getvalue(), name=f"avatar_{user.pk}.jpg")
 
-def resize_and_crop_center(img, size=70):
+def resize_and_crop_center(img, size=128):
     img = img.convert("RGB")
     w, h = img.size
     ratio = w / h
@@ -111,7 +111,7 @@ def resize_and_crop_center(img, size=70):
     bottom = top + size
     return img.crop((left, top, right, bottom))
 
-def process_uploaded_avatar(file_field, user, size=70):
+def process_uploaded_avatar(file_field, user, size=128):
     try:
         file_field.seek(0)
         img = Image.open(BytesIO(file_field.read())).convert("RGBA")

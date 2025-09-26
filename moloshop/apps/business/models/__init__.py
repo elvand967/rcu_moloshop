@@ -11,9 +11,15 @@ from .business import Business
 from .landing import Landing
 '''
 
-from .business import Business, ContactInfo, Messenger
-from .products import Category, Goods, Service
-from .staff import Staff
-from .landing import Landing, Section, SectionImage
+from .business import *
+from .business_products import *
+from .staff import *
+
+
+
+# from .business import Business, ContactInfo, Messenger
+# from .business_products import Category, Product, Service
+# from .staff import Staff
+# from .landing import Landing, Section, SectionImage
 # from .order import Order
 # from .promotion import Promotion

@@ -1,19 +1,19 @@
-# apps/business/admin/services.py
+# apps/business/admin/product.py
 
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from apps.business.models import Service, Category
+from apps.business.models import Product, Category
 from .media import MediaInline
 
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ("title", "business_link", "image_preview", "unit", "price", "currency", "staff", "is_active", "created_at")
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("title", "business_link", "image_preview", "unit", "price", "currency", "created_at")
     readonly_fields = ("image_preview",)
-    list_filter = ("business", "staff", "is_active", "created_at")
-    search_fields = ("title", "description", "business__title", "staff__user__email")
+    list_filter = ("business", "currency", "created_at")
+    search_fields = ("title", "description", "business__title")
     ordering = ("business__title", "title")
 
-    inlines = [MediaInline]  # галерея услуги
+    inlines = [MediaInline]  # галерея товара
 
     def business_link(self, obj):
         if obj.business:
@@ -35,4 +35,4 @@ class ServiceAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-admin.site.register(Service, ServiceAdmin)
+admin.site.register(Product, ProductAdmin)

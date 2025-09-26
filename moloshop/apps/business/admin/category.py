@@ -1,5 +1,9 @@
-
 # apps/business/admin/category.py
+
+from django.contrib import admin
+from mptt.admin import DraggableMPTTAdmin
+from apps.business.models import Category
+
 
 from django.contrib import admin
 from mptt.admin import DraggableMPTTAdmin

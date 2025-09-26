@@ -1,35 +1,39 @@
 
 # apps/business/views/edit_products_views.py
 
-from django.shortcuts import get_object_or_404, render, redirect
-from apps.business.models import Goods, Service, Business
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, redirect, render
 from apps.business.forms.edit_products_item import get_item_form
+from apps.business.models import Business
 
+@login_required
+def goods_edit(request, business_slug, item_slug):
+    from apps.business.models import Goods
+    return _item_edit(request, business_slug, item_slug, Goods)
 
-def item_edit(request, business_slug, item_slug, model):
-    business = get_object_or_404(Business, slug=business_slug)
-    obj = get_object_or_404(model, business=business, slug=item_slug)
+@login_required
+def service_edit(request, business_slug, item_slug):
+    from apps.business.models import Service
+    return _item_edit(request, business_slug, item_slug, Service)
 
-    ItemForm = get_item_form(model)
+def _item_edit(request, business_slug, item_slug, model_class):
+    business = get_object_or_404(Business, slug=business_slug, owner=request.user)
+    if item_slug == "new":
+        return redirect("business:goods_create" if model_class.__name__ == "Goods" else "business:service_create", business_slug=business.slug)
+
+    item = get_object_or_404(model_class, slug=item_slug, business=business)
+    ItemForm = get_item_form(model_class)
 
     if request.method == "POST":
-        form = ItemForm(request.POST, request.FILES, instance=obj)
+        form = ItemForm(request.POST, request.FILES, instance=item)
         if form.is_valid():
             form.save()
-            return redirect("business:user_business_list")
+            return redirect("business:business_edit", slug=business.slug)
     else:
-        form = ItemForm(instance=obj)
-
-    # передаём verbose_name в шаблон
-    verbose_name = model._meta.verbose_name
+        form = ItemForm(instance=item)
 
     return render(
         request,
-        "business/products/edit_products.html",
-        {
-            "form": form,
-            "object": obj,
-            "business": business,
-            "verbose_name": verbose_name,
-        },
+        "business/products/products_edit.html",
+        {"form": form, "business": business}
     )

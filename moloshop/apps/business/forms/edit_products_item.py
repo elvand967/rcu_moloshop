@@ -10,12 +10,12 @@ def get_item_form(model_class):
     class ItemForm(forms.ModelForm):
         class Meta:
             model = model_class
-            fields = ["title", "description", "price", "image", "is_active"]
+            fields = ["title", "image", "description", "price", "is_active"]
             widgets = {
                 "title": forms.TextInput(attrs={"class": "form-control"}),
+                "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
                 "description": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
                 "price": forms.NumberInput(attrs={"class": "form-control"}),
-                "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
                 "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
             }
 

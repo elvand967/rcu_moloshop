@@ -1,5 +1,5 @@
 
-# ../apps/core/models/abstract.py
+# apps/core/models/abstract.py
 
 from django.db import models
 import uuid
