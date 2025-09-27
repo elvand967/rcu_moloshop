@@ -23,8 +23,8 @@
                 data-delete-url="{% url 'business:delete_favicon' business_slug=business.slug %}">
             {% csrf_token %}
             <input type="file" name="favicon" id="id_favicon_file" hidden>
-            <button type="button" id="select_favicon_btn">Загрузить фавикон</button>
-            <button type="button" id="delete_favicon_btn">Удалить</button>
+            <button type="button" id="select_favicon_btn" class="btn btn--large btn--success">Загрузить фавикон</button>
+            <button type="button" id="delete_favicon_btn" class="btn btn--compact btn--danger">Удалить</button>
           </form>
         </fieldset>
 
@@ -62,15 +62,22 @@
                 {% endif %}
             {% endfor %}
             <div style="margin-bottom:1rem;">
-                <button type="submit" style="padding:0.5rem 1rem; background:#007bff; color:#fff; border:none; border-radius:4px;">
+                {# <button type="submit" style="padding:0.5rem 1rem; background:#007bff; color:#fff; border:none; border-radius:4px;"> #}
+                <button type="submit" class="btn btn--large btn--success">
                     {{ form.instance.pk|yesno:"Сохранить изменения,Создать бизнес" }}
                 </button>
+
                 <a href="{% url 'business:business_list' %}"
-                   style="margin-left:1rem; padding:0.5rem 1rem; background:#6c757d; color:#fff; text-decoration:none; border-radius:4px;">
+                   {# style="margin-left:1rem; padding:0.5rem 1rem; background:#6c757d; color:#fff; text-decoration:none; border-radius:4px;" #}
+                 class="btn btn--secondary">
                    Отмена
                 </a>
             </div>
         </form>
+
+
+
+
 
     </div>
 </div>

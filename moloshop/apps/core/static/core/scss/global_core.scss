@@ -14,6 +14,12 @@
 // Утилиты (миксины, функции)
 @import 'partials/utilities';
 
+// Базовые стили форм (для виджетов)
+@import 'partials/_basic_style_forms';
+
+// Базовые стили для кнопок
+@import 'partials/_basic_style_buttons';
+
 // Главное горизонтальное меню
 @import 'partials/main_menu';
 
@@ -28,3 +34,4 @@
 
 // Кастомная тема стилей подсказки Tippy.js
 @import 'partials/custom-tooltip';
+
