@@ -79,9 +79,9 @@ function setupDelete(buttonId, formId, previewId, placeholderUrl) {
 
 document.addEventListener("DOMContentLoaded", () => {
   setupUpload("select_logo_btn", "id_logo_file", "logo_upload_form", "logo_preview");
-  setupDelete("delete_logo_btn", "logo_upload_form", "logo_preview", STATIC_URL + "business/img/placeholder_logo.png");
+  setupDelete("delete_logo_btn", "logo_upload_form", "logo_preview", STATIC_URL + "business/images/placeholder.jpg");
 
   setupUpload("select_favicon_btn", "id_favicon_file", "favicon_upload_form", "favicon_preview");
-  setupDelete("delete_favicon_btn", "favicon_upload_form", "favicon_preview", STATIC_URL + "business/img/placeholder_favicon.png");
+  setupDelete("delete_favicon_btn", "favicon_upload_form", "favicon_preview", STATIC_URL + "business/images/placeholder.jpg");
 });
 

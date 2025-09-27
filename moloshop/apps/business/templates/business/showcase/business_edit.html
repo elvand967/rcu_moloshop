@@ -12,39 +12,49 @@
         {# ===== Фавикон ===== #}
         <fieldset style="margin-top: 1rem;">
           <legend>Фавикон</legend>
-          {% if business.favicon and business.favicon.url %}
-            <img id="favicon_preview" src="{{ business.favicon.url }}" alt="Фавикон" style="width: 64px; height:64px; display: block;">
-          {% else %}
-            <img id="favicon_preview" src="{% static 'business/img/placeholder_favicon.png' %}" alt="Фавикон" style="width:64px; height:64px;">
-          {% endif %}
-
-          <form id="favicon_upload_form" enctype="multipart/form-data" method="post"
-                data-upload-url="{% url 'business:upload_favicon' business_slug=business.slug %}"
-                data-delete-url="{% url 'business:delete_favicon' business_slug=business.slug %}">
-            {% csrf_token %}
-            <input type="file" name="favicon" id="id_favicon_file" hidden>
-            <button type="button" id="select_favicon_btn" class="btn btn--large btn--success">Загрузить фавикон</button>
-            <button type="button" id="delete_favicon_btn" class="btn btn--compact btn--danger">Удалить</button>
-          </form>
+            <div class="row mb-4">
+                <div class="col-6 col-sm-12">
+                  {% if business.favicon and business.favicon.url %}
+                    <img id="favicon_preview" src="{{ business.favicon.url }}" alt="Фавикон" style="width: 64px; height:64px; display: block;">
+                  {% else %}
+                    <img id="favicon_preview" src="{% static 'business/images/placeholder.jpg' %}" alt="Фавикон" style="width:64px; height:64px;">
+                  {% endif %}
+                </div>
+                <div class="col-6 col-sm-12">
+                  <form id="favicon_upload_form" enctype="multipart/form-data" method="post"
+                        data-upload-url="{% url 'business:upload_favicon' business_slug=business.slug %}"
+                        data-delete-url="{% url 'business:delete_favicon' business_slug=business.slug %}">
+                    {% csrf_token %}
+                    <input type="file" name="favicon" id="id_favicon_file" hidden>
+                    <button type="button" id="select_favicon_btn" class="btn btn--large btn--success">Загрузить фавикон</button>
+                    <button type="button" id="delete_favicon_btn" class="btn btn--compact btn--danger">Удалить</button>
+                  </form>
+                </div>
+            </div>
         </fieldset>
 
         {# ===== Логотип ===== #}
         <fieldset style="margin-top: 1rem;">
           <legend>Логотип</legend>
-          {% if business.logo and business.logo.url %}
-            <img id="logo_preview" src="{{ business.logo.url }}" alt="Логотип" style="max-width: 128px; max-height: 128px; display: block;">
-          {% else %}
-            <img id="logo_preview" src="{% static 'business/img/placeholder_logo.png' %}" alt="Логотип" style="max-width:128px; max-height:128px;">
-          {% endif %}
-
-          <form id="logo_upload_form" enctype="multipart/form-data" method="post"
-                data-upload-url="{% url 'business:upload_logo' business_slug=business.slug %}"
-                data-delete-url="{% url 'business:delete_logo' business_slug=business.slug %}">
-            {% csrf_token %}
-            <input type="file" name="logo" id="id_logo_file" hidden>
-            <button type="button" id="select_logo_btn">Загрузить логотип</button>
-            <button type="button" id="delete_logo_btn">Удалить</button>
-          </form>
+            <div class="row mb-4">
+                <div class="col-6 col-sm-12">
+                  {% if business.logo and business.logo.url %}
+                    <img id="logo_preview" src="{{ business.logo.url }}" alt="Логотип" style="max-width: 128px; max-height: 128px; display: block;">
+                  {% else %}
+                    <img id="logo_preview" src="{% static 'business/images/placeholder.jpg' %}" alt="Логотип" style="max-width:128px; max-height:128px;">
+                  {% endif %}
+                </div>
+                <div class="col-6 col-sm-12">
+                  <form id="logo_upload_form" enctype="multipart/form-data" method="post"
+                        data-upload-url="{% url 'business:upload_logo' business_slug=business.slug %}"
+                        data-delete-url="{% url 'business:delete_logo' business_slug=business.slug %}">
+                    {% csrf_token %}
+                    <input type="file" name="logo" id="id_logo_file" hidden>
+                    <button type="button" id="select_logo_btn" class="btn btn--large btn--success">Загрузить логотип</button>
+                    <button type="button" id="delete_logo_btn" class="btn btn--compact btn--danger">Удалить</button>
+                  </form>
+                </div>
+            </div>
         </fieldset>
 
         {# ===== Основная форма бизнеса ===== #}
@@ -74,10 +84,6 @@
                 </a>
             </div>
         </form>
-
-
-
-
 
     </div>
 </div>
