@@ -1,8 +1,0 @@
-
-{# +apps/business/templates/business/img_upload.html #}
-
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Загрузить {{ image_type }}</button>
-</form>

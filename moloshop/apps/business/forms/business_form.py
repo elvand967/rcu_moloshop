@@ -21,7 +21,7 @@ class BusinessForm(forms.ModelForm):
             "title": "Название бизнеса",
             "subtitle": "Подзаголовок",
             "description": "Описание",
-            "is_visible": "Опубликовано?",
+            "is_visible": "Активный",
         }
 
         widgets = {

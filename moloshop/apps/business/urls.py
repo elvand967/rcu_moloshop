@@ -2,11 +2,12 @@
 # apps/business/urls.py
 
 from django.urls import path
-from apps.business.views import business_list, business_create, business_edit, business_detail, business_delete, \
-    upload_views, ajax_upload
-# from apps.business.views import edit_products_views, products_create
-from apps.business.views.ajax_upload import upload_logo, upload_favicon, delete_logo, delete_favicon
-from apps.business.views.upload_views import upload_image
+from apps.business.views import business_list, business_create, business_edit, business_detail, business_delete
+
+from apps.business.views.ajax_upload import upload_logo, upload_favicon, delete_logo, delete_favicon, \
+    upload_product_image, delete_product_image, upload_service_image, delete_service_image
+from apps.business.views.business_options import goods_create, goods_edit, service_create, service_edit, goods_delete, \
+    service_delete
 
 app_name = "business"
 
@@ -17,18 +18,28 @@ urlpatterns = [
     path("<slug:slug>/", business_detail, name="business_detail"),
     path("<slug:slug>/delete/", business_delete, name="business_delete"),
 
-    # # Создание товара / услуги
-    # path("<slug:business_slug>/goods/create/", products_create.goods_create, name="goods_create"),
-    # path("<slug:business_slug>/services/create/", products_create.service_create, name="service_create"),
-    #
-    # # Редактирование товара / услуги
-    # path("<slug:business_slug>/goods/<slug:item_slug>/edit/", edit_products_views.goods_edit, name="goods_edit"),
-    # path("<slug:business_slug>/services/<slug:item_slug>/edit/", edit_products_views.service_edit, name="service_edit"),
+    # товары
+    path("<slug:business_slug>/goods/create/", goods_create, name="goods_create"),
+    path("<slug:business_slug>/goods/<slug:slug>/edit/", goods_edit, name="goods_edit"),
+    path("<slug:business_slug>/goods/<slug:slug>/delete/",goods_delete, name="goods_delete"),
+
+    # услуги
+    path("<slug:business_slug>/services/create/", service_create, name="service_create"),
+    path("<slug:business_slug>/services/<slug:slug>/edit/", service_edit, name="service_edit"),
+    path("<slug:business_slug>/services/<slug:slug>/delete/", service_delete, name="service_delete"),
 
     # Загрузка/удаление логотипа/фавикона, с AJAX запросом
     path('<slug:business_slug>/edit/upload_logo/', upload_logo, name='upload_logo'),
     path('<slug:business_slug>/edit/upload_favicon/', upload_favicon, name='upload_favicon'),
     path("<slug:business_slug>/delete_logo/", delete_logo, name="delete_logo"),
     path("<slug:business_slug>/delete_favicon/", delete_favicon, name="delete_favicon"),
+
+    # Загрузка/удаление обложек карточек товаров/услуг, с AJAX запросом
+    path('<slug:business_slug>/products/<slug:product_slug>/upload_image/', upload_product_image, name='upload_product_image'),
+    path('<slug:business_slug>/products/<slug:product_slug>/delete_image/', delete_product_image, name='delete_product_image'),
+
+    path('<slug:business_slug>/services/<slug:service_slug>/upload_image/', upload_service_image, name='upload_service_image'),
+    path('<slug:business_slug>/services/<slug:service_slug>/delete_image/', delete_service_image, name='delete_service_image'),
+
 
 ]

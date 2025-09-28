@@ -1,0 +1,69 @@
+
+{# apps/business/templates/business/products/service_form.html - новый #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+
+{% block users_content %}
+<div class="container mt-4">
+  <h2>
+    {% if service %}Редактирование услуги{% else %}Создание услуги{% endif %}
+  </h2>
+
+  {# Загрузка обложки услуги #}
+  <fieldset style="margin-top: 1rem;">
+    <legend>Обложка услуги</legend>
+    <div class="row mb-4">
+        <div class="col-6 col-sm-12">
+          {% if service.image %}
+            <img id="service_image_preview" src="{{ service.image.url }}" alt="Обложка услуги" style="max-width: 128px; max-height: 128px; display: block;">
+          {% else %}
+            <img id="service_image_preview" src="{% static 'business/images/placeholder.jpg' %}" alt="Обложка услуги" style="max-width:128px; max-height:128px;">
+          {% endif %}
+        </div>
+        <div class="col-6 col-sm-12">
+          <form id="service_image_upload_form" enctype="multipart/form-data" method="post"
+                data-upload-url="{% url 'business:upload_service_image' business_slug=business.slug service_slug=service.slug %}"
+                data-delete-url="{% url 'business:delete_service_image' business_slug=business.slug service_slug=service.slug %}">
+            {% csrf_token %}
+            <input type="file" name="image" id="id_service_image_file" hidden>
+            <button type="button" id="select_service_image_btn" class="btn btn--large btn--success">Загрузить обложку</button>
+            <button type="button" id="delete_service_image_btn" class="btn btn--compact btn--danger">Удалить</button>
+          </form>
+        </div>
+    </div>
+  </fieldset>
+
+  {# Услуга #}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% for field in form %}
+      <div class="mb-3">
+        {{ field.label_tag }}
+        {{ field }}
+        {% if field.help_text %}
+          <div class="form-text">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn--success">
+      {% if product %}Сохранить изменения{% else %}Создать услугу{% endif %}
+    </button>
+    <a href="{% url 'business:business_edit' business.slug %}" class="btn btn--danger">Отмена</a>
+  </form>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const STATIC_URL = "{% get_static_prefix %}";
+</script>
+<script src="{% static 'business/js/business_upload.js' %}"></script>
+{% endblock %}

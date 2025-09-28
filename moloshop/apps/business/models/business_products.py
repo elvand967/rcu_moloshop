@@ -149,7 +149,7 @@ class BaseProduct(SlugNamespaceModel):
     )
 
     description = models.TextField(blank=True, verbose_name="Описание")
-    price = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Цена за единицу")
+    price = models.DecimalField(default=0, max_digits=12, decimal_places=2, verbose_name="Цена за единицу")
     currency = models.CharField(
         max_length=3,
         choices=CurrencyChoice.choices,
