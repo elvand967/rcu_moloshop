@@ -46,6 +46,15 @@ UPLOAD_CONFIG = {
         "quality": 80,
         "folder": lambda instance: f"business/{instance.business.slug}/products_webp",
     },
+    "gallery": {
+        "field": "image",
+        "target_field": "file",
+        "size": (910, 512),
+        "format": "WEBP",
+        "ext": "webp",
+        "quality": 80,
+        "folder": lambda instance: f"business/{instance.business.slug}/gallery",
+    },
     "banner": {
         "field": "image",
         "target_field": "image_webp",

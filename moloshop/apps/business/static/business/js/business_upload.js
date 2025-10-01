@@ -17,7 +17,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-// Настройка загрузки файла
+// Настройка загрузки файла (одиночного) с предпросмотром (логотип, обложки)
 function setupUpload(buttonId, inputId, formId, previewId) {
   const button = document.getElementById(buttonId);
   const input = document.getElementById(inputId);
@@ -60,7 +60,7 @@ function setupUpload(buttonId, inputId, formId, previewId) {
   });
 }
 
-// Настройка удаления файла
+// Настройка удаления файла (одиночного) с предпросмотром (логотип, обложки)
 function setupDelete(buttonId, formId, previewId, placeholderUrl) {
   const button = document.getElementById(buttonId);
   const form = document.getElementById(formId);
@@ -94,6 +94,94 @@ function setupDelete(buttonId, formId, previewId, placeholderUrl) {
   });
 }
 
+// Функция-обработчик удаления отдельного изображения галереи
+function deleteImageHandler(event) {
+  const button = event.currentTarget;
+  const mediaId = button.getAttribute('data-media-id');
+  const businessSlug = button.closest('[data-business-slug]').dataset.businessSlug;
+  const modelSlug = button.closest('[data-model-slug]').dataset.modelSlug;
+  const modelType = button.closest('[data-model-type]').dataset.modelType;
+
+  if (!confirm('Удалить изображение?')) return;
+
+  fetch(`/business/${businessSlug}/${modelType}/${modelSlug}/gallery/delete/${mediaId}/`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken'),
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    credentials: 'same-origin'
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      button.parentElement.remove();
+    } else {
+      alert(data.error || 'Ошибка при удалении изображения');
+    }
+  })
+  .catch(() => alert('Ошибка сети при удалении изображения'));
+}
+
+// Настройка удаления изображений галереи (множественной)
+function setupGalleryDelete() {
+  document.querySelectorAll('.btn-delete-image').forEach(button => {
+    button.addEventListener('click', deleteImageHandler);
+  });
+}
+
+// Настройка загрузки изображений галереи (множественной)
+function setupGalleryUpload(buttonId, inputId, galleryContainerId, formId) {
+  const button = document.getElementById(buttonId);
+  const input = document.getElementById(inputId);
+  const gallery = document.getElementById(galleryContainerId);
+  const form = document.getElementById(formId);
+  const uploadUrl = form?.dataset.uploadUrl;
+
+  if (!button || !input || !gallery || !form || !uploadUrl) return;
+
+  button.addEventListener('click', () => input.click());
+
+  input.addEventListener('change', () => {
+    if (!input.files.length) return;
+
+    const formData = new FormData(form);
+    for (const file of input.files) {
+      formData.set('image', file);
+
+      fetch(uploadUrl, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: formData,
+        credentials: 'same-origin',
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log('Server response:', data);
+        if (data.success) {
+          const div = document.createElement('div');
+          div.style.display = 'inline-block';
+          div.style.marginRight = '10px';
+          div.style.position = 'relative';
+          div.innerHTML = `
+            <img src="${data.url}" style="max-width: 100px; max-height: 100px; object-fit: cover; border: 1px solid #ccc; padding: 2px;">
+            <button type="button" class="btn btn-sm btn-danger btn-delete-image" data-media-id="${data.media_id}">Удалить</button>
+          `;
+          gallery.appendChild(div);
+          div.querySelector('.btn-delete-image').addEventListener('click', deleteImageHandler);
+        } else {
+          alert(data.error || 'Ошибка загрузки изображения');
+        }
+      })
+      .catch(() => alert('Ошибка сети при загрузке изображения'));
+    }
+  });
+}
+
+
 // Инициализация после загрузки страницы
 document.addEventListener("DOMContentLoaded", () => {
   // Логотип
@@ -111,4 +199,19 @@ document.addEventListener("DOMContentLoaded", () => {
   // Обложка услуги
   setupUpload("select_service_image_btn", "id_service_image_file", "service_image_upload_form", "service_image_preview");
   setupDelete("delete_service_image_btn", "service_image_upload_form", "service_image_preview", STATIC_URL + "business/images/placeholder.jpg");
+
+  // Инициализация галерей с множественной загрузкой/удалением
+  document.querySelectorAll('.gallery-preview').forEach(gallery => {
+    const slug = gallery.dataset.modelSlug;
+
+    setupGalleryDelete(); // Можно оставить один раз, если все кнопки удаления имеют общий класс
+
+    // Формируем id с учетом slug
+    const buttonId = `select_gallery_image_btn_${slug}`;
+    const inputId = `id_gallery_image_file_${slug}`;
+    const galleryContainerId = `gallery_preview_${slug}`;
+    const formId = `gallery_upload_form_${slug}`;
+
+    setupGalleryUpload(buttonId, inputId, galleryContainerId, formId);
+  });
 });

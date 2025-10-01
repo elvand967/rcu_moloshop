@@ -5,9 +5,9 @@ from django.urls import path
 from apps.business.views import business_list, business_create, business_edit, business_detail, business_delete
 
 from apps.business.views.ajax_upload import upload_logo, upload_favicon, delete_logo, delete_favicon, \
-    upload_product_image, delete_product_image, upload_service_image, delete_service_image
+    upload_product_image, delete_product_image, upload_service_image, delete_service_image, upload_gallery_image
 from apps.business.views.business_options import goods_create, goods_edit, service_create, service_edit, goods_delete, \
-    service_delete
+    service_delete, delete_gallery_image
 
 app_name = "business"
 
@@ -40,6 +40,12 @@ urlpatterns = [
 
     path('<slug:business_slug>/services/<slug:service_slug>/upload_image/', upload_service_image, name='upload_service_image'),
     path('<slug:business_slug>/services/<slug:service_slug>/delete_image/', delete_service_image, name='delete_service_image'),
+
+    # Загрузка/удаление изображений галереи
+    path('<slug:business_slug>/<str:model_type>/<slug:model_slug>/gallery/upload/', upload_gallery_image,
+         name='upload_gallery_image'),
+    path('<slug:business_slug>/<str:model_type>/<slug:model_slug>/gallery/delete/<uuid:media_id>/', delete_gallery_image,
+         name='delete_gallery_image'),
 
 
 ]

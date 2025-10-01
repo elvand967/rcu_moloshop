@@ -1,5 +1,5 @@
 
-{# apps/business/templates/business/products/service_form.html - новый #}
+{# apps/business/templates/business/products/service_form.html #}
 
 {% extends "users/base_userpanel.html" %}
 {% load static %}
@@ -58,6 +58,72 @@
     <a href="{% url 'business:business_edit' business.slug %}" class="btn btn--danger">Отмена</a>
   </form>
 
+
+{# Галерея изображений услуг #}
+<fieldset style="margin-top: 2rem;">
+  <legend>Галерея изображений услуг</legend>
+  <div id="gallery_preview_{{ service.slug }}"
+     data-business-slug="{{ business.slug }}"
+     data-model-slug="{{ service.slug }}"
+     data-model-type="service"
+     class="gallery-preview">
+  {% if gallery %}
+    {% for media in gallery %}
+    <div class="gallery-item" id="gallery-item-{{ media.id }}">
+      <img src="{{ media.file.url }}" alt="{{ media.alt_text }}" class="gallery-img">
+      <button type="button"
+              class="btn btn-sm btn-danger btn-delete-image"
+              data-media-id="{{ media.id }}">
+        Удалить
+      </button>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>Изображения отсутствуют.</p>
+  {% endif %}
+</div>
+
+
+  <form id="gallery_upload_form_{{ service.slug }}" enctype="multipart/form-data" method="post"
+        data-upload-url="{% url 'business:upload_gallery_image' business_slug=business.slug model_type='service' model_slug=service.slug %}">
+    {% csrf_token %}
+    <input type="file" id="id_gallery_image_file_{{ service.slug }}" name="image" hidden>
+    <button type="button" id="select_gallery_image_btn_{{ service.slug }}" class="btn btn--large btn--success" style="margin-top:1rem;">Загрузить изображение</button>
+  </form>
+</fieldset>
+
+
+<style>
+.gallery-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+.gallery-item {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 4px;
+  max-width: 120px;
+}
+.gallery-img {
+  display: block;
+  max-width: 100%;
+  max-height: 100px;
+  object-fit: cover;
+}
+.gallery-item .btn-delete-image {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  line-height: 1;
+  cursor: pointer;
+}
+</style>
+
 </div>
 {% endblock %}
 
@@ -65,5 +131,9 @@
 <script>
     const STATIC_URL = "{% get_static_prefix %}";
 </script>
+
 <script src="{% static 'business/js/business_upload.js' %}"></script>
+
+<script src="{% static 'business/js/delete_gallery_image.js' %}"></script>
+
 {% endblock %}
