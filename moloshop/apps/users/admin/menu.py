@@ -47,7 +47,7 @@ class ProfileMenuCategoryAdmin(DraggableMPTTAdmin):
             "description": "Укажите либо Django-URL (из списка), либо внешнюю ссылку."
         }),
         ("Служебное", {
-            "fields": ("updated_at",),
+            "fields": ("order", "updated_at",),
         }),
     )
     readonly_fields = ("updated_at",)

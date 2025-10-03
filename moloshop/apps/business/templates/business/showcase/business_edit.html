@@ -5,7 +5,8 @@
 
 {% block users_content %}
 <div class="container" style="margin-top:2rem; margin-bottom:2rem;">
-    <h2>{{ form.instance.pk|yesno:"Редактирование бизнеса,Создание нового бизнеса" }}</h2>
+    <h2 class="col-12 d-flex justify-center my-3">{{ business.title }}</h2>
+    <h3>{{ form.instance.pk|yesno:"Редактирование бизнеса,Создание нового бизнеса" }}</h3>
 
     <div style="border:1px solid #ccc; border-radius:8px; padding:1rem;">
 

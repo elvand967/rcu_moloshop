@@ -2,8 +2,8 @@
 # apps/users/templatetags/profile_menu.py
 
 from django import template
+from django.db.models import Q, Prefetch
 from apps.users.models.menu import ProfileMenuCategory
-
 
 register = template.Library()
 
@@ -11,11 +11,26 @@ register = template.Library()
 def render_user_menu(context):
     request = context['request']
     current_path = request.path
-    all_items = ProfileMenuCategory.objects.all().prefetch_related('parent', 'children__children')
-    menu_sections = [item for item in all_items if item.parent is None]
+
+    if request.user.is_authenticated:
+        # Загружаем только корневые пункты меню, общие и персональные для пользователя
+        menu_sections = ProfileMenuCategory.objects.filter(
+            Q(user__isnull=True) | Q(user=request.user),
+            parent=None
+        ).order_by('order').prefetch_related(
+            Prefetch('children', queryset=ProfileMenuCategory.objects.filter(
+                Q(user__isnull=True) | Q(user=request.user)
+            ).order_by('order'))
+        )
+    else:
+        menu_sections = ProfileMenuCategory.objects.filter(
+            user__isnull=True,
+            parent=None
+        ).order_by('order').prefetch_related('children')
 
     def get_open_ids(path):
-        for item in all_items:
+        # Найти пункт меню по текущему пути и собрать список всех родителей для раскрытия
+        for item in ProfileMenuCategory.objects.all():
             if item.get_absolute_url() == path:
                 open_ids = []
                 current = item.parent
@@ -33,3 +48,4 @@ def render_user_menu(context):
         'current_path': current_path,
         'open_ids': open_ids,
     }
+

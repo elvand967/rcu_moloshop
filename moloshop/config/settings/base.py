@@ -75,6 +75,10 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                # Кастомный контекст процессор для работы с меню пользователя
+                # Теперь во всех шаблонах будет доступна переменная menu_sections с меню пользователя
+                # и current_path для подсветки активного пункта.
+                'apps.users.context_processors.user_menu',
             ],
         },
     },

@@ -14,6 +14,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from django.http import JsonResponse
+
+from apps.users.models import ProfileMenuCategory
+
 '''
 Декоратор login_required в Django используется во вьюшках для 
 ограничения доступа к этим вьюшкам только аутентифицированным пользователям. 
@@ -25,29 +28,29 @@ from django.http import JsonResponse
 даже если все представления доступны только из личного кабинета авторизованных пользователей.
 '''
 
-@login_required
-def business_list(request):
-    """
-    Отображает список бизнесов текущего пользователя вместе с товарами, услугами и медиа.
-    """
-
-    products = Product.objects.prefetch_related("media")
-    services = Service.objects.prefetch_related("media")
-
-    businesses = (
-        Business.objects.filter(owner=request.user)
-        .order_by("order", "title")
-        .prefetch_related(
-            Prefetch("products", queryset=products),
-            Prefetch("services", queryset=services),
-        )
-    )
-
-    return render(
-        request,
-        "business/showcase/business_list.html",
-        {"businesses": businesses},
-    )
+# @login_required
+# def business_list(request):
+#     """
+#     Отображает список бизнесов текущего пользователя вместе с товарами, услугами и медиа.
+#     """
+#
+#     products = Product.objects.prefetch_related("media")
+#     services = Service.objects.prefetch_related("media")
+#
+#     businesses = (
+#         Business.objects.filter(owner=request.user)
+#         .order_by("order", "title")
+#         .prefetch_related(
+#             Prefetch("products", queryset=products),
+#             Prefetch("services", queryset=services),
+#         )
+#     )
+#
+#     return render(
+#         request,
+#         "business/showcase/business_list.html",
+#         {"businesses": businesses},
+#     )
 
 @login_required
 # Декоратор, который гарантирует, что доступ к функции будет только у аутентифицированных пользователей.
@@ -94,15 +97,61 @@ def business_list(request):
 # =============================
 @login_required
 def business_create(request):
-    """
-    Создание нового бизнеса
-    """
     if request.method == "POST":
         form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
             business = form.save(commit=False)
             business.owner = request.user
             business.save()
+
+            # Ищем глобальный корень "Мои бизнесы"
+            root_menu = get_object_or_404(ProfileMenuCategory, user__isnull=True, name="Мои бизнесы", parent=None)
+
+            # Создаём бизнес как дочерний к этому глобальному корню
+            business_menu = ProfileMenuCategory.objects.create(
+                user=request.user,
+                name=business.title,
+                url='business:business_edit',
+                url_params={'business_slug': business.slug},
+                order=0,
+                parent=root_menu,
+            )
+
+            # Создаём подпункты 3-го уровня
+            ProfileMenuCategory.objects.create(
+                user=request.user,
+                name='Адрес',
+                url='business:business_address_edit',
+                url_params={'business_slug': business.slug},
+                order=1,
+                parent=business_menu,
+            )
+            ProfileMenuCategory.objects.create(
+                user=request.user,
+                name='Контакты',
+                url='business:business_contacts_edit',
+                url_params={'business_slug': business.slug},
+                order=2,
+                parent=business_menu,
+            )
+            ProfileMenuCategory.objects.create(
+                user=request.user,
+                name='Товары',
+                url='business:business_products_list',
+                url_params={'business_slug': business.slug},
+                order=3,
+                parent=business_menu,
+            )
+            ProfileMenuCategory.objects.create(
+                user=request.user,
+                name='Услуги',
+                url='business:business_services_list',
+                url_params={'business_slug': business.slug},
+                order=4,
+                parent=business_menu,
+            )
+
+            messages.success(request, "Бизнес успешно создан и добавлен в меню.")
             return redirect("business:business_edit", business.slug)
     else:
         form = BusinessForm()
@@ -145,8 +194,21 @@ def business_delete(request, slug):
     business = get_object_or_404(Business, slug=slug, owner=request.user)
 
     if request.method == "POST":
+        # Удаляем бизнес
         business.delete()
-        messages.success(request, f"Бизнес '{business.title}' удалён.")
+
+        # Ищем пункт меню 2-го уровня с именем бизнеса и пользователем
+        menu_item = ProfileMenuCategory.objects.filter(
+            user=request.user,
+            name=business.title,
+            parent__isnull=False  # 2-й уровень (дочерний к корню)
+        ).first()
+
+        if menu_item:
+            # Удаляем пункт меню и все его потомки из дерева
+            menu_item.delete()
+
+        messages.success(request, f"Бизнес '{business.title}' и его меню успешно удалены.")
         return redirect("business:business_list")
 
     # GET-запрос: показать подтверждение удаления (можно сделать модальное окно на фронтенде)
@@ -154,9 +216,6 @@ def business_delete(request, slug):
     return redirect("business:business_list")
 
 
-# =============================
-# CRUD для Товаров
-# =============================
 @login_required
 def goods_create(request, business_slug):
     '''
