@@ -1,5 +1,12 @@
 // SCSS для приложения business
+// apps/business/static/business/scss/business.scss
 
-body {
-  // background-color: #f9f9f9;
-}
+// ========== users.scss ==========
+@import 'variables';
+@import 'mixins';
+
+// Стили списка услуг
+@import 'partials/products';
+
+// Пагинатор
+@import 'partials/pagination';

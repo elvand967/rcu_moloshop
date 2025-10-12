@@ -1,0 +1,52 @@
+
+// apps/business/static/business/scss/partials/_pagination.scss
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+}
+
+.page-link {
+  display: inline-block;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.page-link:hover {
+  background: #f2f2f2;
+}
+
+.page-link.active {
+  background: #4CAF50 !important;
+  color: #fff !important;
+  cursor: default;
+}
+
+.page-link.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* 🔹 Адаптив под мобильные */
+@media (max-width: 600px) {
+  .pagination {
+    gap: 0.25rem;
+  }
+  .page-link {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.9rem;
+  }
+  .pagination-wrapper {
+    font-size: 0.9rem;
+  }
+}

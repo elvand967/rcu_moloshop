@@ -9,7 +9,7 @@ old - Вместо:
 # ../apps/business/admin/__init__.py
 """
 from .business import *
-from .product import *
+from .goods import *
 from .services import *
 from .category import *
 from .media import *

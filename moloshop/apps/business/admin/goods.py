@@ -1,19 +1,20 @@
-# apps/business/admin/product.py
+# apps/business/admin/goods.py
 
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from apps.business.models import Product, Category
+from apps.business.models import Goods, Category  # Product → Goods
 from .media import MediaInline
 
-class ProductAdmin(admin.ModelAdmin):
+
+class GoodsAdmin(admin.ModelAdmin):  # ProductAdmin → GoodsAdmin
     list_display = ("title", "business_link", "image_preview", "unit", "price", "currency", "created_at")
     readonly_fields = ("image_preview",)
     list_filter = ("business", "currency", "created_at")
     search_fields = ("title", "description", "business__title")
     ordering = ("business__title", "title")
 
-    inlines = [MediaInline]  # галерея товара
+    inlines = [MediaInline]
 
     def business_link(self, obj):
         if obj.business:
@@ -35,4 +36,5 @@ class ProductAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Goods, GoodsAdmin)
+

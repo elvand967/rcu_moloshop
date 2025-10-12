@@ -182,11 +182,11 @@ class BaseProduct(SlugNamespaceModel):
             return
 
         # Проверка пересечений по бизнесу и SKU (обе модели)
-        product_ct = ContentType.objects.get_for_model(Product)
+        product_ct = ContentType.objects.get_for_model(Goods)
         service_ct = ContentType.objects.get_for_model(Service)
 
         conflict = (
-            Product.objects.filter(business=self.business, sku=self.sku)
+            Goods.objects.filter(business=self.business, sku=self.sku)
             .exclude(pk=self.pk)
             .exists()
             or Service.objects.filter(business=self.business, sku=self.sku)
@@ -206,9 +206,9 @@ class BaseProduct(SlugNamespaceModel):
 
 
 # ==========================
-#  Товары  Goods
+# Goods (Товары)
 # ==========================
-class Product(BaseProduct):
+class Goods(BaseProduct):
     """Товар конкретного бизнеса"""
     stock = models.PositiveIntegerField(default=0, verbose_name="Остаток")
     delivery_info = models.CharField(
@@ -229,7 +229,7 @@ class Product(BaseProduct):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["namespace", "slug"], name="uniq_product_namespace_slug")
+            models.UniqueConstraint(fields=["namespace", "slug"], name="uniq_goods_namespace_slug")
         ]
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
@@ -265,6 +265,23 @@ class Service(BaseProduct):
     )
     image = models.ImageField("Обложка", upload_to="services/covers/", blank=True, null=True)
     gallery = GenericRelation(Media, related_query_name="service")
+
+    @property
+    def duration_display(self):
+        """Красивое текстовое отображение длительности"""
+        if not self.duration:
+            return ""
+        total_seconds = int(self.duration.total_seconds())
+        hours, remainder = divmod(total_seconds, 3600)
+        minutes = remainder // 60
+        if hours and minutes:
+            return f"{hours}ч {minutes:02d}м"
+        elif hours:
+            return f"{hours}ч"
+        elif minutes:
+            return f"{minutes}м"
+        else:
+            return "0м"
 
     class Meta:
         constraints = [

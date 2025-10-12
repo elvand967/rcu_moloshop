@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mptt",
     "nested_admin",
+    "widget_tweaks",
     # WYSIWYG-редактор Ckeditor (django-ckeditor)
     "ckeditor",
     "ckeditor_uploader",

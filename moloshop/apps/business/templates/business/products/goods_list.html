@@ -1,0 +1,288 @@
+
+{# apps/business/templates/business/products/goods_list.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+{% load core_extras %}
+
+{% block extra_head %}
+<link type="text/css" href="{% static 'business/css/business.css' %}" rel="stylesheet" />
+{{ block.super }}
+{% endblock %}
+
+{% block users_content %}
+<h2 class="page-title">Товары бизнеса {{ business.title }}</h2>
+
+<a href="{% url 'business:goods_create' business.slug %}" class="btn btn-primary" style="margin-bottom:1rem;">
+  ➕ Новый товар
+</a>
+
+<div class="accordion" style="max-width: 800px; margin: 2rem auto; border-radius:.75rem; overflow: hidden;">
+  {% for goods in goodss %}
+    <div class="accordion-item" data-goods-id="{{ goods.id }}" style="border-bottom: 1px solid #ddd;">
+      <div class="accordion-header products-accordion-header">
+        <div class="products-thumb">
+          {% if goods.image %}
+            <img src="{{ goods.image.url }}" alt="{{ goods.title }}" class="products-thumb-img">
+          {% else %}
+            <div class="products-no-thumb">💇</div>
+          {% endif %}
+        </div>
+
+        <div class="products-info">
+          <span class="products-title">{{ goods.title }}</span>
+          <span class="products-price">{{ goods.price }} {{ goods.currency }}</span>
+          <div class="products-duration">
+            {% if goods.duration %}
+              ⏱ {{ goods.duration_display }}
+            {% endif %}
+          </div>
+        </div>
+
+        <img
+          src="{% static 'core/img/icons/png/chevron-left.png' %}"
+          alt="Toggle"
+          class="toggle-icon products-toggle-icon"
+        />
+      </div>
+
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; background:#fff; transition: max-height 0.3s ease, padding 0.3s ease; padding-top: 0; padding-bottom: 0;">
+
+      {# Загрузка обложки товара #}
+      <fieldset style="margin: .75rem 1rem;">
+        <legend>Обложка товара</legend>
+        <div class="row mb-4">
+          <div class="col-6 col-sm-12">
+            {% if goods.image %}
+              <img class="goods-image-preview"
+                   src="{{ goods.image.url }}"
+                   alt="Обложка товара"
+                   style="border-radius:.75rem; display:block;">
+
+            {% else %}
+              <img class="goods-image-preview"
+                   src="{% static 'business/images/placeholder.jpg' %}"
+                   alt="Обложка товара"
+                   style="border-radius:.75rem; display:block;">
+            {% endif %}
+          </div>
+
+          <div class="col-6 col-sm-12">
+            <form class="goods-image-upload-form"
+                  enctype="multipart/form-data"
+                  method="post"
+                  data-upload-url="{% url 'business:upload_goods_image' business_slug=business.slug goods_slug=goods.slug %}"
+                  data-delete-url="{% url 'business:delete_goods_image' business_slug=business.slug goods_slug=goods.slug %}">
+              {% csrf_token %}
+              <input type="file" name="image" class="goods-image-file" hidden>
+              <button type="button" class="btn btn--large btn--success select-goods-image-btn">Загрузить обложку</button>
+              <button type="button" class="btn btn--compact btn--danger delete-goods-image-btn">Удалить</button>
+            </form>
+          </div>
+        </div>
+      </fieldset>
+
+      {# Галерея изображений товаров #}
+      <fieldset style="margin: .75rem 1rem;">
+        <legend>Галерея изображений услуг</legend>
+        <div id="gallery_preview_{{ goods.slug }}"
+             data-business-slug="{{ business.slug }}"
+             data-model-type="goods"
+             data-model-slug="{{ goods.slug }}"
+             class="gallery-preview">
+          {% with gallery=gallery_dict|get_item:goods.id %}
+            {% if gallery %}
+              {% for media in gallery %}
+                <div class="gallery-item" id="gallery-item-{{ media.id }}">
+                  <a href="{{ media.file.url }}" target="_blank" rel="noopener noreferrer" title="Открыть изображение в полном размере">
+                    <img src="{{ media.file.url }}" alt="{{ media.alt_text }}" class="gallery-img">
+                  </a>
+                  <button type="button"
+                          class="btn btn-sm btn-danger btn-delete-image"
+                          data-media-id="{{ media.id }}"
+                          title="Удалить изображение">
+                    ✕
+                  </button>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>Изображения отсутствуют.</p>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <form id="gallery_upload_form_{{ goods.slug }}" enctype="multipart/form-data" method="post"
+              data-upload-url="{% url 'business:upload_gallery_image' business_slug=business.slug model_type='goods' model_slug=goods.slug %}">
+          {% csrf_token %}
+          <input type="file" id="id_gallery_image_file_{{ goods.slug }}" name="image" hidden>
+          <button type="button" id="select_gallery_image_btn_{{ goods.slug }}" class="btn btn--large btn--success" style="margin-top:1rem;">Загрузить изображение</button>
+        </form>
+      </fieldset>
+
+      {# Форма товара #}
+      <form method="post" class="goods-form p-3" style="display:flex; flex-direction:column; gap:0.5rem;">
+        {% csrf_token %}
+        <input type="hidden" name="goods_id" value="{{ goods.id }}">
+          {% with form=goods_forms|get_item:goods.id %}
+            {% for field in form %}
+              {% include "core/partials/field_row.html" with field=field %}
+            {% endfor %}
+          {% endwith %}
+        <button type="submit" class="btn-save" style="margin-top: 0.5rem; background: #4CAF50; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.3s;">
+            💾 Сохранить
+        </button>
+        </form>
+
+        <form id="delete-goods-{{ goods.slug }}" method="post" action="{% url 'business:goods_delete' business.slug goods.slug %}" style="margin-top: 0.5rem;">
+          {% csrf_token %}
+          <button
+            type="button"
+            class="btn-delete"
+            onclick="confirmDeleteItem('goods', '{{ goods.slug }}', '{{ goods.title }}')"
+            style="background: #dc3545; color: #fff; border: none; margin: 0 .75rem; padding: 0.4rem 1rem; border-radius:.75rem; cursor: pointer; transition: background 0.3s;">
+            🗑 Удалить товар
+          </button>
+        </form>
+
+      </div>
+    </div>
+  {% empty %}
+    <p>Пока нет товаров.</p>
+  {% endfor %}
+</div>
+
+{# Пагинатор #}
+{% if goodss.has_other_pages %}
+<nav class="pagination-wrapper" style="text-align:center; margin:2rem 0;">
+  <ul class="pagination" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; list-style:none; padding:0;">
+
+    {# Кнопка "Назад" #}
+    {% if goodss.has_previous %}
+      <li>
+        <a class="page-link" href="?page={{ goodss.previous_page_number }}{% if active_goods_id %}&active_goods_id={{ active_goods_id }}{% endif %}"
+           aria-label="Предыдущая"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">
+          ←
+        </a>
+      </li>
+    {% else %}
+      <li><span class="page-link disabled" style="padding:0.5rem 1rem; color:#999;">←</span></li>
+    {% endif %}
+
+    {# Номер первой страницы #}
+    {% if goodss.number > 3 %}
+      <li>
+        <a class="page-link" href="?page=1{% if active_goods_id %}&active_goods_id={{ active_goods_id }}{% endif %}"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">1</a>
+      </li>
+      {% if goodss.number > 4 %}
+        <li><span style="padding:0.5rem 0.75rem;">…</span></li>
+      {% endif %}
+    {% endif %}
+
+    {# Диапазон текущих страниц (текущая ±2) #}
+    {% for num in goodss.paginator.page_range %}
+      {% if num >= goodss.number|add:"-2" and num <= goodss.number|add:"2" %}
+        {% if num == goodss.number %}
+          <li><span class="page-link active"
+                    style="padding:0.5rem 1rem; background:#4CAF50; color:#fff; border-radius:.5rem;">{{ num }}</span></li>
+        {% else %}
+          <li>
+            <a class="page-link" href="?page={{ num }}{% if active_goods_id %}&active_goods_id={{ active_goods_id }}{% endif %}"
+               style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">{{ num }}</a>
+          </li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {# Последняя страница и многоточие #}
+    {% if goodss.number < goodss.paginator.num_pages|add:"-2" %}
+      {% if goodss.number < goodss.paginator.num_pages|add:"-3" %}
+        <li><span style="padding:0.5rem 0.75rem;">…</span></li>
+      {% endif %}
+      <li>
+        <a class="page-link" href="?page={{ goodss.paginator.num_pages }}{% if active_goods_id %}&active_goods_id={{ active_goods_id }}{% endif %}"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">{{ goodss.paginator.num_pages }}</a>
+      </li>
+    {% endif %}
+
+    {# Кнопка "Вперёд" #}
+    {% if goodss.has_next %}
+      <li>
+        <a class="page-link" href="?page={{ goodss.next_page_number }}{% if active_goods_id %}&active_goods_id={{ active_goods_id }}{% endif %}"
+           aria-label="Следующая"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">
+          →
+        </a>
+      </li>
+    {% else %}
+      <li><span class="page-link disabled" style="padding:0.5rem 1rem; color:#999;">→</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const headers = document.querySelectorAll(".accordion-header");
+
+  headers.forEach(header => {
+    header.addEventListener("click", (event) => {
+      // Проверяем, не кликнули ли по кнопке удаления (или другому интерактивному элементу),
+      // чтобы не переключать аккордеон при клике туда
+      if (event.target.closest(".btn-delete") || event.target.closest(".btn-delete-image") || event.target.closest("button")) {
+        return;
+      }
+
+      const isActive = header.classList.contains("active");
+      const body = header.nextElementSibling;
+
+      if (isActive) {
+        // Закрываем текущий открытый блок
+        header.classList.remove("active");
+        header.querySelector(".toggle-icon").classList.remove("active");
+        body.style.maxHeight = null;
+        body.style.paddingTop = "0";
+        body.style.paddingBottom = "0";
+      } else {
+        // Закрываем все остальные
+        headers.forEach(h => {
+          h.classList.remove("active");
+          h.querySelector(".toggle-icon").classList.remove("active");
+          const b = h.nextElementSibling;
+          b.style.maxHeight = null;
+          b.style.paddingTop = "0";
+          b.style.paddingBottom = "0";
+        });
+        // Открываем текущий
+        header.classList.add("active");
+        header.querySelector(".toggle-icon").classList.add("active");
+        body.style.maxHeight = (body.scrollHeight + 20) + "px";
+        body.style.paddingTop = "1rem";
+        body.style.paddingBottom = "1rem";
+      }
+    });
+  });
+
+  {% if active_goods_id %}
+  const activeItem = document.querySelector(`.accordion-item[data-goods-id="{{ active_goods_id }}"]`);
+  if(activeItem){
+    const activeHeader = activeItem.querySelector(".accordion-header");
+    const activeBody = activeHeader.nextElementSibling;
+    activeHeader.classList.add("active");
+    activeHeader.querySelector(".toggle-icon").classList.add("active");
+    activeBody.style.maxHeight = (activeBody.scrollHeight + 20) + "px";
+    activeBody.style.paddingTop = "1rem";
+    activeBody.style.paddingBottom = "1rem";
+  }
+  {% endif %}
+});
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'business/js/goodss_upload.js' %}"></script>
+<script src="{% static 'business/js/gallery_upload_and_delete.js' %}"></script>
+<script src="{% static 'core/js/libs/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'business/js/confirm_delete.js' %}"></script>
+{% endblock %}

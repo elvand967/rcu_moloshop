@@ -1,0 +1,151 @@
+
+// apps/business/static/business/scss/partials/_products.scss
+
+// Основные стили аккордеона
+.toggle-icon.active {
+  transform: rotate(270deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.accordion-item:nth-child(odd) .accordion-header {
+  background-color: #f9f9f9; /* светлый фон */
+  border-left: 6px solid #4caf50;
+}
+
+.accordion-item:nth-child(even) .accordion-header {
+  background-color: #f3f6f8; /* чуть темнее */
+  border-left: 6px solid #81c784;
+}
+
+.accordion-item .accordion-header:hover {
+  background-color: #e9f1e9;
+}
+
+.accordion-item .accordion-header.active {
+  background-color: #e6f4ea;
+}
+
+// Аккордеон хедер и вложенные элементы (альтернатива inline-стилям)
+.products-accordion-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  position: relative;
+}
+
+.products-thumb {
+  margin-right: 1rem;
+}
+
+.products-thumb img {
+  height: 75px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.products-no-thumb {
+  height: 75px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-info {
+  flex-grow: 1;
+}
+
+.products-title {
+  font-weight: 600;
+  display: block;
+}
+
+.products-price {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.products-duration {
+  /* пусто - можно расширить при необходимости */
+}
+
+.products-delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: transparent;
+  color: #dc3545;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.products-toggle-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+  user-select: none;
+  margin-left: 8px;
+}
+
+// Стили для галереи
+.gallery-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.gallery-item {
+  position: relative; /* важно */
+  width: 128px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.btn-delete-image {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: rgba(220, 53, 69, 0.85);
+  border: none;
+  color: white;
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  z-index: 20; /* поверх остальных элементов */
+  transition: background 0.3s ease;
+}
+
+.btn-delete-image:hover {
+  background: rgba(220, 53, 69, 1);
+}

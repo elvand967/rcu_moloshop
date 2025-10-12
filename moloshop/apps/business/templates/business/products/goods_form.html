@@ -15,20 +15,20 @@
     <legend>Обложка</legend>
     <div class="row mb-4">
       <div class="col-6 col-sm-12">
-        {% if product.image %}
-          <img id="product_image_preview" src="{{ product.image.url }}" alt="Обложка" style="max-width: 128px; max-height: 128px; display: block;">
+        {% if goods.image %}
+          <img id="goods_image_preview" src="{{ goods.image.url }}" alt="Обложка" style="max-width: 128px; max-height: 128px; display: block;">
         {% else %}
-          <img id="product_image_preview" src="{% static 'business/images/placeholder.jpg' %}" alt="Обложка" style="max-width: 128px; max-height: 128px;">
+          <img id="goods_image_preview" src="{% static 'business/images/placeholder.jpg' %}" alt="Обложка" style="max-width: 128px; max-height: 128px;">
         {% endif %}
       </div>
       <div class="col-6 col-sm-12">
-        <form id="product_image_upload_form" enctype="multipart/form-data" method="post"
-              data-upload-url="{% url 'business:upload_product_image' business_slug=business.slug product_slug=product.slug %}"
-              data-delete-url="{% url 'business:delete_product_image' business_slug=business.slug product_slug=product.slug %}">
+        <form id="goods_image_upload_form" enctype="multipart/form-data" method="post"
+              data-upload-url="{% url 'business:upload_goods_image' business_slug=business.slug goods_slug=goods.slug %}"
+              data-delete-url="{% url 'business:delete_goods_image' business_slug=business.slug goods_slug=goods.slug %}">
           {% csrf_token %}
-          <input type="file" name="image" id="id_product_image_file" hidden>
-          <button type="button" id="select_product_image_btn" class="btn btn--large btn--success">Загрузить обложку</button>
-          <button type="button" id="delete_product_image_btn" class="btn btn--compact btn--danger">Удалить</button>
+          <input type="file" name="image" id="id_goods_image_file" hidden>
+          <button type="button" id="select_goods_image_btn" class="btn btn--large btn--success">Загрузить обложку</button>
+          <button type="button" id="delete_goods_image_btn" class="btn btn--compact btn--danger">Удалить</button>
         </form>
       </div>
     </div>
@@ -62,10 +62,10 @@
 {# Галерея изображений товара #}
 <fieldset style="margin-top: 2rem;">
   <legend>Галерея изображений товара</legend>
-  <div id="gallery_preview_{{ product.slug }}"
+  <div id="gallery_preview_{{ goods.slug }}"
      data-business-slug="{{ business.slug }}"
-     data-model-slug="{{ product.slug }}"
-     data-model-type="product"
+     data-model-slug="{{ goods.slug }}"
+     data-model-type="goods"
      class="gallery-preview">
   {% if gallery %}
     {% for media in gallery %}
@@ -84,11 +84,11 @@
 </div>
 
 
-  <form id="gallery_upload_form_{{ product.slug }}" enctype="multipart/form-data" method="post"
-        data-upload-url="{% url 'business:upload_gallery_image' business_slug=business.slug model_type='product' model_slug=product.slug %}">
+  <form id="gallery_upload_form_{{ goods.slug }}" enctype="multipart/form-data" method="post"
+        data-upload-url="{% url 'business:upload_gallery_image' business_slug=business.slug model_type='goods' model_slug=goods.slug %}">
     {% csrf_token %}
-    <input type="file" id="id_gallery_image_file_{{ product.slug }}" name="image" hidden>
-    <button type="button" id="select_gallery_image_btn_{{ product.slug }}" class="btn btn--large btn--success" style="margin-top:1rem;">Загрузить изображение</button>
+    <input type="file" id="id_gallery_image_file_{{ goods.slug }}" name="image" hidden>
+    <button type="button" id="select_gallery_image_btn_{{ goods.slug }}" class="btn btn--large btn--success" style="margin-top:1rem;">Загрузить изображение</button>
   </form>
 </fieldset>
 

@@ -1,22 +1,20 @@
 
 # apps/business/views/business_options.py
 
-
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views.decorators.http import require_POST
-
 from apps.business.forms.business_form import BusinessForm
 from django.db.models import Prefetch
-
-from apps.business.forms.productss_form import ProductForm, ServiceForm
-from apps.business.models import Business, Product, Service, Media
+from apps.business.forms.productss_form import GoodsForm, ServiceForm, ServiceTitleForm, GoodsTitleForm
+from apps.business.models import Business, Goods, Service, Media
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
 from django.http import JsonResponse
-
 from apps.users.models import ProfileMenuCategory
+from django.utils.http import urlencode
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 '''
 Декоратор login_required в Django используется во вьюшках для 
 ограничения доступа к этим вьюшкам только аутентифицированным пользователям. 
@@ -28,30 +26,9 @@ from apps.users.models import ProfileMenuCategory
 даже если все представления доступны только из личного кабинета авторизованных пользователей.
 '''
 
-# @login_required
-# def business_list(request):
-#     """
-#     Отображает список бизнесов текущего пользователя вместе с товарами, услугами и медиа.
-#     """
-#
-#     products = Product.objects.prefetch_related("media")
-#     services = Service.objects.prefetch_related("media")
-#
-#     businesses = (
-#         Business.objects.filter(owner=request.user)
-#         .order_by("order", "title")
-#         .prefetch_related(
-#             Prefetch("products", queryset=products),
-#             Prefetch("services", queryset=services),
-#         )
-#     )
-#
-#     return render(
-#         request,
-#         "business/showcase/business_list.html",
-#         {"businesses": businesses},
-#     )
-
+# =============================
+# CRUD для Бизнеса
+# =============================
 @login_required
 # Декоратор, который гарантирует, что доступ к функции будет только у аутентифицированных пользователей.
 # Если пользователь не вошёл в систему, его перенаправляют на страницу входа.
@@ -62,7 +39,7 @@ def business_list(request):
     Отображает список бизнесов текущего пользователя вместе с товарами, услугами и медиа.
     """
 
-    products = Product.objects.prefetch_related("media")
+    goodss = Goods.objects.prefetch_related("media")
     # Запрос к базе данных для получения всех товаров с предварительной загрузкой связанных объектов 'media' (медиафайлов) для оптимизации.
 
     services = Service.objects.prefetch_related("media")
@@ -76,7 +53,7 @@ def business_list(request):
         # Сортируем бизнесы сначала по полю 'order', затем по 'title' в алфавитном порядке.
 
         .prefetch_related(
-            Prefetch("products", queryset=products),
+            Prefetch("goodss", queryset=goodss),
             Prefetch("services", queryset=services),
         )
         # Оптимизация запросов: для каждого бизнеса заранее подгружаем связанные товары и услуги
@@ -92,9 +69,6 @@ def business_list(request):
     # queryset бизнесов, чтобы отобразить их на странице для пользователя.
 
 
-# =============================
-# CRUD для Бизнеса
-# =============================
 @login_required
 def business_create(request):
     if request.method == "POST":
@@ -137,7 +111,7 @@ def business_create(request):
             ProfileMenuCategory.objects.create(
                 user=request.user,
                 name='Товары',
-                url='business:business_products_list',
+                url='business:goods_list',
                 url_params={'business_slug': business.slug},
                 order=3,
                 parent=business_menu,
@@ -145,7 +119,7 @@ def business_create(request):
             ProfileMenuCategory.objects.create(
                 user=request.user,
                 name='Услуги',
-                url='business:business_services_list',
+                url='business:service_list',
                 url_params={'business_slug': business.slug},
                 order=4,
                 parent=business_menu,
@@ -216,6 +190,9 @@ def business_delete(request, slug):
     return redirect("business:business_list")
 
 
+# =============================
+# CRUD для Товаров
+# =============================
 @login_required
 def goods_create(request, business_slug):
     '''
@@ -224,47 +201,106 @@ def goods_create(request, business_slug):
     Далее в форме редактирования товара уже будут все необходимые параметры
     для работы блока формы ajax-загрузки изображения.
     '''
+    business = get_object_or_404(Business, slug=business_slug, owner=request.user)
+    if request.method == "POST":
+        form = GoodsTitleForm(request.POST)
+        if form.is_valid():
+            goods = form.save(commit=False)
+            goods.business = business
+            goods.save()
+            messages.success(request, f"Товар «{goods.title}» создана.")
+            params = urlencode({"active_goods_id": goods.id})
+            return redirect(f"{reverse('business:goods_list', kwargs={'business_slug': business.slug})}?{params}")
+    else:
+        form = GoodsTitleForm()
+    return render(request, "business/products/goods_new.html", {"form": form, "business": business})
 
+
+@login_required
+def goods_list(request, business_slug):
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
 
-    if request.method == "POST":
-        title = request.POST.get("title")
-        if not title:
-            messages.error(request, "Введите название товара")
-        else:
-            product = Product.objects.create(
-                business=business,
-                title=title,
-            )
-            messages.success(request, f"Товар «{product.title}» создан. Теперь добавьте описание и фото.")
-            return redirect("business:goods_edit", business_slug=business.slug, slug=product.slug)
+    goodss_qs = Goods.objects.filter(business=business).order_by("-created_at")
 
-    return render(request, "business/products/product_new.html", {
+    # --- Пагинация ---
+    paginator = Paginator(goodss_qs, 5)  # по 5 услуг на страницу
+    page_number = request.GET.get("page")
+    try:
+        goodss_page = paginator.page(page_number)
+    except PageNotAnInteger:
+        goodss_page = paginator.page(1)
+    except EmptyPage:
+        goodss_page = paginator.page(paginator.num_pages)
+
+    # Подгружаем галерею для всех товаров, попавших на текущую страницу
+    media_qs = Media.objects.filter(
+        content_type__model='goods',
+        object_id__in=goodss_page.object_list.values_list('id', flat=True)
+    )
+
+    # Словарь goods.id -> список Media
+    gallery_dict = {}
+    for media in media_qs:
+        gallery_dict.setdefault(media.object_id, []).append(media)
+
+    active_goods_id = request.GET.get("active_goods_id")
+    try:
+        active_goods_id = int(active_goods_id)
+    except (TypeError, ValueError):
+        active_goods_id = None
+
+    if request.method == "POST":
+        if "goods_id" in request.POST:
+            goods_id = request.POST.get("goods_id")
+            goods = get_object_or_404(Goods, pk=goods_id, business=business)
+            form = GoodsForm(request.POST, instance=goods)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Изменения сохранены.")
+                return redirect("business:goods_list", business_slug=business.slug)
+        else:
+            form = GoodsForm(request.POST)
+            if form.is_valid():
+                new_goods = form.save(commit=False)
+                new_goods.business = business
+                new_goods.save()
+                messages.success(request, "Товар добавлен.")
+                return redirect("business:goods_list", business_slug=business.slug)
+
+    goods_forms = {s.id: GoodsForm(instance=s) for s in goodss_page}
+    new_goods_form = GoodsForm()
+
+    return render(request, "business/products/goods_list.html", {
         "business": business,
+        "goodss": goodss_page,  # заменили queryset на страницу
+        "goods_forms": goods_forms,
+        "new_goods_form": new_goods_form,
+        "active_goods_id": active_goods_id,
+        "gallery_dict": gallery_dict,
+        "paginator": paginator,
     })
 
 
 @login_required
 def goods_edit(request, business_slug, slug):
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
-    product = get_object_or_404(Product, slug=slug, business=business)
+    goods = get_object_or_404(Goods, slug=slug, business=business)  # Goods
 
     if request.method == "POST":
-        form = ProductForm(request.POST, request.FILES, instance=product)
+        form = GoodsForm(request.POST, request.FILES, instance=goods)  # GoodsForm
         if form.is_valid():
             form.save()
-            messages.success(request, f"Товар «{product.title}» обновлён.")
+            messages.success(request, f"Товар «{goods.title}» обновлён.")
             return redirect("business:business_edit", slug=business.slug)
     else:
-        form = ProductForm(instance=product)
+        form = GoodsForm(instance=goods)
 
-    # Добавляем галерею в context
-    gallery = product.gallery.all()
+    gallery = goods.gallery.all()
 
-    return render(request, "business/products/product_form.html", {
+    return render(request, "business/products/goods_form.html", {
         "business": business,
         "form": form,
-        "product": product,
+        "goods": goods,
         "gallery": gallery,
     })
 
@@ -272,7 +308,7 @@ def goods_edit(request, business_slug, slug):
 @login_required
 def goods_delete(request, business_slug, slug):
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
-    product = get_object_or_404(Product, slug=slug, business=business)
+    product = get_object_or_404(Goods, slug=slug, business=business)  # Goods
     if request.method == "POST":
         product.delete()
         messages.success(request, f"Товар «{product.title}» удалён.")
@@ -284,29 +320,83 @@ def goods_delete(request, business_slug, slug):
 # =============================
 @login_required
 def service_create(request, business_slug):
-    '''
-    Используем промежуточный шаблон с вводом названия товара.
-    Он создаст новую сущность модели с слагом и привязкой к бизнесу.
-    Далее в форме редактирования товара уже будут все необходимые параметры
-    для работы блока формы ajax-загрузки изображения.
-    '''
+    business = get_object_or_404(Business, slug=business_slug, owner=request.user)
+    if request.method == "POST":
+        form = ServiceTitleForm(request.POST)
+        if form.is_valid():
+            service = form.save(commit=False)
+            service.business = business
+            service.save()
+            messages.success(request, f"Услуга «{service.title}» создана.")
+            params = urlencode({"active_service_id": service.id})
+            return redirect(f"{reverse('business:service_list', kwargs={'business_slug': business.slug})}?{params}")
+    else:
+        form = ServiceTitleForm()
+    return render(request, "business/products/service_new.html", {"form": form, "business": business})
 
+
+@login_required
+def service_list(request, business_slug):
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
 
-    if request.method == "POST":
-        title = request.POST.get("title")
-        if not title:
-            messages.error(request, "Введите название услуги")
-        else:
-            service = Service.objects.create(
-                business=business,
-                title=title,
-            )
-            messages.success(request, f"Услуга «{service.title}» создана. Теперь добавьте описание и фото.")
-            return redirect("business:service_edit", business_slug=business.slug, slug=service.slug)
+    services_qs = Service.objects.filter(business=business).order_by("-created_at")
 
-    return render(request, "business/products/service_new.html", {
+    # --- Пагинация ---
+    paginator = Paginator(services_qs, 5)  # по 5 услуг на страницу
+    page_number = request.GET.get("page")
+    try:
+        services_page = paginator.page(page_number)
+    except PageNotAnInteger:
+        services_page = paginator.page(1)
+    except EmptyPage:
+        services_page = paginator.page(paginator.num_pages)
+
+    # Подгружаем галерею для всех услуг, попавших на текущую страницу
+    media_qs = Media.objects.filter(
+        content_type__model='service',
+        object_id__in=services_page.object_list.values_list('id', flat=True)
+    )
+
+    # Словарь service.id -> список Media
+    gallery_dict = {}
+    for media in media_qs:
+        gallery_dict.setdefault(media.object_id, []).append(media)
+
+    active_service_id = request.GET.get("active_service_id")
+    try:
+        active_service_id = int(active_service_id)
+    except (TypeError, ValueError):
+        active_service_id = None
+
+    if request.method == "POST":
+        if "service_id" in request.POST:
+            service_id = request.POST.get("service_id")
+            service = get_object_or_404(Service, pk=service_id, business=business)
+            form = ServiceForm(request.POST, instance=service)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Изменения сохранены.")
+                return redirect("business:service_list", business_slug=business.slug)
+        else:
+            form = ServiceForm(request.POST)
+            if form.is_valid():
+                new_service = form.save(commit=False)
+                new_service.business = business
+                new_service.save()
+                messages.success(request, "Услуга добавлена.")
+                return redirect("business:service_list", business_slug=business.slug)
+
+    service_forms = {s.id: ServiceForm(instance=s) for s in services_page}
+    new_service_form = ServiceForm()
+
+    return render(request, "business/products/services_list.html", {
         "business": business,
+        "services": services_page,  # заменили queryset на страницу
+        "service_forms": service_forms,
+        "new_service_form": new_service_form,
+        "active_service_id": active_service_id,
+        "gallery_dict": gallery_dict,
+        "paginator": paginator,
     })
 
 
@@ -348,9 +438,10 @@ def service_delete(request, business_slug, slug):
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
     service = get_object_or_404(Service, slug=slug, business=business)
     if request.method == "POST":
+        title = service.title
         service.delete()
-        messages.success(request, f"Услуга «{service.title}» удалена.")
-    return redirect("business:business_edit", slug=business.slug)
+        messages.success(request, f"Услуга «{title}» успешно удалена.")
+    return redirect("business:service_list", business_slug=business.slug)
 
 
 @login_required
@@ -358,8 +449,8 @@ def delete_gallery_image(request, business_slug, model_type, model_slug, media_i
     if request.method != "POST":
         return JsonResponse({"error": "Invalid request method"}, status=405)
     business = get_object_or_404(Business, slug=business_slug, owner=request.user)
-    if model_type == "product":
-        obj = get_object_or_404(Product, slug=model_slug, business=business)
+    if model_type == "goods":
+        obj = get_object_or_404(Goods, slug=model_slug, business=business)
     elif model_type == "service":
         obj = get_object_or_404(Service, slug=model_slug, business=business)
     else:
@@ -376,13 +467,12 @@ def delete_gallery_image(request, business_slug, model_type, model_slug, media_i
     return JsonResponse({"success": True})
 
 
-
 __all__ = [
     "business_list", "business_detail",
     "business_create", "business_edit",
     "business_delete",
-    "goods_create", "goods_edit", "goods_delete",
-    "service_create", "service_edit", "service_delete",
+    "goods_list", "goods_create", "goods_edit", "goods_delete",
+    "service_list", "service_create", "service_edit", "service_delete",
     "delete_gallery_image",
 ]
 

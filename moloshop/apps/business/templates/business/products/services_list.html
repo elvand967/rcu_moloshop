@@ -1,0 +1,288 @@
+
+{# apps/business/templates/business/products/services_list.html #}
+
+{% extends "users/base_userpanel.html" %}
+{% load static %}
+{% load core_extras %}
+
+{% block extra_head %}
+<link type="text/css" href="{% static 'business/css/business.css' %}" rel="stylesheet" />
+{{ block.super }}
+{% endblock %}
+
+{% block users_content %}
+<h2 class="page-title">Услуги бизнеса {{ business.title }}</h2>
+
+<a href="{% url 'business:service_create' business.slug %}" class="btn btn-primary" style="margin-bottom:1rem;">
+  ➕ Новая услуга
+</a>
+
+<div class="accordion" style="max-width: 800px; margin: 2rem auto; border-radius:.75rem; overflow: hidden;">
+  {% for service in services %}
+    <div class="accordion-item" data-service-id="{{ service.id }}" style="border-bottom: 1px solid #ddd;">
+      <div class="accordion-header products-accordion-header">
+        <div class="products-thumb">
+          {% if service.image %}
+            <img src="{{ service.image.url }}" alt="{{ service.title }}" class="products-thumb-img">
+          {% else %}
+            <div class="products-no-thumb">💇</div>
+          {% endif %}
+        </div>
+
+        <div class="products-info">
+          <span class="products-title">{{ service.title }}</span>
+          <span class="products-price">{{ service.price }} {{ service.currency }}</span>
+          <div class="products-duration">
+            {% if service.duration %}
+              ⏱ {{ service.duration_display }}
+            {% endif %}
+          </div>
+        </div>
+
+        <img
+          src="{% static 'core/img/icons/png/chevron-left.png' %}"
+          alt="Toggle"
+          class="toggle-icon products-toggle-icon"
+        />
+      </div>
+
+      <div class="accordion-body" style="max-height: 0; overflow: hidden; background:#fff; transition: max-height 0.3s ease, padding 0.3s ease; padding-top: 0; padding-bottom: 0;">
+
+      {# Загрузка обложки услуги #}
+      <fieldset style="margin: .75rem 1rem;">
+        <legend>Обложка услуги</legend>
+        <div class="row mb-4">
+          <div class="col-6 col-sm-12">
+            {% if service.image %}
+              <img class="service-image-preview"
+                   src="{{ service.image.url }}"
+                   alt="Обложка услуги"
+                   style="border-radius:.75rem; display:block;">
+
+            {% else %}
+              <img class="service-image-preview"
+                   src="{% static 'business/images/placeholder.jpg' %}"
+                   alt="Обложка услуги"
+                   style="border-radius:.75rem; display:block;">
+            {% endif %}
+          </div>
+
+          <div class="col-6 col-sm-12">
+            <form class="service-image-upload-form"
+                  enctype="multipart/form-data"
+                  method="post"
+                  data-upload-url="{% url 'business:upload_service_image' business_slug=business.slug service_slug=service.slug %}"
+                  data-delete-url="{% url 'business:delete_service_image' business_slug=business.slug service_slug=service.slug %}">
+              {% csrf_token %}
+              <input type="file" name="image" class="service-image-file" hidden>
+              <button type="button" class="btn btn--large btn--success select-service-image-btn">Загрузить обложку</button>
+              <button type="button" class="btn btn--compact btn--danger delete-service-image-btn">Удалить</button>
+            </form>
+          </div>
+        </div>
+      </fieldset>
+
+      {# Галерея изображений услуг #}
+      <fieldset style="margin: .75rem 1rem;">
+        <legend>Галерея изображений услуг</legend>
+        <div id="gallery_preview_{{ service.slug }}"
+             data-business-slug="{{ business.slug }}"
+             data-model-type="service"
+             data-model-slug="{{ service.slug }}"
+             class="gallery-preview">
+          {% with gallery=gallery_dict|get_item:service.id %}
+            {% if gallery %}
+              {% for media in gallery %}
+                <div class="gallery-item" id="gallery-item-{{ media.id }}">
+                  <a href="{{ media.file.url }}" target="_blank" rel="noopener noreferrer" title="Открыть изображение в полном размере">
+                    <img src="{{ media.file.url }}" alt="{{ media.alt_text }}" class="gallery-img">
+                  </a>
+                  <button type="button"
+                          class="btn btn-sm btn-danger btn-delete-image"
+                          data-media-id="{{ media.id }}"
+                          title="Удалить изображение">
+                    ✕
+                  </button>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>Изображения отсутствуют.</p>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        <form id="gallery_upload_form_{{ service.slug }}" enctype="multipart/form-data" method="post"
+              data-upload-url="{% url 'business:upload_gallery_image' business_slug=business.slug model_type='service' model_slug=service.slug %}">
+          {% csrf_token %}
+          <input type="file" id="id_gallery_image_file_{{ service.slug }}" name="image" hidden>
+          <button type="button" id="select_gallery_image_btn_{{ service.slug }}" class="btn btn--large btn--success" style="margin-top:1rem;">Загрузить изображение</button>
+        </form>
+      </fieldset>
+
+      {# Форма услуги #}
+      <form method="post" class="service-form p-3" style="display:flex; flex-direction:column; gap:0.5rem;">
+        {% csrf_token %}
+        <input type="hidden" name="service_id" value="{{ service.id }}">
+          {% with form=service_forms|get_item:service.id %}
+            {% for field in form %}
+              {% include "core/partials/field_row.html" with field=field %}
+            {% endfor %}
+          {% endwith %}
+        <button type="submit" class="btn-save" style="margin-top: 0.5rem; background: #4CAF50; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; transition: background 0.3s;">
+            💾 Сохранить
+        </button>
+        </form>
+
+        <form id="delete-service-{{ service.slug }}" method="post" action="{% url 'business:service_delete' business.slug service.slug %}" style="margin-top: 0.5rem;">
+          {% csrf_token %}
+          <button
+            type="button"
+            class="btn-delete"
+            onclick="confirmDeleteItem('service', '{{ service.slug }}', '{{ service.title }}')"
+            style="background: #dc3545; color: #fff; border: none; margin: 0 .75rem; padding: 0.4rem 1rem; border-radius:.75rem; cursor: pointer; transition: background 0.3s;">
+            🗑 Удалить услугу
+          </button>
+        </form>
+
+      </div>
+    </div>
+  {% empty %}
+    <p>Пока нет услуг.</p>
+  {% endfor %}
+</div>
+
+{# Пагинатор #}
+{% if services.has_other_pages %}
+<nav class="pagination-wrapper" style="text-align:center; margin:2rem 0;">
+  <ul class="pagination" style="display:inline-flex; flex-wrap:wrap; gap:0.5rem; justify-content:center; list-style:none; padding:0;">
+
+    {# Кнопка "Назад" #}
+    {% if services.has_previous %}
+      <li>
+        <a class="page-link" href="?page={{ services.previous_page_number }}{% if active_service_id %}&active_service_id={{ active_service_id }}{% endif %}"
+           aria-label="Предыдущая"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">
+          ←
+        </a>
+      </li>
+    {% else %}
+      <li><span class="page-link disabled" style="padding:0.5rem 1rem; color:#999;">←</span></li>
+    {% endif %}
+
+    {# Номер первой страницы #}
+    {% if services.number > 3 %}
+      <li>
+        <a class="page-link" href="?page=1{% if active_service_id %}&active_service_id={{ active_service_id }}{% endif %}"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">1</a>
+      </li>
+      {% if services.number > 4 %}
+        <li><span style="padding:0.5rem 0.75rem;">…</span></li>
+      {% endif %}
+    {% endif %}
+
+    {# Диапазон текущих страниц (текущая ±2) #}
+    {% for num in services.paginator.page_range %}
+      {% if num >= services.number|add:"-2" and num <= services.number|add:"2" %}
+        {% if num == services.number %}
+          <li><span class="page-link active"
+                    style="padding:0.5rem 1rem; background:#4CAF50; color:#fff; border-radius:.5rem;">{{ num }}</span></li>
+        {% else %}
+          <li>
+            <a class="page-link" href="?page={{ num }}{% if active_service_id %}&active_service_id={{ active_service_id }}{% endif %}"
+               style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">{{ num }}</a>
+          </li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    {# Последняя страница и многоточие #}
+    {% if services.number < services.paginator.num_pages|add:"-2" %}
+      {% if services.number < services.paginator.num_pages|add:"-3" %}
+        <li><span style="padding:0.5rem 0.75rem;">…</span></li>
+      {% endif %}
+      <li>
+        <a class="page-link" href="?page={{ services.paginator.num_pages }}{% if active_service_id %}&active_service_id={{ active_service_id }}{% endif %}"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">{{ services.paginator.num_pages }}</a>
+      </li>
+    {% endif %}
+
+    {# Кнопка "Вперёд" #}
+    {% if services.has_next %}
+      <li>
+        <a class="page-link" href="?page={{ services.next_page_number }}{% if active_service_id %}&active_service_id={{ active_service_id }}{% endif %}"
+           aria-label="Следующая"
+           style="padding:0.5rem 1rem; border:1px solid #ccc; border-radius:.5rem;">
+          →
+        </a>
+      </li>
+    {% else %}
+      <li><span class="page-link disabled" style="padding:0.5rem 1rem; color:#999;">→</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const headers = document.querySelectorAll(".accordion-header");
+
+  headers.forEach(header => {
+    header.addEventListener("click", (event) => {
+      // Проверяем, не кликнули ли по кнопке удаления (или другому интерактивному элементу),
+      // чтобы не переключать аккордеон при клике туда
+      if (event.target.closest(".btn-delete") || event.target.closest(".btn-delete-image") || event.target.closest("button")) {
+        return;
+      }
+
+      const isActive = header.classList.contains("active");
+      const body = header.nextElementSibling;
+
+      if (isActive) {
+        // Закрываем текущий открытый блок
+        header.classList.remove("active");
+        header.querySelector(".toggle-icon").classList.remove("active");
+        body.style.maxHeight = null;
+        body.style.paddingTop = "0";
+        body.style.paddingBottom = "0";
+      } else {
+        // Закрываем все остальные
+        headers.forEach(h => {
+          h.classList.remove("active");
+          h.querySelector(".toggle-icon").classList.remove("active");
+          const b = h.nextElementSibling;
+          b.style.maxHeight = null;
+          b.style.paddingTop = "0";
+          b.style.paddingBottom = "0";
+        });
+        // Открываем текущий
+        header.classList.add("active");
+        header.querySelector(".toggle-icon").classList.add("active");
+        body.style.maxHeight = (body.scrollHeight + 20) + "px";
+        body.style.paddingTop = "1rem";
+        body.style.paddingBottom = "1rem";
+      }
+    });
+  });
+
+  {% if active_service_id %}
+  const activeItem = document.querySelector(`.accordion-item[data-service-id="{{ active_service_id }}"]`);
+  if(activeItem){
+    const activeHeader = activeItem.querySelector(".accordion-header");
+    const activeBody = activeHeader.nextElementSibling;
+    activeHeader.classList.add("active");
+    activeHeader.querySelector(".toggle-icon").classList.add("active");
+    activeBody.style.maxHeight = (activeBody.scrollHeight + 20) + "px";
+    activeBody.style.paddingTop = "1rem";
+    activeBody.style.paddingBottom = "1rem";
+  }
+  {% endif %}
+});
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'business/js/productss_upload.js' %}"></script>
+<script src="{% static 'business/js/gallery_upload_and_delete.js' %}"></script>
+<script src="{% static 'core/js/libs/sweetalert2.all.min.js' %}"></script>
+<script src="{% static 'business/js/confirm_delete.js' %}"></script>
+{% endblock %}

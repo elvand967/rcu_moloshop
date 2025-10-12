@@ -11,7 +11,7 @@
 
 {% block extra_head %}
 {# Добавим стили пакета apps/users #}
-<link href="{% static 'users/css/users.css' %}" rel="stylesheet">
+<link type="text/css" href="{% static 'users/css/users.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
@@ -37,3 +37,5 @@
 </div>
 {% endblock %}
 {% block sidebar %}{# Можно оставить пустым или убрать #}{% endblock %}
+
+{% block extra_js %}{% endblock %}

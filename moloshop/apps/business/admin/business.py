@@ -6,13 +6,10 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from nested_admin.nested import NestedModelAdmin, NestedStackedInline, NestedTabularInline
+from apps.business.models import Business, ContactInfo, Messenger, Goods, Service, Category
 
-from apps.business.models import Business, ContactInfo, Messenger, Product, Service, Category
-
-
-# === Inline для продуктов ===
-class ProductInline(NestedTabularInline):
-    model = Product
+class GoodsInline(NestedTabularInline):
+    model = Goods
     extra = 0
     can_delete = True
     fields = ("title", "sku", "category", "image_preview", "description", "unit", "price", "currency")
@@ -35,7 +32,6 @@ class ProductInline(NestedTabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-# === Inline для услуг ===
 class ServiceInline(NestedTabularInline):
     model = Service
     extra = 0
@@ -61,7 +57,6 @@ class ServiceInline(NestedTabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
-# === Inline для мессенджеров ===
 class MessengerInline(NestedTabularInline):
     model = Messenger
     extra = 1
@@ -70,7 +65,6 @@ class MessengerInline(NestedTabularInline):
     show_change_link = True
 
 
-# === Inline для контактной информации ===
 class ContactInfoInline(NestedStackedInline):
     model = ContactInfo
     extra = 0
@@ -81,10 +75,9 @@ class ContactInfoInline(NestedStackedInline):
     classes = ["collapse"]
 
 
-# === Админка бизнеса ===
 class BusinessAdmin(NestedModelAdmin):
     list_display = ("title", "business_owner", "image_preview", "is_visible",
-                    "products_count", "services_count", "created_at")
+                    "goods_count", "services_count", "created_at")  # products_count → goods_count
     list_filter = ("is_visible", "created_at")
     search_fields = ("title", "slug", "description", "owner__email", "owner__first_name", "owner__last_name")
     readonly_fields = ("image_preview",)
@@ -94,7 +87,7 @@ class BusinessAdmin(NestedModelAdmin):
     )
     list_editable = ("is_visible",)
     ordering = ("owner__last_name", "title", "created_at")
-    inlines = [ContactInfoInline, ProductInline, ServiceInline]
+    inlines = [ContactInfoInline, GoodsInline, ServiceInline]  # ProductInline → GoodsInline
 
     def get_inline_instances(self, request, obj=None):
         for inline in self.inlines:
@@ -114,13 +107,15 @@ class BusinessAdmin(NestedModelAdmin):
 
     def image_preview(self, obj):
         if obj.logo:
-            return format_html('<img src="{}" style="max-height:50px; border-radius:4px; margin-left:10px;" />', obj.logo.url)
+            return format_html(
+                '<img src="{}" style="max-height:50px; border-radius:4px; margin-left:10px;" />', obj.logo.url
+            )
         return "—"
     image_preview.short_description = "Логотип"
 
-    def products_count(self, obj):
-        return obj.products.count()
-    products_count.short_description = "Товаров"
+    def goods_count(self, obj):
+        return obj.goodss.count()
+    goods_count.short_description = "Товаров"
 
     def services_count(self, obj):
         return obj.services.count()

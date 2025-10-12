@@ -84,24 +84,24 @@
         <fieldset style="margin-top:2rem;">
           <legend>Товары</legend>
           <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
-              {% for product in business.products.all %}
+              {% for goods in business.goodss.all %}
               <div style="border:1px solid #ccc; border-radius:6px; padding:0.5rem; width:120px; text-align:center;">
-                  {% if product.image %}
-                  <img src="{{ product.image.url }}" alt="{{ product.title }}" style="width:100%; height:80px; object-fit:cover; border-radius:4px;">
+                  {% if goods.image %}
+                  <img src="{{ goods.image.url }}" alt="{{ goods.title }}" style="width:100%; height:80px; object-fit:cover; border-radius:4px;">
                   {% else %}
                   <div style="width:100%; height:80px; background:#eee; display:flex; align-items:center; justify-content:center; border-radius:4px;">
-                      {{ product.title|slice:":1" }}
+                      {{ goods.title|slice:":1" }}
                   </div>
                   {% endif %}
-                  <div style="margin-top:0.25rem; font-size:0.85rem;">{{ product.title }}</div>
-                  <a href="{% url 'business:goods_edit' business.slug product.slug %}" class="btn btn--compact btn--secondary">✏️</a>
+                  <div style="margin-top:0.25rem; font-size:0.85rem;">{{ goods.title }}</div>
+                  <a href="{% url 'business:goods_edit' business.slug goods.slug %}" class="btn btn--compact btn--secondary">✏️</a>
 
-                  <form id="delete-product-{{ product.slug }}"
+                  <form id="delete-goods-{{ goods.slug }}"
                           method="post"
-                          action="{% url 'business:goods_delete' business.slug product.slug %}">
+                          action="{% url 'business:goods_delete' business.slug goods.slug %}">
                       {% csrf_token %}
                       <button type="button"
-                              onclick="confirmDeleteItem('product', '{{ product.slug }}', '{{ product.title }}')"
+                              onclick="confirmDeleteItem('goods', '{{ goods.slug }}', '{{ goods.title }}')"
                               title="Удалить товар"
                               style="background:none; border:none; color:red; cursor:pointer;">
                           🗑
